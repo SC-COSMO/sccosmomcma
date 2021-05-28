@@ -11,12 +11,14 @@ library(grid) # For watermark
 devtools::load_all(".")
 library(sccosmoData)
 library(stringi)
+library(usmap)
+library(countrycode)
 library(dampack)
 
 ######## Initial setup ######
 choose_country <- "Mexico"
 #choose_state   <- "Ciudad de Mexico"
-choose_state   <- "Hidalgo"
+choose_state   <- "MCMA"
 df_density <- get_densities(country = choose_country, 
                             state = choose_state)
 
