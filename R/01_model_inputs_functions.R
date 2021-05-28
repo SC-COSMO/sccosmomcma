@@ -147,6 +147,7 @@ load_params_init <- function(
                                                  time_start = 0,
                                                  time_stop = n_t)),
   l_idx_scale_factor = get_const_multiage_list(n_t, rep(0.2, 8)),
+  v_reduced_sus = rep(1, 8),
   v_alpha_dx            = NULL,  # reduction in mortality on detected infectious vs undetcted infectious
   # HOSPITALIZATION PARAMETERS
   # https://www.thelancet.com/action/showPdf?pii=S1473-3099%2820%2930243-7
@@ -289,6 +290,8 @@ load_params_init <- function(
     l_ifr    = l_ifr,
     ## intervention(s) parameters
     l_interventions        = l_interventions,
+    ## Reduced susceptibility 
+    v_reduced_sus = v_reduced_sus,
     ## Detection parameters
     l_idx_scale_factor     = l_idx_scale_factor,
     v_alpha_dx             = v_alpha_dx,

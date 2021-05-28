@@ -250,20 +250,19 @@ cosmo_dXdt <- function(time, v_pop, l_params_all) {
     v_lambda_hh_community <- n_household_infection_rate * v_prop_ages_curr_sus
     
     ### Compute one-column matrix of forces of infection lambda
-    v_lambda <- m_Beta %*% (I/Ntot) + (m_Beta %*% (IDX/Ntot))*v_idx_scale_factor
-    
+    v_lambda <- (m_Beta %*% (I/Ntot) + (m_Beta %*% (IDX/Ntot))*v_idx_scale_factor) * v_reduced_sus    
     # cbind(S, round(v_lambda*S, 0), round(v_lambda_hh_community*N, 0))
     
     ### ODE model
     ## S
     dS_dt  <- v_birth*Ntot +
       v_omega * R - 
-      (v_lambda + v_r_mort) * S -   # Leaving S from community transmission
-      v_lambda_hh_community*N  # Leaving S from household transmission
+      (v_lambda + v_r_mort) * S - # Leaving S from community transmission
+      v_lambda_hh_community * S   # Leaving S from household transmission
     
     ### E
     ## E1
-    m_dE1_dt <- cbind(S = (v_lambda* S) + v_lambda_hh_community*N, 
+    m_dE1_dt <- cbind(S = (v_lambda* S) + v_lambda_hh_community * S, 
                       n_exp_states*v_sigma*m_E1[, -n_exp_states]) - # Incoming E1
       matrix((v_r_mort + n_exp_states*v_sigma), nrow = n_ages, ncol = n_exp_states) * m_E1 - 
       m_E1 %*% (m_nu_exp1_dx + m_phi_exp1_dx) - 
