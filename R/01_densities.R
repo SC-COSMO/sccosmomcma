@@ -15,3 +15,65 @@ get_densities_mx <- function(reload = FALSE) {
   }
   return(df_densities_mx)
 }
+
+#' Get population and age structure 
+#'
+#' \code{get_densities} wrapper function that allows user to
+#' subset data from various sources.
+#' If only county is specified (other parameters = ""), 
+#' it provides national level data
+#' Currently for US, if state(s) is specified, then it returns
+#' lowest geographical level (state or county) that it has
+#' within those specified state(s)
+#' If county is also specified (and the dataset contains counties),
+#' then only those counties within the state(s) are returned
+#' 
+#' @param reload a flag (default is FALSE) of whether to 
+#' redownload and process the data file
+#'
+#' @export
+get_densities <- function(country = "", 
+                          state = "",
+                          county = "") {
+  
+  country <- stringi::stri_trans_general(country, "latin-ascii")
+  state <-   stringi::stri_trans_general(state, "latin-ascii")
+  county <-  stringi::stri_trans_general(county, "latin-ascii")
+  
+  df_return <- get_densities_mx()
+  
+  match_country <- get_countrycode(country)
+  match_state <- get_fipscodes_mx(stringi::stri_trans_general(state, "latin-ascii"))
+  
+  # filter our return for the right country, state(s)
+  df_return <- df_return %>%
+    dplyr::mutate(s_code = get_fipscodes_mx(stringi::stri_trans_general(state, "latin-ascii"))) %>%
+    dplyr::filter(get_countrycode(stringi::stri_trans_general(country, "latin-ascii")) %in% match_country &
+             s_code == match_state)
+  
+  return(df_return)
+}
+
+#' Get a three letter code for a country's name
+#'
+#' \code{get_countrycode} returns a string with a 3 letter code
+#' for a country's name to help with matching between datasets. 
+#'
+#' @export
+get_countrycode <- function(country) {
+  return(suppressWarnings(countrycode::countrycode(country, origin = 'country.name', destination = 'iso3c')))
+}
+
+#' Get FIPS codes for Mexican states
+#'
+#' \code{get_fipscodes_mx} returns a string with the FIPS code 
+#' for Mexican states' names.
+#'
+#' @export
+get_fipscodes_mx <- function(state){
+  tmp <- c()
+  for(i in state){
+    tmp <- c(tmp, df_MEX_codes$s_code[df_MEX_codes$state==i])
+  }
+  return(tmp)
+}

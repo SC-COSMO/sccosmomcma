@@ -11,3 +11,26 @@ v_reduced_hosp <- c(rep(reduced_hosp, 2), rep(1, (n_ages-2))) # SA
 reduced_mort <- 0.1
 v_reduced_mort <- rep(1, n_ages) # SQ
 v_reduced_mort <- c(rep(reduced_mort, 2), rep(1, (n_ages-2))) # SA
+
+
+country <- "Mexico"
+state <- "MCMA"
+county <-"MCMA"
+
+df_density <- get_densities(country = country, 
+                            state = state,
+                            county = county)
+
+get_lifetables(country = country, 
+              state = state,
+              county = county)
+get_population_ages(country = country, 
+                    state = state,
+                    county = county)
+get_population_birth(country = country, 
+                     state = state,
+                     county = county)
+
+l_contact_matrices <- get_contact_matrix(country = country, 
+                                         state = state, 
+                                         density = df_density$density)

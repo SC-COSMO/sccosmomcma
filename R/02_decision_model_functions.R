@@ -52,6 +52,7 @@ cosmo_dXdt <- function(time, v_pop, l_params_all) {
   v_names_inf_l2_states     <- l_params_all$v_names_inf_l2_states
   v_names_infidx_l1_states  <- l_params_all$v_names_infidx_l1_states
   v_names_infidx_l2_states  <- l_params_all$v_names_infidx_l2_states
+  v_reduced_sus             <- l_params_all$v_reduced_sus
   v_names_hh                <- l_params_all$v_names_hh
   r_tau                     <- l_params_all$r_tau
   v_hh_contacts             <- l_params_all$v_hh_contacts

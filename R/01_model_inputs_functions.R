@@ -36,7 +36,8 @@
 #' folder.
 #' @param l_interventions a list of intervention "objects" defining type, timing, and
 #' effects of interventions.
-#' @param v_idx_scale_factor Age-specific infectiousness reduction factor on detected cases
+#' @param l_idx_scale_factor Age-specific infectiousness reduction factor on detected cases
+#' @param v_reduced_sus Age-specific reduction factor on susceptibility
 #' @param v_alpha_dx Age-specific reduction in mortality on detected infectious vs undetected infectious
 #' @param l_l_hospitalizations list of lists specifying age-specific,
 #'                             time-varying probability of hospitalizations

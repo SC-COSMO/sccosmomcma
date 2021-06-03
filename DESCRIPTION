@@ -25,7 +25,7 @@ Description: A collection of functions that implements the Stanford-CIDE
   PharmacoEconomics 2019;37(11):1329–1339.
 License: file LICENSE
 Depends:
-    R (>= 4.0.5)
+    R (>= 4.0.3)
 Imports:
     dplyr,
     tidyverse,
@@ -41,7 +41,10 @@ Imports:
     truncnorm,
     utils,
     plotrix,
-    rlang
+    rlang,
+    stringi,
+    countrycode,
+    data.table
 Suggests: 
     knitr,
     rmarkdown,

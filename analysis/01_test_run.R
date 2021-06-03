@@ -7,11 +7,10 @@ library(reshape2)
 library(tidyverse)
 library(ggplot2)
 library(grid) # For watermark
-# library(sccosmo)
+# library(sccosmomcma)
 devtools::load_all(".")
-library(sccosmoData)
 library(stringi)
-library(usmap)
+library(data.table)
 library(countrycode)
 library(dampack)
 

@@ -1,19 +1,19 @@
-library(sccosmoData)
-library(stringi)
-library(usmap)
-library(countrycode)
-
-### Define country and state
-choose_country <- "Mexico"
-choose_state <- "MCMA"
-
-### Get contact matrices from sccosmoData
-l_contact_matrices <- sccosmoData::get_contact_matrix(country = choose_country, 
-                                                      state = choose_state, 
-                                                      density = 141341)
-### Create .rda object of setting-specific contact matrices for an exemplary 
-### population and stor it in 'data' folder
-usethis::use_data(l_contact_matrices, overwrite = TRUE)
+# library(sccosmoData)
+# library(stringi)
+# library(usmap)
+# library(countrycode)
+# 
+# ### Define country and state
+# choose_country <- "Mexico"
+# choose_state <- "MCMA"
+# 
+# ### Get contact matrices from sccosmoData
+# l_contact_matrices <- sccosmoData::get_contact_matrix(country = choose_country, 
+#                                                       state = choose_state, 
+#                                                       density = 141341)
+# ### Create .rda object of setting-specific contact matrices for an exemplary 
+# ### population and stor it in 'data' folder
+# usethis::use_data(l_contact_matrices, overwrite = TRUE)
 
 #' Get contact matrices df
 #'
@@ -25,11 +25,6 @@ usethis::use_data(l_contact_matrices, overwrite = TRUE)
 #'
 #' @export
 get_contact_matrices_world <- function(reload = FALSE) {
-  if (reload == TRUE | !exists("df_contacts_src_world")) {
-    download_contact_matrices_world()
-    process_contact_matrices_world()
-    load(file = "./data/df_contacts_src_world")
-  } 
   return(df_contacts_src_world)
 }
 
@@ -38,12 +33,8 @@ get_contact_matrices_world <- function(reload = FALSE) {
 #' \code{get_contact_matrix} wrapper function that allows user to
 #' subset data from various sources.
 #' If only county is specified (other parameters = ""), 
-#' it provides national level data
-#' Currently for US, if state(s) is specified, then it returns
-#' lowest geographical level (state or county) that it has
-#' within those specified state(s)
-#' If county is also specified (and the dataset contains counties),
-#' then only those counties within the state(s) are returned
+#' it provides national level data.If county is also specified (and the dataset 
+#' contains counties), then only those counties within the state(s) are returned.
 #' 
 #' @param v_init_age_grps vector that specifies the age bins to aggregate and return
 #' @param country country of desired data
@@ -71,16 +62,10 @@ get_contact_matrix <- function(v_init_age_grps = c(0, 5, 15, 25, 45, 55, 65, 70)
   n_init_age_grps <- length(v_init_age_grps)
   
   # Clean up input strings
-  match_country <- stri_trans_general(country, "latin-ascii")
-  match_state <-   stri_trans_general(state, "latin-ascii")
-  match_county <-  stri_trans_general(county, "latin-ascii")
-  src_country <-  stri_trans_general(src_country, "latin-ascii")
-  
-  if (recache == F) {
-    if (is_in_cache(GLOBAL_CONTACT_MATRICES_CACHE, match_country, match_state, match_county, density = density)) {
-      return (get_from_cache(GLOBAL_CONTACT_MATRICES_CACHE, match_country, match_state, match_county, density = density))
-    }
-  }
+  match_country <- stringi::stri_trans_general(country, "latin-ascii")
+  match_state   <- stringi::stri_trans_general(state, "latin-ascii")
+  match_county  <- stringi::stri_trans_general(county, "latin-ascii")
+  src_country   <- stringi::stri_trans_general(src_country, "latin-ascii")
   
   ##############################
   #### Error checking for inputs
@@ -93,20 +78,8 @@ get_contact_matrix <- function(v_init_age_grps = c(0, 5, 15, 25, 45, 55, 65, 70)
     stop("At minimum, must supply country")
   }
   
-  if (is.na(match("", match_country)) & is.na(match("", src_country))) {
-    # Check whether the requested country exists in the source country list
-    if ((match_country %in% unique(sccosmoData::df_contacts_src_world$country))) {
-      warning("Supplied both src_country and country. Using src_country ('", paste0(src_country),"') for contact matrix.")
-    }
-  }
-  
   if (is.na(match("", match_country)) & !is.na(match("", src_country))) {
     src_country <- match_country
-  }  
-  
-  # Check whether the requested country exists in the source country list
-  if (!(src_country %in% unique(df_contacts_src_world$country))) {
-    stop("'", src_country, "' is not in contact matrix country list. Need to supply an alternate src_country.")
   }
   
   ##############################
@@ -153,7 +126,7 @@ get_contact_matrix <- function(v_init_age_grps = c(0, 5, 15, 25, 45, 55, 65, 70)
     } 
     
     df_pop_ages <- df_pop_ages %>%
-      ungroup() %>%
+      dplyr::ungroup() %>%
       dplyr::select(AgeGrpContact, prop_pop)
   }
   
@@ -168,17 +141,17 @@ get_contact_matrix <- function(v_init_age_grps = c(0, 5, 15, 25, 45, 55, 65, 70)
     
     ## Supplied state and county, only national density
     if (is.na(match("", match_state)) & density_goal$state == "" & is.na(match("", match_county)) & density_goal$county == "") {
-      warning("State-level and county-level densities are not available from sccosmoData. Using country-level density instead.")
+      warning("State-level and county-level densities are not available. Using country-level density instead.")
     } 
     ## Supplied state and county, only state density
     if (is.na(match("", match_state)) & density_goal$state != "" & is.na(match("", match_county)) & density_goal$county == "") {
-      warning("County-level density is not available from sccosmoData. Using state-level density instead.")
+      warning("County-level density is not available. Using state-level density instead.")
     } 
     ## Supplied state, only national density
     if (is.na(match("", match_state)) & density_goal$state == "" & !is.na(match("", match_county))) {
-      warning("State-level density is not available from sccosmoData. Using country-level density instead.")
+      warning("State-level density is not available. Using country-level density instead.")
     } 
-    density_goal <- pull(density_goal, density)
+    density_goal <- dplyr::pull(density_goal, density)
   }
   
   # Compute ratio between predicted contacts based on density of goal population and source population
@@ -198,35 +171,39 @@ get_contact_matrix <- function(v_init_age_grps = c(0, 5, 15, 25, 45, 55, 65, 70)
     tmp_contacts[[loc]] <- wrangle_contact_matrix(setting = loc,
                                                   src_country = src_country,
                                                   v_init_age_grps = v_init_age_grps) %>%
-      left_join(df_pop_ages) %>%
+      dplyr::left_join(df_pop_ages) %>%
       # Adjust for density and population age structure
-      mutate(contacts = standardized_contacts * density_scale_factor * prop_pop) %>%
+      dplyr::mutate(contacts = standardized_contacts * density_scale_factor * prop_pop) %>%
       dplyr::select(country, AgeGrp, AgeGrpContact, contacts) %>%
       # Clean up to return expected format for sccosmo
-      mutate(age_start_contact = as.character(AgeGrpContact),
-             age_start_contact = gsub("\\[", "", age_start_contact),
-             age_start_contact = gsub(",.*", "", age_start_contact),
-             age_start_contact = as.numeric(age_start_contact)) %>%
+      dplyr::mutate(age_start_contact = as.character(AgeGrpContact),
+                    age_start_contact = gsub("\\[", "", age_start_contact),
+                    age_start_contact = gsub(",.*", "", age_start_contact),
+                    age_start_contact = as.numeric(age_start_contact)) %>%
       dplyr::select(-AgeGrpContact) %>%
-      pivot_wider(id_cols = c(country, AgeGrp), names_from = age_start_contact, values_from = contacts,
-                  names_prefix = "cd-") %>%
+      tidyr::pivot_wider(id_cols = c(country, AgeGrp), 
+                         names_from = age_start_contact, 
+                         values_from = contacts,
+                         names_prefix = "cd-") %>%
       dplyr::select(-c(country, AgeGrp)) %>%
       as.matrix()
   }
   
   tmp_contacts[["home"]] <- df_contacts_home %>%
-    left_join(df_pop_ages) %>%
+    dplyr::left_join(df_pop_ages) %>%
     # Adjust only for population age structure
-    mutate(contacts = standardized_contacts * prop_pop) %>%
+    dplyr::mutate(contacts = standardized_contacts * prop_pop) %>%
     dplyr::select(country, AgeGrp, AgeGrpContact, contacts) %>%
     # Clean up to return expected format for sccosmo
-    mutate(age_start_contact = as.character(AgeGrpContact),
-           age_start_contact = gsub("\\[", "", age_start_contact),
-           age_start_contact = gsub(",.*", "", age_start_contact),
-           age_start_contact = as.numeric(age_start_contact)) %>%
+    dplyr::mutate(age_start_contact = as.character(AgeGrpContact),
+                  age_start_contact = gsub("\\[", "", age_start_contact),
+                  age_start_contact = gsub(",.*", "", age_start_contact),
+                  age_start_contact = as.numeric(age_start_contact)) %>%
     dplyr::select(-AgeGrpContact) %>%
-    pivot_wider(id_cols = c(country, AgeGrp), names_from = age_start_contact, values_from = contacts,
-                names_prefix = "cd-") %>%
+    tidyr::pivot_wider(id_cols = c(country, AgeGrp), 
+                       names_from = age_start_contact, 
+                       values_from = contacts,
+                       names_prefix = "cd-") %>%
     dplyr::select(-c(country, AgeGrp)) %>%
     as.matrix()
   
@@ -242,8 +219,6 @@ get_contact_matrix <- function(v_init_age_grps = c(0, 5, 15, 25, 45, 55, 65, 70)
                            m_contact_other_locations = tmp_contacts[["other_locations"]],
                            m_contact_home = tmp_contacts[["home"]])
   
-  add_to_cache(GLOBAL_CONTACT_MATRICES_CACHE, country, state, county, l_contact_matrix, density = density)
-  
   return(l_contact_matrix)
   
 }
@@ -253,46 +228,55 @@ get_contact_matrix <- function(v_init_age_grps = c(0, 5, 15, 25, 45, 55, 65, 70)
 #' \code{wrangle_contact_matrix} returns a dataframe with all of the 
 #' processed information on population age structure. 
 #' 
-#' @param setting character that specifies which contact matrix to return. Options: all_locations, home, non_home, school, work, other_locations.
-#' @param src_country character that specifies which country contact matrix to return
-#' @param v_init_age_grps vector that specifies the age bins to aggregate and return
+#' @param setting character that specifies which contact matrix to return. 
+#' Options: all_locations, home, non_home, school, work, other_locations.
+#' @param src_country character that specifies which country contact matrix to 
+#' return
+#' @param v_init_age_grps vector that specifies the age bins to aggregate and 
+#' return
 #'
 #' @export
-wrangle_contact_matrix <- function(setting = "all_locations", src_country = src_country, v_init_age_grps = v_init_age_grps) {
+wrangle_contact_matrix <- function(setting = "all_locations", 
+                                   src_country = src_country, 
+                                   v_init_age_grps = v_init_age_grps) {
   
   ## Load contact matrices
   df_contacts_src_country <- get_contact_matrices_world() %>%
     ## Filter to country and setting
-    filter(country == src_country & location == setting) %>%
+    dplyr::filter(country == src_country & location == setting) %>%
     ## Expand age to one-year bins
-    rowwise() %>%
-    mutate(age = list(seq(age_start, age_end, 1))) %>%
-    unnest(age) %>%
+    dplyr::rowwise() %>%
+    dplyr::mutate(age = list(seq(age_start, age_end, 1))) %>%
+    tidyr::unnest(age) %>%
     ## Expand contact age to one-year bins
-    mutate(age_start_contact = (contact_grpnum*5)-5,
-           age_end_contact = (contact_grpnum*5)-1,
-           age_end_contact = replace(age_end_contact, age_end_contact == 79, 99)) %>%
-    rowwise() %>%
-    mutate(age_contact = list(seq(age_start_contact, age_end_contact, 1))) %>%
-    unnest(age_contact) %>%
+    dplyr::mutate(age_start_contact = (contact_grpnum*5)-5,
+                  age_end_contact = (contact_grpnum*5)-1,
+                  age_end_contact = replace(age_end_contact, 
+                                            age_end_contact == 79, 99)) %>%
+    dplyr::rowwise() %>%
+    dplyr::mutate(age_contact = list(seq(age_start_contact, age_end_contact, 1))) %>%
+    tidyr::unnest(age_contact) %>%
     ## Create age groups of interest (individual)
-    mutate(AgeGrp = cut(age, breaks = c(v_init_age_grps, Inf), 
+    dplyr::mutate(AgeGrp = cut(age, breaks = c(v_init_age_grps, Inf), 
                         include.lowest = TRUE, right = FALSE)) %>%
-    dplyr::select(location, country, density, standardized_contacts, non_home_dens_coeff, non_home_intercept_coeff, 
+    dplyr::select(location, country, density, standardized_contacts, 
+                  non_home_dens_coeff, non_home_intercept_coeff, 
                   # residual, 
                   age_contact, AgeGrp) %>%
-    group_by(location, country, age_contact, AgeGrp) %>%
-    summarize_all(mean) %>%
+    dplyr::group_by(location, country, age_contact, AgeGrp) %>%
+    dplyr::summarize_all(mean) %>%
     ## Create age groups of interest (contact)
-    mutate(AgeGrpContact = cut(age_contact, breaks = c(v_init_age_grps, Inf), 
-                               include.lowest = TRUE, right = FALSE)) %>%
-    ungroup() %>%
-    dplyr::select(location, country, density, standardized_contacts, non_home_dens_coeff, non_home_intercept_coeff, 
+    dplyr::mutate(AgeGrpContact = cut(age_contact, 
+                                      breaks = c(v_init_age_grps, Inf), 
+                                      include.lowest = TRUE, right = FALSE)) %>%
+    dplyr::ungroup() %>%
+    dplyr::select(location, country, density, standardized_contacts, 
+                  non_home_dens_coeff, non_home_intercept_coeff, 
                   # residual, 
                   AgeGrpContact, AgeGrp) %>%
-    group_by(location, country, AgeGrp, AgeGrpContact) %>%
-    summarize_all(mean) %>%
-    ungroup()
+    dplyr::group_by(location, country, AgeGrp, AgeGrpContact) %>%
+    dplyr::summarize_all(mean) %>%
+    dplyr::ungroup()
   return(df_contacts_src_country)
 }
 
@@ -301,9 +285,12 @@ wrangle_contact_matrix <- function(setting = "all_locations", src_country = src_
 #' \code{aggregate_pop_ages} returns a dataframe with all of the 
 #' processed information on population age structure. 
 #' 
-#' @param match_country character that specifies which country population age structure to return
-#' @param match_state character that specifies which state population age structure to return
-#' @param match_county character that specifies which county population age structure to return
+#' @param match_country character that specifies which country population age 
+#' structure to return
+#' @param match_state character that specifies which state population age 
+#' structure to return
+#' @param match_county character that specifies which county population age 
+#' structure to return
 #' @param ages_to_cut vector that specifies the age bins to aggregate and return
 #'
 #' @export
@@ -312,12 +299,15 @@ aggregate_pop_ages <- function(match_country = "",
                                match_county = "",
                                ages_to_cut = v_init_age_grps) {
   
-  df_pop_ages <- suppressWarnings(get_population_ages(country = match_country, state = match_state, county = match_county)) %>%
-    mutate(AgeGrpContact = cut(age, breaks = c(ages_to_cut, Inf), include.lowest = TRUE, right = FALSE)) %>%
+  df_pop_ages <- suppressWarnings(get_population_ages(country = match_country, 
+                                                      state = match_state, 
+                                                      county = match_county)) %>%
+    dplyr::mutate(AgeGrpContact = cut(age, breaks = c(ages_to_cut, Inf), 
+                               include.lowest = TRUE, right = FALSE)) %>%
     dplyr::select(country, state, county, AgeGrpContact, age_pop) %>%
-    group_by(country, state, county, AgeGrpContact) %>%
-    summarize_all(sum) %>%
-    mutate(prop_pop = age_pop/sum(age_pop)) %>%
+    dplyr::group_by(country, state, county, AgeGrpContact) %>%
+    dplyr::summarize_all(sum) %>%
+    dplyr::mutate(prop_pop = age_pop/sum(age_pop)) %>%
     dplyr::select(-age_pop)
   
   return(df_pop_ages)
