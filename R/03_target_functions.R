@@ -17,12 +17,10 @@ gen_targets <-function(v_states_calib = "MCMA",
                        n_date_last    = "2020-08-31"){
   
   # Covid-19-mx-data by state and age_groups
-  # load("data-raw/df_covid_ssa_state_age_groups.Rdata")
-  # df_covid_ssa_state_age_groups <- read.csv(file = "https://raw.githubusercontent.com/PADeCI/covid19-mx-data/master/data/state_age_groups/covid_ssa_state_age_groups_2020-09-03.csv")
-  
+  df_covid_ssa_state_age_groups <- fread(paste0("data-raw/covid_ssa_state_age_groups_",n_time_stamp,".csv"))
+
   # Covid-19-mx-data by state
-  # df_covid_mx <- read.csv(file = paste0("https://raw.githubusercontent.com/PADeCI/covid19-mx-data/master/data/state/covid_ssa_state_",n_time_stamp,".csv"))
-  df_covid_mx <- fread("C:/Users/Val Gracia/Documents/SC-COSMO/GitHub/Mexico-MCMA/data-raw/covid_ssa_state_2020-12-13.csv")
+  df_covid_mx <- fread(paste0("data-raw/covid_ssa_state_",n_time_stamp,".csv"))
   
   # Set ISO abbreviation by state
   v_acron_sts <- c("AGU","BCN","BCS","CAM","CHP","CHH","COA","COL","DUR","GUA",
@@ -35,10 +33,10 @@ gen_targets <-function(v_states_calib = "MCMA",
   df_covid_mx$state <- as.factor(df_covid_mx$state)
   df_covid_mx$abbrev_state <- ""
   
-  # df_covid_ssa_state_age_groups$state <- as.character(df_covid_ssa_state_age_groups$state)
-  # df_covid_ssa_state_age_groups$state[df_covid_ssa_state_age_groups$state == "Mexico"] <- "National" 
-  # df_covid_ssa_state_age_groups$state <- as.factor(df_covid_ssa_state_age_groups$state)
-  # df_covid_ssa_state_age_groups$abbrev_state <- ""
+  df_covid_ssa_state_age_groups$state <- as.character(df_covid_ssa_state_age_groups$state)
+  df_covid_ssa_state_age_groups$state[df_covid_ssa_state_age_groups$state == "Mexico"] <- "National"
+  df_covid_ssa_state_age_groups$state <- as.factor(df_covid_ssa_state_age_groups$state)
+  df_covid_ssa_state_age_groups$abbrev_state <- ""
    
   v_states <- as.character(unique(df_covid_mx$state))
   names(v_states) <- v_acron_sts
@@ -46,7 +44,7 @@ gen_targets <-function(v_states_calib = "MCMA",
   
   for(state_i in v_states){
     df_covid_mx$abbrev_state[df_covid_mx$state == state_i] <-  names(v_states)[which(v_states==state_i)]
-    # df_covid_ssa_state_age_groups$abbrev_state[df_covid_ssa_state_age_groups$state == state_i] <-  names(v_states)[which(v_states==state_i)]
+    df_covid_ssa_state_age_groups$abbrev_state[df_covid_ssa_state_age_groups$state == state_i] <-  names(v_states)[which(v_states==state_i)]
   }
   
   ### Cumulative targets ###
@@ -205,68 +203,131 @@ gen_targets <-function(v_states_calib = "MCMA",
   m_cov_deaths_inc <- acor2cov(v_acor = v_acf_deaths_inc, 
                                v_sd = df_targets_deaths_inc$se)
   
-  # #### Cumulative targets by age groups ####
-  # ### Confirmed cases
-  # df_targets_cases_age <- df_covid_ssa_state_age_groups %>% 
-  #   filter(state %in% v_states_calib,
-  #          var_outcome == "Confirmed") %>% 
-  #   ungroup() %>%
-  #   group_by(country, state, county, population, var_outcome) %>%  
-  #   rename(value = cum_cases) %>%
-  #   mutate(Date = as.Date(date),
-  #          Date0 = Date - Date[1],
-  #          DateLast = n_date_last,
-  #          Target = "Cumulative confirmed infections by age group",
-  #          type = "Target",
-  #          series = "Confirmed") %>%
-  #   select(series, type, Target, Date, Date0, DateLast, value, 
-  #          time_stamp, age_groups, abbrev_state) %>% 
-  #   spread(key = age_groups, value = value, fill = 0)
-  # 
-  # ## Select targets from a starting and finishing date
-  # if (!is.null(n_date_ini) & !is.null(n_date_last)){
-  #   df_targets_cases_age <- df_targets_cases_age %>% 
-  #     filter(Date >= n_date_ini & Date <= n_date_last)
-  # }
-  # if(!is.null(n_date_last)){
-  #   df_targets_cases_age <- df_targets_cases_age %>% 
-  #     filter(Date <= n_date_last)
-  # }
-  # if(!is.null(n_date_ini)){
-  #   df_targets_cases_age <- df_targets_cases_age %>% 
-  #     filter(Date >= n_date_ini)
-  # }
-  # 
-  # ### Deaths
-  # df_targets_deaths_age <- df_covid_ssa_state_age_groups %>% 
-  #   filter(state %in% v_states_calib,
-  #          var_outcome == "Deaths") %>% 
-  #   ungroup() %>%
-  #   group_by(country, state, county, population, var_outcome) %>%  
-  #   rename(value = cum_cases) %>%
-  #   mutate(Date = as.Date(date),
-  #          Date0 = Date - Date[1],
-  #          DateLast = n_date_last,
-  #          Target = "Cumulative COVID19 deaths infections by age group",
-  #          type = "Target",
-  #          series = "Confirmed") %>%
-  #   select(series, type, Target, Date, Date0, DateLast, value, 
-  #          time_stamp, age_groups, abbrev_state) %>% 
-  #   spread(key = age_groups, value = value, fill = 0)
-  # 
-  # ## Select targets from a starting and finishing date
-  # if (!is.null(n_date_ini) & !is.null(n_date_last)){
-  #   df_targets_deaths_age <- df_targets_deaths_age %>% 
-  #     filter(Date >= n_date_ini & Date <= n_date_last)
-  # }
-  # if(!is.null(n_date_last)){
-  #   df_targets_deaths_age <- df_targets_deaths_age %>% 
-  #     filter(Date <= n_date_last)
-  # }
-  # if(!is.null(n_date_ini)){
-  #   df_targets_deaths_age <- df_targets_deaths_age %>% 
-  #     filter(Date >= n_date_ini)
-  # }
+  #### Cumulative targets by age groups ####
+  ### Confirmed cases
+  df_targets_cases_age <- df_covid_ssa_state_age_groups %>%
+    filter(state %in% v_states_calib,
+           var_outcome == "Confirmed") %>%
+    ungroup() %>%
+    group_by(country, state, county, population, var_outcome) %>%
+    rename(value = cum_cases) %>%
+    mutate(Date = as.Date(date),
+           Date0 = Date - Date[1],
+           DateLast = n_date_last,
+           Target = "Cumulative confirmed infections by age group",
+           type = "Target",
+           series = "Confirmed") %>%
+    select(series, type, Target, Date, Date0, DateLast, value,
+           time_stamp, age_groups, abbrev_state) %>%
+    spread(key = age_groups, value = value, fill = 0)
+
+  ## Select targets from a starting and finishing date
+  if (!is.null(n_date_ini) & !is.null(n_date_last)){
+    df_targets_cases_age <- df_targets_cases_age %>%
+      filter(Date >= n_date_ini & Date <= n_date_last)
+  }
+  if(!is.null(n_date_last)){
+    df_targets_cases_age <- df_targets_cases_age %>%
+      filter(Date <= n_date_last)
+  }
+  if(!is.null(n_date_ini)){
+    df_targets_cases_age <- df_targets_cases_age %>%
+      filter(Date >= n_date_ini)
+  }
+
+  ### Deaths
+  df_targets_deaths_age <- df_covid_ssa_state_age_groups %>%
+    filter(state %in% v_states_calib,
+           var_outcome == "Deaths") %>%
+    ungroup() %>%
+    group_by(country, state, county, population, var_outcome) %>%
+    rename(value = cum_cases) %>%
+    mutate(Date = as.Date(date),
+           Date0 = Date - Date[1],
+           DateLast = n_date_last,
+           Target = "Cumulative COVID19 deaths infections by age group",
+           type = "Target",
+           series = "Confirmed") %>%
+    select(series, type, Target, Date, Date0, DateLast, value,
+           time_stamp, age_groups, abbrev_state) %>%
+    spread(key = age_groups, value = value, fill = 0)
+
+  ## Select targets from a starting and finishing date
+  if (!is.null(n_date_ini) & !is.null(n_date_last)){
+    df_targets_deaths_age <- df_targets_deaths_age %>%
+      filter(Date >= n_date_ini & Date <= n_date_last)
+  }
+  if(!is.null(n_date_last)){
+    df_targets_deaths_age <- df_targets_deaths_age %>%
+      filter(Date <= n_date_last)
+  }
+  if(!is.null(n_date_ini)){
+    df_targets_deaths_age <- df_targets_deaths_age %>%
+      filter(Date >= n_date_ini)
+  }
+  
+  #### Indicent targets by age groups ####
+  ### Confirmed cases
+  df_targets_cases_inc_age <- df_covid_ssa_state_age_groups %>%
+    filter(state %in% v_states_calib,
+           var_outcome == "Confirmed") %>%
+    ungroup() %>%
+    group_by(country, state, county, population, var_outcome) %>%
+    rename(value = new_cases) %>%
+    mutate(Date = as.Date(date),
+           Date0 = Date - Date[1],
+           DateLast = n_date_last,
+           Target = "Incident confirmed infections by age group",
+           type = "Target",
+           series = "Confirmed") %>%
+    select(series, type, Target, Date, Date0, DateLast, value,
+           time_stamp, age_groups, abbrev_state) %>%
+    spread(key = age_groups, value = value, fill = 0)
+  
+  ## Select targets from a starting and finishing date
+  if (!is.null(n_date_ini) & !is.null(n_date_last)){
+    df_targets_cases_inc_age <- df_targets_cases_inc_age %>%
+      filter(Date >= n_date_ini & Date <= n_date_last)
+  }
+  if(!is.null(n_date_last)){
+    df_targets_cases_inc_age <- df_targets_cases_inc_age %>%
+      filter(Date <= n_date_last)
+  }
+  if(!is.null(n_date_ini)){
+    df_targets_cases_inc_age <- df_targets_cases_inc_age %>%
+      filter(Date >= n_date_ini)
+  }
+  
+  ### Deaths
+  df_targets_deaths_inc_age <- df_covid_ssa_state_age_groups %>%
+    filter(state %in% v_states_calib,
+           var_outcome == "Deaths") %>%
+    ungroup() %>%
+    group_by(country, state, county, population, var_outcome) %>%
+    rename(value = new_cases) %>%
+    mutate(Date = as.Date(date),
+           Date0 = Date - Date[1],
+           DateLast = n_date_last,
+           Target = "Incident COVID19 deaths infections by age group",
+           type = "Target",
+           series = "Confirmed") %>%
+    select(series, type, Target, Date, Date0, DateLast, value,
+           time_stamp, age_groups, abbrev_state) %>%
+    spread(key = age_groups, value = value, fill = 0)
+  
+  ## Select targets from a starting and finishing date
+  if (!is.null(n_date_ini) & !is.null(n_date_last)){
+    df_targets_deaths_inc_age <- df_targets_deaths_inc_age %>%
+      filter(Date >= n_date_ini & Date <= n_date_last)
+  }
+  if(!is.null(n_date_last)){
+    df_targets_deaths_inc_age <- df_targets_deaths_inc_age %>%
+      filter(Date <= n_date_last)
+  }
+  if(!is.null(n_date_ini)){
+    df_targets_deaths_inc_age <- df_targets_deaths_inc_age %>%
+      filter(Date >= n_date_ini)
+  }
   
   #### Combine ALL targets ####
   df_all_targets <- bind_rows(df_targets_cases, 
@@ -275,8 +336,10 @@ gen_targets <-function(v_states_calib = "MCMA",
                               df_targets_deaths_inc) %>%
     arrange(state, series, Date0)
   
-  # df_all_targets_age <- bind_rows(df_targets_cases_age,
-  #                                 df_targets_deaths_age)
+  df_all_targets_age <- bind_rows(df_targets_cases_age,
+                                  df_targets_deaths_age,
+                                  df_targets_cases_inc_age,
+                                  df_targets_deaths_inc_age)
   
   return(list(df_all_targets     = df_all_targets,
               cases              = df_targets_cases,
@@ -284,12 +347,13 @@ gen_targets <-function(v_states_calib = "MCMA",
               cases_inc          = df_targets_cases_inc,
               deaths_inc         = df_targets_deaths_inc,
               cov_cases_inc      = m_cov_cases_inc,
-              cov_deaths_inc     = m_cov_deaths_inc
-              # df_all_targets_age = df_all_targets_age
-              # cases_age          = df_targets_cases_age,
-              # deaths_age         = df_targets_deaths_age
+              cov_deaths_inc     = m_cov_deaths_inc,
+              df_all_targets_age = df_all_targets_age,
+              cases_age          = df_targets_cases_age,
+              deaths_age         = df_targets_deaths_age,
+              cases_inc_age     = df_targets_cases_inc_age,
+              deaths_inc_age     = df_targets_deaths_inc_age
               ))
-  
               
 }
 

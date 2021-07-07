@@ -83,12 +83,10 @@ validate_out <- function(m_calib_post,
   system.time(
     m_out_post_all <- foreach(i = 1:n_samp, .combine = rbind, .export = ls(globalenv()), # i = 1
                               .packages=c("sccosmomcma",
-                                          "tictoc",
                                           "tidyverse",
                                           "dplyr",
                                           "lubridate",
-                                          "epitools",
-                                          "dampack"),
+                                          "epitools"),
                               .options.snow = opts) %dopar% { 
       # ## For progress bar.
       # if(!exists("pb")) pb <- tkProgressBar(title = "Parallel task for internal validation",
@@ -135,14 +133,17 @@ validate_out <- function(m_calib_post,
                                  Target = "Incident confirmed infections",
                                  m_out_infdx_inc, 
                                  check.names = FALSE)
+  
   df_out_infdx_cum <- data.frame(type = "Model", 
                                  Target = "Cumulative confirmed infections",
                                  m_out_infdx_cum, 
                                  check.names = FALSE)
+  
   df_out_DXDcov_inc <- data.frame(type = "Model", 
                                   Target = "Incident COVID19 deaths infections",
                                   m_out_DXDcov_inc, 
                                   check.names = FALSE)
+  
   df_out_DXDcov_cum <- data.frame(type = "Model", 
                                   Target = "Cumulative COVID19 deaths infections",
                                   m_out_DXDcov_cum, 
@@ -153,43 +154,54 @@ validate_out <- function(m_calib_post,
                                          id.vars = c("type", "Target"), 
                                          variable.name = "Date", 
                                          value.name = "Value")
+  
   df_out_infdx_cum_lng <- reshape2::melt(df_out_infdx_cum, 
                                          id.vars = c("type", "Target"), 
                                          variable.name = "Date", 
                                          value.name = "Value")
+  
   df_out_DXDcov_inc_lng <- reshape2::melt(df_out_DXDcov_inc, 
                                           id.vars = c("type", "Target"), 
                                           variable.name = "Date", 
                                           value.name = "Value")
+  
   df_out_DXDcov_cum_lng <- reshape2::melt(df_out_DXDcov_cum, 
                                           id.vars = c("type", "Target"), 
                                           variable.name = "Date", 
                                           value.name = "Value")
+  
   ### Compute posterior model-predicted 95% CI
   df_out_infdx_inc_summ <- summarise_data(df_out_infdx_inc_lng, 
                                           varname = "value",
                                           groupnames = c("type", "Target", "Date"))
+  
   df_out_infdx_cum_summ <- summarise_data(df_out_infdx_cum_lng, 
                                           varname = "value",
                                           groupnames = c("type", "Target", "Date"))
+  
   df_out_DXDcov_inc_summ <- summarise_data(df_out_DXDcov_inc_lng, 
                                            varname = "value",
                                            groupnames = c("type", "Target", "Date"))
+  
   df_out_DXDcov_cum_summ <- summarise_data(df_out_DXDcov_cum_lng, 
                                            varname = "value",
                                            groupnames = c("type", "Target", "Date"))
+  
   ### Generate data frame with time-series data
   df_out_all_summ <- bind_rows(df_out_infdx_inc_summ, 
                                df_out_infdx_cum_summ, 
                                df_out_DXDcov_inc_summ,
                                df_out_DXDcov_cum_summ)
+  
   df_out_all_summ$Date <- as.Date(df_out_all_summ$Date)
-  ### Generaet list to return all data frames
-  l_out_post_summ <- list(df_out_infdx_inc_summ = df_out_infdx_inc_summ,
-                          df_out_infdx_cum_summ = df_out_infdx_cum_summ,
+  
+  ### Generate list to return all data frames
+  l_out_post_summ <- list(df_out_infdx_inc_summ  = df_out_infdx_inc_summ,
+                          df_out_infdx_cum_summ  = df_out_infdx_cum_summ,
                           df_out_DXDcov_inc_summ = df_out_DXDcov_inc_summ,
                           df_out_DXDcov_cum_summ = df_out_DXDcov_cum_summ,
-                          df_out_all_summ = df_out_all_summ)
+                          df_out_all_summ        = df_out_all_summ)
+  
   return(l_out_post_summ)
 }      
 

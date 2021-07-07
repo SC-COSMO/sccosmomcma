@@ -15,25 +15,30 @@ calibration_out <- function(v_params_calib,
                             n_lag_inf = NULL,
                             n_lag_conf = 12,
                             l_dates_targets){ # User defined
+  
   l_params_all$l_interventions[[2]]$intervention_factor <- v_params_calib["r_soc_dist_factor"]
   l_params_all$l_interventions[[3]]$intervention_factor <- v_params_calib["r_soc_dist_factor_2"]
   l_params_all$l_interventions[[4]]$intervention_factor <- v_params_calib["r_soc_dist_factor_3"]
   l_params_all$l_interventions[[5]]$intervention_factor <- v_params_calib["r_soc_dist_factor_4"]
   l_params_all$l_interventions[[6]]$intervention_factor <- v_params_calib["r_soc_dist_factor_5"]
-  l_params_all$l_nu_exp2_dx[[1]]$val_start <- as.numeric(v_params_calib["r_nu_exp2_dx_lb"])     # 1 refers to period
-  l_params_all$l_nu_exp2_dx[[1]]$val_end <- as.numeric(v_params_calib["r_nu_exp2_dx_ub"])
+  l_params_all$l_interventions[[6]]$intervention_factor <- v_params_calib["r_soc_dist_factor_6"]
+  # l_params_all$l_interventions[[6]]$intervention_factor <- v_params_calib["r_soc_dist_factor_7"]
+  # l_params_all$l_interventions[[6]]$intervention_factor <- v_params_calib["r_soc_dist_factor_8"]
+  
+  l_params_all$l_nu_exp2_dx[[1]]$val_start           <- as.numeric(v_params_calib["r_nu_exp2_dx_lb"])     # 1 refers to period
+  l_params_all$l_nu_exp2_dx[[1]]$val_end             <- as.numeric(v_params_calib["r_nu_exp2_dx_ub"])
   l_params_all$l_nu_exp2_dx[[1]]$v_logit_change_rate <- as.numeric(v_params_calib["r_nu_exp2_dx_rate"])
-  l_params_all$l_nu_exp2_dx[[1]]$v_logit_change_mid <- as.numeric(v_params_calib["n_nu_exp2_dx_mid"])
-  l_params_all$l_nu_inf2_dx[[1]]$val_start <- as.numeric(v_params_calib["r_nu_exp2_dx_lb"])
-  l_params_all$l_nu_inf2_dx[[1]]$val_end <- as.numeric(v_params_calib["r_nu_exp2_dx_ub"])
+  l_params_all$l_nu_exp2_dx[[1]]$v_logit_change_mid  <- as.numeric(v_params_calib["n_nu_exp2_dx_mid"])
+  l_params_all$l_nu_inf2_dx[[1]]$val_start           <- as.numeric(v_params_calib["r_nu_exp2_dx_lb"])
+  l_params_all$l_nu_inf2_dx[[1]]$val_end             <- as.numeric(v_params_calib["r_nu_exp2_dx_ub"])
   l_params_all$l_nu_inf2_dx[[1]]$v_logit_change_rate <- as.numeric(v_params_calib["r_nu_exp2_dx_rate"])
-  l_params_all$l_nu_inf2_dx[[1]]$v_logit_change_mid <- as.numeric(v_params_calib["n_nu_exp2_dx_mid"])
+  l_params_all$l_nu_inf2_dx[[1]]$v_logit_change_mid  <- as.numeric(v_params_calib["n_nu_exp2_dx_mid"])
   
   #print(v_params_calib)
   ## Upadate parameter values to be used for calibration
   l_params_all <- sccosmomcma::update_param_list(l_params_all = l_params_all, 
-                                             params_updated = v_params_calib)
-  # print(l_params_all$v_soc_dist_factor)
+                                                 params_updated = v_params_calib)
+  
   # Run model with updated calibrated parameters
   l_out_cosmo <- sccosmomcma::cosmo(l_params_all = l_params_all)
   
@@ -42,6 +47,7 @@ calibration_out <- function(v_params_calib,
   v_dates0 <- 0:sum(n_t_calib)
   # v_dates  <- df_n_t_mex_states_project_i$Date_init + 0:sum(df_n_t_mex_states_project_i$n_t)
   # v_dates0 <- 0:sum(df_n_t_mex_states_project_i$n_t)
+  
   #### Cumulative DX Cases ####
   df_dxcum_ages <- calc_dxcum_totals(l_out_cosmo)
   
@@ -58,6 +64,7 @@ calibration_out <- function(v_params_calib,
                                 Date0 = v_dates0,
                                 value = df_dxcum_ages[-c(1:(n_lag_inf + n_lag_conf)), (l_params_all$n_ages + 2)])
   }
+  
   ### Age-specific
   if(is.null(n_lag_inf)){
     df_DX_cum_ages <- data.frame(Outcome = "Cumulative diagnosed infections", 
@@ -93,23 +100,39 @@ calibration_out <- function(v_params_calib,
                                 value = df_dxinc_ages[-c(1:(n_lag_inf + n_lag_conf)), (l_params_all$n_ages + 2)])
   }
   
+  ### Age-specific
+  if(is.null(n_lag_inf)){
+    df_DX_inc_ages <- data.frame(Outcome = "Incident confirmed infections", 
+                                 time = df_dxinc_ages$time[-c(1:(n_lag_conf))],
+                                 Date = v_dates,
+                                 Date0 = v_dates0,
+                                 df_dxinc_ages[-c(1:(n_lag_conf)), as.character(l_params_all$v_names_ages)],
+                                 check.names = FALSE)
+    
+  } else {
+    df_DX_inc_ages <- data.frame(Outcome = "Incident confirmed infections", 
+                                 time = df_dxinc_ages$time[-c(1:(n_lag_inf + n_lag_conf))],
+                                 Date = v_dates,
+                                 Date0 = v_dates0,
+                                 df_dxinc_ages[-c(1:(n_lag_inf + n_lag_conf)), as.character(l_params_all$v_names_ages)],
+                                 check.names = FALSE)
+  }
+  
   #### Cumulative DX COVID Deaths  ####
   df_DCov_ages <- calc_deathsdx_totals(l_out_cosmo) # calc_deaths_totals(l_out_cosmo)
   if(is.null(n_lag_inf)){
-    df_Dcov_total <- data.frame(#county =  v_states_calib, 
-      Outcome = "Cumulative COVID19 deaths infections", 
-      time = df_DCov_ages$time[-c(1:(n_lag_conf))],
-      Date = v_dates,
-      Date0 = v_dates0,
-      value = df_DCov_ages[-c(1:(n_lag_conf)), (l_params_all$n_ages + 2)])
+    df_Dcov_total <- data.frame(Outcome = "Cumulative COVID19 deaths infections", 
+                                time = df_DCov_ages$time[-c(1:(n_lag_conf))],
+                                Date = v_dates,
+                                Date0 = v_dates0,
+                                value = df_DCov_ages[-c(1:(n_lag_conf)), (l_params_all$n_ages + 2)])
     
   } else {
-    df_Dcov_total <- data.frame(#county =  v_states_calib, 
-      Outcome = "Cumulative COVID19 deaths infections", 
-      time = df_DCov_ages$time[-c(1:(n_lag_inf + n_lag_conf))],
-      Date = v_dates,
-      Date0 = v_dates0,
-      value = df_DCov_ages[-c(1:(n_lag_inf + n_lag_conf)), (l_params_all$n_ages + 2)]  )
+    df_Dcov_total <- data.frame(Outcome = "Cumulative COVID19 deaths infections", 
+                                time = df_DCov_ages$time[-c(1:(n_lag_inf + n_lag_conf))],
+                                Date = v_dates,
+                                Date0 = v_dates0,
+                                value = df_DCov_ages[-c(1:(n_lag_inf + n_lag_conf)), (l_params_all$n_ages + 2)]  )
     
   }
   ### Age-specific
@@ -133,44 +156,105 @@ calibration_out <- function(v_params_calib,
   #### Incident COVID Deaths  ####
   df_DCov_inc_ages <- calc_incdeathsdx_totals(l_out_cosmo)
   if(is.null(n_lag_inf)){
-    df_Dcov_inc_total <- data.frame(#county =  v_states_calib, 
-      Outcome = "Incident COVID19 deaths infections", 
-      time = df_DCov_inc_ages$time[-c(1:(n_lag_conf))],
-      Date = v_dates,
-      Date0 = v_dates0,
-      value = df_DCov_inc_ages[-c(1:(n_lag_conf)), (l_params_all$n_ages + 2)])
+    df_Dcov_inc_total <- data.frame(Outcome = "Incident COVID19 deaths infections", 
+                                    time = df_DCov_inc_ages$time[-c(1:(n_lag_conf))],
+                                    Date = v_dates,
+                                    Date0 = v_dates0,
+                                    value = df_DCov_inc_ages[-c(1:(n_lag_conf)), (l_params_all$n_ages + 2)])
     
   } else {
-    df_Dcov_inc_total <- data.frame(#county =  v_states_calib, 
-      Outcome = "Incident COVID19 deaths infections", 
-      time = df_DCov_inc_ages$time[-c(1:(n_lag_inf + n_lag_conf))],
-      Date = v_dates,
-      Date0 = v_dates0,
-      value = df_DCov_inc_ages[-c(1:(n_lag_inf + n_lag_conf)), (l_params_all$n_ages + 2)]  )
+    df_Dcov_inc_total <- data.frame(Outcome = "Incident COVID19 deaths infections", 
+                                    time = df_DCov_inc_ages$time[-c(1:(n_lag_inf + n_lag_conf))],
+                                    Date = v_dates,
+                                    Date0 = v_dates0,
+                                    value = df_DCov_inc_ages[-c(1:(n_lag_inf + n_lag_conf)), (l_params_all$n_ages + 2)]  )
     
   }
+  
+  ### Age-specific
+  if(is.null(n_lag_inf)){
+    df_Dcov_inc_ages <- data.frame(Outcome = "Incident COVID19 deaths infections",
+                                   time = df_DCov_inc_ages$time[-c(1:(n_lag_conf))],
+                                   Date = v_dates,
+                                   Date0 = v_dates0,
+                                   df_DCov_inc_ages[-c(1:(n_lag_conf)), as.character(l_params_all$v_names_ages)],
+                                   check.names = FALSE)
+    
+  } else {
+    df_Dcov_inc_ages <- data.frame(Outcome = "Incident COVID19 deaths infections",
+                                   time = df_DCov_inc_ages$time[-c(1:(n_lag_inf + n_lag_conf))],
+                                   Date = v_dates,
+                                   Date0 = v_dates0,
+                                   df_DCov_inc_ages[-c(1:(n_lag_inf + n_lag_conf)), as.character(l_params_all$v_names_ages)],
+                                   check.names = FALSE)
+  }
+  
+  ### Apply delay in deaths
+  df_Dcov_inc_total <- df_Dcov_inc_total %>%
+    mutate(Date = Date + n_death_delay)
+  
+  df_Dcov_inc_ages <- df_Dcov_inc_ages %>%
+    mutate(Date = Date + n_death_delay)
+  
+  df_Dcov_total <- df_Dcov_total %>%
+    mutate(Date = Date + n_death_delay)
+  
+  df_Dcov_cum_ages <- df_Dcov_cum_ages %>%
+    mutate(Date = Date + n_death_delay)
   
   ### Filter by dates
   df_DX_cum_tot <- df_DX_cum_tot %>%
     filter(Date >= l_dates_targets$cases[1] & Date <= l_dates_targets$cases[2])
   
+  df_DX_cum_ages <- df_DX_cum_ages %>%
+    filter(Date >= l_dates_targets$cases[1] & Date <= l_dates_targets$cases[2])
+  
   df_DX_inc_tot <- df_DX_inc_tot %>%
     filter(Date >= l_dates_targets$cases_inc[1] & Date <= l_dates_targets$cases_inc[2])
   
+  df_DX_inc_ages <- df_DX_inc_ages %>%
+    filter(Date >= l_dates_targets$cases_inc[1] & Date <= l_dates_targets$cases_inc[2])
+  
   df_Dcov_total <- df_Dcov_total %>%
-    filter(Date >= l_dates_targets$deaths[1] & Date <= l_dates_targets$deaths[2])
+    filter(Date >= l_dates_targets$deaths[1] & Date <= l_dates_targets$deaths[2]) %>%
+    complete(Date = seq.Date(from = as.Date(l_dates_targets$deaths[1]),
+                             to   = as.Date(l_dates_targets$deaths[2]),
+                             by   = "day"),
+             fill = list(Outcome    = "Cumulative COVID19 deaths infections",
+                         value = df_Dcov_total$value[1]
+                         )) %>%
+    mutate(Date0 = as.numeric(Date - Date[1]),
+           time = n_lag_inf:(as.Date(l_dates_targets$deaths[2]) - 
+                               as.Date(l_dates_targets$deaths[1]) + n_lag_inf))
+  
+  df_Dcov_cum_ages <- df_Dcov_cum_ages %>%
+    filter(Date >= l_dates_targets$deaths[1] & Date <= l_dates_targets$deaths[2]) 
   
   df_Dcov_inc_total <- df_Dcov_inc_total %>%
+    filter(Date >= l_dates_targets$deaths_inc[1] & Date <= l_dates_targets$deaths_inc[2]) %>%
+    complete(Date = seq.Date(from = as.Date(l_dates_targets$deaths[1]),
+                             to   = as.Date(l_dates_targets$deaths[2]),
+                             by   = "day"),
+             fill = list(Outcome    = "Cumulative COVID19 deaths infections",
+                         value = df_Dcov_inc_total$value[1]
+             )) %>%
+    mutate(Date0 = as.numeric(Date - Date[1]),
+           time = n_lag_inf:(as.Date(l_dates_targets$deaths[2]) - 
+                               as.Date(l_dates_targets$deaths[1]) + n_lag_inf))
+  
+  df_Dcov_inc_ages <- df_Dcov_inc_ages %>%
     filter(Date >= l_dates_targets$deaths_inc[1] & Date <= l_dates_targets$deaths_inc[2])
   
   
   ####### Return Output ###########################################
-  l_out <- list(DXCumTot   = df_DX_cum_tot,
-                DXIncTot   = df_DX_inc_tot,
-                DcovTot    = df_Dcov_total,
-                DcovIncTot = df_Dcov_inc_total,
-                DXCumAges  = df_DX_cum_ages,
-                DcovAges   = df_Dcov_cum_ages)
+  l_out <- list(DXCumTot    = df_DX_cum_tot,
+                DXCumAges   = df_DX_cum_ages,
+                DXIncTot    = df_DX_inc_tot,
+                DXIncAges   = df_DX_inc_ages,
+                DcovTot     = df_Dcov_total,
+                DcovAges    = df_Dcov_cum_ages,
+                DcovIncTot  = df_Dcov_inc_total,
+                DcovIncAges = df_Dcov_inc_ages)
   return(l_out)
 }
 
@@ -509,13 +593,10 @@ log_lik_par <- function(v_params,
                    .export = ls(globalenv()),
                    .packages=c("sccosmomcma",
                                "ggplot2",
-                               # "tictoc",
                                "tidyverse",
                                "dplyr",
-                               # "lubridate",
+                               "dampack",
                                "epitools"
-                               # "dampack", 
-                               # "sccosmoData"
                    ),
                    .options.snow = opts) %dopar% {
                      log_lik(v_params[i, ], ...)
@@ -649,6 +730,9 @@ get_bounds <- function() {
             r_soc_dist_factor_3 = 0.250,
             r_soc_dist_factor_4 = 0.250,
             r_soc_dist_factor_5 = 0.250,
+            r_soc_dist_factor_6 = 0.250,
+            # r_soc_dist_factor_7 = 0.250,
+            # r_soc_dist_factor_8 = 0.250,
             r_nu_exp2_dx_lb     = 0.005,
             r_nu_exp2_dx_ub     = 0.005,
             r_nu_exp2_dx_rate   = 0.010,
@@ -664,6 +748,9 @@ get_bounds <- function() {
             r_soc_dist_factor_3 = 0.750,
             r_soc_dist_factor_4 = 0.750,
             r_soc_dist_factor_5 = 0.750,
+            r_soc_dist_factor_6 = 0.750,
+            # r_soc_dist_factor_7 = 0.750,
+            # r_soc_dist_factor_8 = 0.750,
             r_nu_exp2_dx_lb     = 0.120,
             r_nu_exp2_dx_ub     = 0.250,
             r_nu_exp2_dx_rate   = 1.000,
