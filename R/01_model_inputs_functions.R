@@ -49,12 +49,12 @@
 #' you are severe hospitalization 
 #' @param v_p_icu_ns_hosp Age-specific Probability of going to ICU given that 
 #' you are non-severe hospitalization
-#' @param m_r_exit_hns Age-specific rate of non-severe hospital exit
-#' @param m_r_exit_hs Age-specific rate of severe hospital exit
+#' @param m_r_exit_tot Age-specific rate of non-severe hospital exit
+#' @param m_r_exit_nonicu Age-specific rate of severe hospital exit
 #' @param m_r_exit_icu Age-specific rate of ICU hospital exit
-#' @param m_sigma_hns Age-specific sigma (gamma distrib) non-severe hosp dur
-#' @param m_sigma_hs  Age-specific sigma (gamma distrib) severe hosp dur
-#' @param m_sigma_icu Age-specific sigma (gamma distrib) ICU hosp dur
+#' @param m_sigma_tot Age-specific sigma (gamma distrib) tot hosp duration
+#' @param m_sigma_nonicu  Age-specific sigma (gamma distrib) non ICU hosp duration
+#' @param m_sigma_icu Age-specific sigma (gamma distrib) ICU hosp duration
 #' @param n_hhsize Household size (integer)
 #' @param r_tau Transmission rate in the household model
 #' @param r_sigma Daily rate of progression of exposed individuals 
@@ -163,11 +163,11 @@ load_params_init <- function(
   #45-64    ICU 7.3 days; Hosp 4.3 days
   #15-44    ICU 7.2 days; Hosp 4.2 days
   #<15      ICU 7.7 days; Hosp 3.1 days
-  m_r_exit_hns          = c(1/3.1, 1/3.1, 1/((3.1+4.2)/2), 1/4.2, 1/4.3, 1/4.3, 1/4.6, 1/4.6),
+  m_r_exit_tot          = c(1/3.1, 1/3.1, 1/((3.1+4.2)/2), 1/4.2, 1/4.3, 1/4.3, 1/4.6, 1/4.6),
   m_r_exit_icu          = c(1/7.7, 1/7.7, 1/((7.7+7.2)/2), 1/7.2, 1/7.3, 1/7.3, 1/7.1, 1/7.1),
-  m_r_exit_hs           = 0.5*m_r_exit_hns + 0.5*m_r_exit_icu,
-  m_sigma_hns           = c(2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0),
-  m_sigma_hs            = c(2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0),
+  m_r_exit_nonicu       = 0.5*m_r_exit_tot + 0.5*m_r_exit_icu,
+  m_sigma_tot           = c(2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0),
+  m_sigma_nonicu        = c(2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0),
   m_sigma_icu           = c(1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5),
   ### Household parameters
   n_hhsize = 3,
@@ -301,11 +301,11 @@ load_params_init <- function(
     v_p_s_hosp            = v_p_s_hosp, 
     v_p_icu_s_hosp        = v_p_icu_s_hosp, 
     v_p_icu_ns_hosp       = v_p_icu_ns_hosp, 
-    m_r_exit_hns          = m_r_exit_hns, 
+    m_r_exit_tot          = m_r_exit_tot, 
     m_r_exit_icu          = m_r_exit_icu, 
-    m_r_exit_hs           = m_r_exit_hs,
-    m_sigma_hns           = m_sigma_hns,
-    m_sigma_hs            = m_sigma_hs,
+    m_r_exit_nonicu       = m_r_exit_nonicu,
+    m_sigma_tot           = m_sigma_tot,
+    m_sigma_nonicu        = m_sigma_nonicu,
     m_sigma_icu           = m_sigma_icu,
     n_hhsize = n_hhsize,
     r_tau    = r_tau,
