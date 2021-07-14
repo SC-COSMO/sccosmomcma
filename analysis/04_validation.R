@@ -8,7 +8,7 @@
 #     - Fernando Alarid-Escudero, PhD, <fernando.alarid@cide.edu>              #
 #     - Andrea Luviano, MD, MPH                                                #
 #     - Jeremy D Goldhaber-Fiebert, PhD                                        #                                                       #
-#     - Valeria Gracia Olvera, MsC, <valeria.gracia@cide.edu>                  #
+#     - Valeria Gracia Olvera, MSc, <valeria.gracia@cide.edu>                  #
 #------------------------------------------------------------------------------# 
 
 rm(list = ls()) # to clean the workspace
@@ -42,7 +42,7 @@ l_reduced_sus <- list(SQ = rep(1, n_ages), # SQ
                       SA = c(rep(reduced_sus, 2), rep(1, (n_ages-2)))) # SA
                            
 
-for(n_proj_type in c("SQ", "SA")){ # n_proj_type = "SQ"
+for(n_proj_type in c("SQ", "SA")){ # n_proj_type = "SA"
         
         # Load data ---------------------------------------------------------------
 
@@ -85,37 +85,15 @@ for(n_proj_type in c("SQ", "SA")){ # n_proj_type = "SQ"
                                 intervention_factor = v_map["r_soc_dist_factor_3"],
                                 intervention_change_rate = 0.5)
         i5 <- make_intervention(intervention_type = "SocialDistancing",
-                                time_start  = n_date0_NPI + n_lag_inf + n_offset_NPI_2 + n_offset_NPI_3 + 
-                                        n_offset_NPI_4,
-                                time_stop   = n_date0_NPI + n_lag_inf + n_offset_NPI_2 + n_offset_NPI_3 + 
-                                        n_offset_NPI_4 + n_offset_NPI_5,
+                                time_start  = n_date0_NPI + n_lag_inf + n_offset_NPI_2 + n_offset_NPI_3 + n_offset_NPI_4,
+                                time_stop   = n_date0_NPI + n_lag_inf + n_offset_NPI_2 + n_offset_NPI_3 + n_offset_NPI_4 + n_offset_NPI_5,
                                 intervention_factor = v_map["r_soc_dist_factor_4"],
                                 intervention_change_rate = 0.5)
         i6 <- make_intervention(intervention_type = "SocialDistancing",
-                                time_start  = n_date0_NPI + n_lag_inf + n_offset_NPI_2 + n_offset_NPI_3 +
-                                        n_offset_NPI_4 + n_offset_NPI_5,
-                                time_stop   = n_date0_NPI + n_lag_inf + n_offset_NPI_2 + n_offset_NPI_3 + 
-                                        n_offset_NPI_4 + n_offset_NPI_5 + n_offset_NPI_6,
+                                time_start  = n_date0_NPI + n_lag_inf + n_offset_NPI_2 + n_offset_NPI_3 + n_offset_NPI_4 + n_offset_NPI_5,
+                                time_stop   = n_t_calib + n_lag_inf + 1,
                                 intervention_factor = v_map["r_soc_dist_factor_5"],
                                 intervention_change_rate = 0.5)
-        i7 <- make_intervention(intervention_type = "SocialDistancing",
-                                time_start  = n_date0_NPI + n_lag_inf + n_offset_NPI_2 + n_offset_NPI_3 + 
-                                        n_offset_NPI_4 + n_offset_NPI_5 + n_offset_NPI_6,
-                                time_stop   = n_t_calib + n_lag_inf + 1,
-                                intervention_factor = v_map["r_soc_dist_factor_6"],
-                                intervention_change_rate = 0.5)
-        # i8 <- make_intervention(intervention_type = "SocialDistancing",
-        #                         time_start  = n_date0_NPI + n_lag_inf + n_offset_NPI_2 + n_offset_NPI_3 + 
-        #                                 n_offset_NPI_4 + n_offset_NPI_5 + n_offset_NPI_6 + n_offset_NPI_7 + n_offset_NPI_8,
-        #                         time_stop   = n_t_calib + n_lag_inf + 1,
-        #                         intervention_factor = v_map["r_soc_dist_factor_7"],
-        #                         intervention_change_rate = 0.5)
-        # i9 <- make_intervention(intervention_type = "SocialDistancing",
-        #                         time_start  = n_date0_NPI + n_lag_inf + n_offset_NPI_2 + n_offset_NPI_3 + 
-        #                                 n_offset_NPI_4 + n_offset_NPI_5 + n_offset_NPI_6 + n_offset_NPI_7 + n_offset_NPI_8,
-        #                         time_stop   = n_t_calib + n_lag_inf + 1,
-        #                         intervention_factor = v_map["r_soc_dist_factor_8"],
-        #                         intervention_change_rate = 0.5)
         
         ### Add interventions
         l_interventions <- add_intervention(interventions = NULL, intervention = i1)
@@ -124,10 +102,7 @@ for(n_proj_type in c("SQ", "SA")){ # n_proj_type = "SQ"
         l_interventions <- add_intervention(interventions = l_interventions, intervention = i4)
         l_interventions <- add_intervention(interventions = l_interventions, intervention = i5)
         l_interventions <- add_intervention(interventions = l_interventions, intervention = i6)
-        l_interventions <- add_intervention(interventions = l_interventions, intervention = i7)
-        # l_interventions <- add_intervention(interventions = l_interventions, intervention = i8)
-        # l_interventions <- add_intervention(interventions = l_interventions, intervention = i9)
-        
+
         ### Time varying parameters
         l_params_init <- sccosmomcma::load_params_init(n_t = n_t_calib + n_lag_inf, # Number of days
                                                        ctry = "Mexico",

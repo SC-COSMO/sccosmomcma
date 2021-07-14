@@ -63,7 +63,9 @@ l_reduced_sus <- list(SQ = rep(1, n_ages), # SQ
                       SA = c(rep(reduced_sus, 2), rep(1, (n_ages-2)))) # SA
 
 
-for(n_proj_type in c("SQ", "SA")){ # n_proj_type = "SQ"
+for(n_proj_type in c("SQ", "SA")){ # n_proj_type = "SA"
+  
+  cat("Running calibration for ", n_proj_type, "\n")
 
   # State-specific data -----------------------------------------------------
   
@@ -167,9 +169,6 @@ for(n_proj_type in c("SQ", "SA")){ # n_proj_type = "SQ"
                       r_soc_dist_factor_3 = 0.50,
                       r_soc_dist_factor_4 = 0.50,
                       r_soc_dist_factor_5 = 0.50,
-                      r_soc_dist_factor_6 = 0.50,
-                      # r_soc_dist_factor_7 = 0.50,
-                      # r_soc_dist_factor_8 = 0.50,
                       r_nu_exp2_dx_lb     = 0.050,
                       r_nu_exp2_dx_ub     = 0.100,
                       r_nu_exp2_dx_rate   = 0.250,
@@ -184,9 +183,6 @@ for(n_proj_type in c("SQ", "SA")){ # n_proj_type = "SQ"
                       "r_soc_dist_factor_3",
                       "r_soc_dist_factor_4",
                       "r_soc_dist_factor_5",
-                      "r_soc_dist_factor_6",
-                      # "r_soc_dist_factor_7",
-                      # "r_soc_dist_factor_8",
                       "r_nu_exp2_dx_lb",
                       "r_nu_exp2_dx_ub",
                       "r_nu_exp2_dx_rate",
@@ -207,43 +203,28 @@ for(n_proj_type in c("SQ", "SA")){ # n_proj_type = "SQ"
   # Interventions -----------------------------------------------------------
   
   ## Define intervention 1 timing
-  n_date_NPI <- df_NPIs$Date_INT1[df_NPIs$state == state_i]
+  n_date_NPI <- df_NPIs$Date_INT2[df_NPIs$state == state_i] 
   n_date0_NPI <- as.numeric(n_date_NPI - n_date_ini)
   
   ## Define intervention 2 timing
-  n_date_NPI_2 <- df_NPIs$Date_INT2[df_NPIs$state == state_i]
+  n_date_NPI_2 <- df_NPIs$Date_INT3[df_NPIs$state == state_i] 
   n_date0_NPI_2 <- as.numeric(n_date_NPI_2 - n_date_ini)
   n_offset_NPI_2 <- n_date0_NPI_2 - n_date0_NPI
   
   # Define intervention 3 timing
-  n_date_NPI_3 <- df_NPIs$Date_INT3[df_NPIs$state == state_i]
+  n_date_NPI_3 <- df_NPIs$Date_INT4[df_NPIs$state == state_i] - 21
   n_date0_NPI_3 <- as.numeric(n_date_NPI_3 - n_date_ini)
   n_offset_NPI_3 <- n_date0_NPI_3 - n_date0_NPI_2
   
   # Define intervention 4 timing
-  n_date_NPI_4 <- df_NPIs$Date_INT4[df_NPIs$state == state_i]
+  n_date_NPI_4 <- df_NPIs$Date_INT5[df_NPIs$state == state_i] #- 11
   n_date0_NPI_4 <- as.numeric(n_date_NPI_4 - n_date_ini)
   n_offset_NPI_4 <- n_date0_NPI_4 - n_date0_NPI_3
   
   # Define intervention 5 timing
-  n_date_NPI_5 <- df_NPIs$Date_INT5[df_NPIs$state == state_i]
+  n_date_NPI_5 <- df_NPIs$Date_INT6[df_NPIs$state == state_i] 
   n_date0_NPI_5 <- as.numeric(n_date_NPI_5 - n_date_ini)
   n_offset_NPI_5 <- n_date0_NPI_5 - n_date0_NPI_4
-  
-  # Define intervention 6 timing
-  n_date_NPI_6 <- df_NPIs$Date_INT6[df_NPIs$state == state_i]
-  n_date0_NPI_6 <- as.numeric(n_date_NPI_6 - n_date_ini)
-  n_offset_NPI_6 <- n_date0_NPI_6 - n_date0_NPI_5
-  
-  # # Define intervention 7 timing
-  # n_date_NPI_7 <- df_NPIs$Date_INT7[df_NPIs$state == state_i]
-  # n_date0_NPI_7 <- as.numeric(n_date_NPI_7 - n_date_ini)
-  # n_offset_NPI_7 <- n_date0_NPI_7 - n_date0_NPI_6
-  # 
-  # # Define intervention 8 timing
-  # n_date_NPI_8 <- df_NPIs$Date_INT8[df_NPIs$state == state_i]
-  # n_date0_NPI_8 <- as.numeric(n_date_NPI_8 - n_date_ini)
-  # n_offset_NPI_8 <- n_date0_NPI_8 - n_date0_NPI_7
   
   # Define status quo interventions
   i1 <- make_intervention(intervention_type = "StatusQuo",
@@ -266,38 +247,15 @@ for(n_proj_type in c("SQ", "SA")){ # n_proj_type = "SQ"
                           intervention_factor = v_params_calib["r_soc_dist_factor_3"],
                           intervention_change_rate = 0.5)
   i5 <- make_intervention(intervention_type = "SocialDistancing",
-                          time_start  = n_date0_NPI + n_lag_inf + n_offset_NPI_2 + n_offset_NPI_3 + 
-                            n_offset_NPI_4,
-                          time_stop   = n_date0_NPI + n_lag_inf + n_offset_NPI_2 + n_offset_NPI_3 +
-                            n_offset_NPI_4 + n_offset_NPI_5,
+                          time_start  = n_date0_NPI + n_lag_inf + n_offset_NPI_2 + n_offset_NPI_3 + n_offset_NPI_4,
+                          time_stop   = n_date0_NPI + n_lag_inf + n_offset_NPI_2 + n_offset_NPI_3 + n_offset_NPI_4 + n_offset_NPI_5,
                           intervention_factor = v_params_calib["r_soc_dist_factor_4"],
                           intervention_change_rate = 0.5)
   i6 <- make_intervention(intervention_type = "SocialDistancing",
-                          time_start  = n_date0_NPI + n_lag_inf + n_offset_NPI_2 + n_offset_NPI_3 +
-                            n_offset_NPI_4  + n_offset_NPI_5,
-                          time_stop   = n_date0_NPI + n_lag_inf + n_offset_NPI_2 + n_offset_NPI_3 + 
-                            n_offset_NPI_4  + n_offset_NPI_5 + n_offset_NPI_6,
+                          time_start  = n_date0_NPI + n_lag_inf + n_offset_NPI_2 + n_offset_NPI_3 + n_offset_NPI_4  + n_offset_NPI_5,
+                          time_stop   = n_t_calib + n_lag_inf + 1,
                           intervention_factor = v_params_calib["r_soc_dist_factor_5"],
                           intervention_change_rate = 0.5)
-  i7 <- make_intervention(intervention_type = "SocialDistancing",
-                          time_start  = n_date0_NPI + n_lag_inf + n_offset_NPI_2 + n_offset_NPI_3 + 
-                            n_offset_NPI_4  + n_offset_NPI_5 + n_offset_NPI_6,
-                          time_stop   = n_t_calib + n_lag_inf + 1,
-                          intervention_factor = v_params_calib["r_soc_dist_factor_6"],
-                          intervention_change_rate = 0.5)
-  # i8 <- make_intervention(intervention_type = "SocialDistancing",
-  #                         time_start  = n_date0_NPI + n_lag_inf + n_offset_NPI_2 + n_offset_NPI_3 +
-  #                           n_offset_NPI_4  + n_offset_NPI_5 + n_offset_NPI_6 + n_offset_NPI_7,
-  #                         time_stop   = n_date0_NPI + n_lag_inf + n_offset_NPI_2 + n_offset_NPI_3 +
-  #                           n_offset_NPI_4  + n_offset_NPI_5 + n_offset_NPI_6 + n_offset_NPI_7 + n_offset_NPI_8,
-  #                         intervention_factor = v_params_calib["r_soc_dist_factor_7"],
-  #                         intervention_change_rate = 0.5)
-  # i9 <- make_intervention(intervention_type = "SocialDistancing",
-  #                         time_start  = n_date0_NPI + n_lag_inf + n_offset_NPI_2 + n_offset_NPI_3 +
-  #                           n_offset_NPI_4  + n_offset_NPI_5 + n_offset_NPI_6 + n_offset_NPI_7 + n_offset_NPI_8,
-  #                         time_stop   = n_t_calib + n_lag_inf + 1,
-  #                         intervention_factor = v_params_calib["r_soc_dist_factor_8"],
-  #                         intervention_change_rate = 0.5)
   
   ### Add interventions
   l_interventions <- add_intervention(interventions = NULL, intervention = i1)
@@ -306,9 +264,6 @@ for(n_proj_type in c("SQ", "SA")){ # n_proj_type = "SQ"
   l_interventions <- add_intervention(interventions = l_interventions, intervention = i4)
   l_interventions <- add_intervention(interventions = l_interventions, intervention = i5)
   l_interventions <- add_intervention(interventions = l_interventions, intervention = i6)
-  l_interventions <- add_intervention(interventions = l_interventions, intervention = i7)
-  # l_interventions <- add_intervention(interventions = l_interventions, intervention = i8)
-  # l_interventions <- add_intervention(interventions = l_interventions, intervention = i9)
   
   # Load parameters ---------------------------------------------------------
   

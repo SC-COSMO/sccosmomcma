@@ -24,21 +24,21 @@ n_date_projs <- "2020-12-13"
 n_date_obs <- "2020-12-13"
 n_time_stamp_hosp <- "2021-03-07"
 
-# Combine data.frames for both scenarios
+# # Combine data.frames for both scenarios
 # df_out_total_prob <- data.frame(NULL)
 # df_out_total_prob_all <- data.frame(NULL)
 # 
 # for(n_proj_type in c("SQ", "SA")){
-#   
+# 
 #   load(paste0("output/05_projections_probabilistic_all_",n_proj_type,"_MCMA_", n_date_projs, ".RData"))
 #   load(paste0("output/05_projections_probabilistic_",n_proj_type,"_MCMA_", n_date_projs, ".RData"))
-#   
+# 
 #   df_out_total_prob <- rbind.data.frame(df_out_total_prob,
 #                                         df_out_mex_total_prob)
-#   
+# 
 #   df_out_total_prob_all <- rbind.data.frame(df_out_total_prob_all,
 #                                             df_out_mex_total_prob_all)
-#   
+# 
 # }
 # 
 # save(df_out_total_prob_all, file =paste0("output/05_projections_probabilistic_all_MCMA_",n_date_projs,".RData"))
@@ -148,10 +148,14 @@ number_ticks <- function(n) {
 
 # Wrangle data ------------------------------------------------------------
 
+# Try 1: +54% (SA: +55%)
+# Try 2 and 3: +51% (SA: +48%)
+  
+
 # Set vector of interventions and labels
 v_interv_names <- c(BaseCase           = "Policy A. Physical distancing: status quo; Schooling: not in-person",
-                    IncreaseSD         = "Policy B. Physical distancing: +30% compared to status quo; Schooling: not in-person",
-                    IncreaseSDSchoolSD = "Policy C. Physical distancing: +30% compared to status quo; Schooling: in-person",
+                    IncreaseSD         = "Policy B. Physical distancing: +51% (SA: +48%) compared to status quo; Schooling: not in-person",
+                    IncreaseSDSchoolSD = "Policy C. Physical distancing: +51% (SA: +48%) compared to status quo; Schooling: in-person",
                     SchoolSD           = "Policy D. Physical distancing: status quo; Schooling: in-person")
 
 # Rename interventions
@@ -342,30 +346,30 @@ df_covid_obs_data_week$Outcome[df_covid_obs_data_week$Outcome == "Incident COVID
 
 # ABSTRACT ----------------------------------------------------------------
 
-# Interventions
-select_intervention <- c("SchoolSD",
-                         "IncreaseSD",
-                         "IncreaseSDSchoolSD",
-                         "BaseCase")
-
-df_AbstractResults <-  df_out_total_prob_all %>%
-  filter(dates >= "2020-12-07" &
-           # BaseCase_type=="Holidays" &
-           intervention_type %in% select_intervention &
-           Outcome == "Incident cases") %>%
-  group_by(county, type, BaseCase_type, Intervention, intervention_type, Outcome,
-           simulation, proj_type) %>%
-  summarise(cum_value = sum(value)) %>%
-  group_by(county, type, BaseCase_type, Intervention, intervention_type, Outcome,
-           proj_type) %>%
-  summarise(value = mean(cum_value),
-            sd    = sd(cum_value),
-            lb     = quantile(cum_value, probs = 0.025, names = FALSE),
-            ub     = quantile(cum_value, probs = 0.975, names = FALSE)) %>%
-  mutate(time_stamp = n_time_stamp) %>%
-  rename(state = county)
-
-save(df_AbstractResults, file = "figs/data_frames/df_AbstractResults.RData")
+# # Interventions
+# select_intervention <- c("SchoolSD",
+#                          "IncreaseSD",
+#                          "IncreaseSDSchoolSD",
+#                          "BaseCase")
+# 
+# df_AbstractResults <-  df_out_total_prob_all %>%
+#   filter(dates >= "2020-12-07" &
+#            # BaseCase_type=="Holidays" &
+#            intervention_type %in% select_intervention &
+#            Outcome == "Incident cases") %>%
+#   group_by(county, type, BaseCase_type, Intervention, intervention_type, Outcome,
+#            simulation, proj_type) %>%
+#   summarise(cum_value = sum(value)) %>%
+#   group_by(county, type, BaseCase_type, Intervention, intervention_type, Outcome,
+#            proj_type) %>%
+#   summarise(value = mean(cum_value),
+#             sd    = sd(cum_value),
+#             lb     = quantile(cum_value, probs = 0.025, names = FALSE),
+#             ub     = quantile(cum_value, probs = 0.975, names = FALSE)) %>%
+#   mutate(time_stamp = n_time_stamp) %>%
+#   rename(state = county)
+# 
+# save(df_AbstractResults, file = "figs/data_frames/df_AbstractResults.RData")
 
 
 
@@ -1567,41 +1571,41 @@ for(n_proj_type in c("SQ", "SA")){
 
 # Table S2: cases and deaths ----------------------------------------------
 
-v_outcome <- c("Incident cases",
-               "Cumulative cases",
-               "Incident deaths",
-               "Cumulative deaths")
-
-# Interventions
-select_intervention <- c("SchoolSD", 
-                         "IncreaseSD",
-                         "IncreaseSDSchoolSD",
-                         "BaseCase")
-
-# Intervention data
-df_tableS2 <- df_out_total_prob_all %>%
-  ungroup() %>%
-  filter(county == state_i &
-           intervention_type %in% select_intervention &
-           Outcome %in% v_outcome &
-           dates == max_date) %>%
-  group_by(county, type, BaseCase, BaseCase_type, Intervention, 
-           intervention_type, Outcome, dates, proj_type, proj_type_label) %>%
-  summarise(mean = round(mean(value),0),
-            median = quantile(value, probs = 0.5, names = FALSE),
-            sd = round(sd(value),0),
-            lb = round(quantile(value, probs = 0.025, names = FALSE),0),
-            ub = round(quantile(value, probs = 0.975, names = FALSE),0)) %>%
-  rename(value = mean,
-         state = county) %>%
-  mutate(time_stamp = n_time_stamp) %>%
-  select(state, type, BaseCase, BaseCase_type, Intervention, 
-         intervention_type, Outcome, dates, value, lb, ub, time_stamp,
-         proj_type)
-
-# Save
-save(df_tableS2, file = "figs/data_frames/df_tableS2.RData")
-
+# v_outcome <- c("Incident cases",
+#                "Cumulative cases",
+#                "Incident deaths",
+#                "Cumulative deaths")
+# 
+# # Interventions
+# select_intervention <- c("SchoolSD", 
+#                          "IncreaseSD",
+#                          "IncreaseSDSchoolSD",
+#                          "BaseCase")
+# 
+# # Intervention data
+# df_tableS2 <- df_out_total_prob_all %>%
+#   ungroup() %>%
+#   filter(county == state_i &
+#            intervention_type %in% select_intervention &
+#            Outcome %in% v_outcome &
+#            dates == max_date) %>%
+#   group_by(county, type, BaseCase, BaseCase_type, Intervention, 
+#            intervention_type, Outcome, dates, proj_type, proj_type_label) %>%
+#   summarise(mean = round(mean(value),0),
+#             median = quantile(value, probs = 0.5, names = FALSE),
+#             sd = round(sd(value),0),
+#             lb = round(quantile(value, probs = 0.025, names = FALSE),0),
+#             ub = round(quantile(value, probs = 0.975, names = FALSE),0)) %>%
+#   rename(value = mean,
+#          state = county) %>%
+#   mutate(time_stamp = n_time_stamp) %>%
+#   select(state, type, BaseCase, BaseCase_type, Intervention, 
+#          intervention_type, Outcome, dates, value, lb, ub, time_stamp,
+#          proj_type)
+# 
+# # Save
+# save(df_tableS2, file = "figs/data_frames/df_tableS2.RData")
+# 
 
 # Figure S4: Effective Reproduction Number --------------------------------
 

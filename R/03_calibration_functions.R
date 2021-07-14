@@ -21,10 +21,7 @@ calibration_out <- function(v_params_calib,
   l_params_all$l_interventions[[4]]$intervention_factor <- v_params_calib["r_soc_dist_factor_3"]
   l_params_all$l_interventions[[5]]$intervention_factor <- v_params_calib["r_soc_dist_factor_4"]
   l_params_all$l_interventions[[6]]$intervention_factor <- v_params_calib["r_soc_dist_factor_5"]
-  l_params_all$l_interventions[[6]]$intervention_factor <- v_params_calib["r_soc_dist_factor_6"]
-  # l_params_all$l_interventions[[6]]$intervention_factor <- v_params_calib["r_soc_dist_factor_7"]
-  # l_params_all$l_interventions[[6]]$intervention_factor <- v_params_calib["r_soc_dist_factor_8"]
-  
+
   l_params_all$l_nu_exp2_dx[[1]]$val_start           <- as.numeric(v_params_calib["r_nu_exp2_dx_lb"])     # 1 refers to period
   l_params_all$l_nu_exp2_dx[[1]]$val_end             <- as.numeric(v_params_calib["r_nu_exp2_dx_ub"])
   l_params_all$l_nu_exp2_dx[[1]]$v_logit_change_rate <- as.numeric(v_params_calib["r_nu_exp2_dx_rate"])
@@ -730,9 +727,6 @@ get_bounds <- function() {
             r_soc_dist_factor_3 = 0.250,
             r_soc_dist_factor_4 = 0.250,
             r_soc_dist_factor_5 = 0.250,
-            r_soc_dist_factor_6 = 0.250,
-            # r_soc_dist_factor_7 = 0.250,
-            # r_soc_dist_factor_8 = 0.250,
             r_nu_exp2_dx_lb     = 0.005,
             r_nu_exp2_dx_ub     = 0.005,
             r_nu_exp2_dx_rate   = 0.010,
@@ -748,9 +742,6 @@ get_bounds <- function() {
             r_soc_dist_factor_3 = 0.750,
             r_soc_dist_factor_4 = 0.750,
             r_soc_dist_factor_5 = 0.750,
-            r_soc_dist_factor_6 = 0.750,
-            # r_soc_dist_factor_7 = 0.750,
-            # r_soc_dist_factor_8 = 0.750,
             r_nu_exp2_dx_lb     = 0.120,
             r_nu_exp2_dx_ub     = 0.250,
             r_nu_exp2_dx_rate   = 1.000,
