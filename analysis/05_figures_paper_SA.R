@@ -1,12 +1,13 @@
-# 05_figures_paper.R
+# 05_figures_SM_paper.R
 #-------------------------------------------------------------------------# 
-# This script creates the figures presented in the MCMA paper.            #
+# This script creates the figures presented for the sensitivity analysis  # 
+# presented in the MCMA paper.                                            #
 #                                                                         # 
 # Authors:                                                                #
-#     - Valeria Gracia Olvera, MsC                                        #
+#     - Valeria Gracia Olvera, MsC, <valeria.gracia@cide.edu>             #
 #-------------------------------------------------------------------------# 
 
-rm(list=ls())
+rm(list=ls()) # empty the environment
 
 
 # Load packages and set constants -----------------------------------------
@@ -24,19 +25,38 @@ n_date_projs <- "2020-12-13"
 n_date_obs <- "2020-12-13"
 n_time_stamp_hosp <- "2021-03-07"
 
+# # Combine data.frames for both scenarios
+# df_out_total_prob <- data.frame(NULL)
+# df_out_total_prob_all <- data.frame(NULL)
+# 
+# for(n_proj_type in c("SQ", "SA")){
+# 
+#   load(paste0("output/05_projections_probabilistic_all_",n_proj_type,"_MCMA_", n_date_projs, ".RData"))
+#   load(paste0("output/05_projections_probabilistic_",n_proj_type,"_MCMA_", n_date_projs, ".RData"))
+# 
+#   df_out_total_prob <- rbind.data.frame(df_out_total_prob,
+#                                         df_out_mex_total_prob)
+# 
+#   df_out_total_prob_all <- rbind.data.frame(df_out_total_prob_all,
+#                                             df_out_mex_total_prob_all)
+# 
+# }
+# 
+# save(df_out_total_prob_all, file =paste0("output/05_projections_probabilistic_all_MCMA_",n_date_projs,".RData"))
+# save(df_out_total_prob, file = paste0("output/05_projections_probabilistic_MCMA_",n_date_projs,".RData"))
+
+
 # Load data ---------------------------------------------------------------
 
 # Projections
-load(paste0("output/05_projections_probabilistic_all_SQ_MCMA_",n_date_projs,".RData"))
-load(paste0("output/05_projections_probabilistic_SQ_MCMA_",n_date_projs,".RData"))
-
-df_out_total_prob_all <- df_out_mex_total_prob_all
-df_out_total_prob <- df_out_mex_total_prob
+load(paste0("output/05_projections_probabilistic_all_MCMA_",n_date_projs,".RData"))
+load(paste0("output/05_projections_probabilistic_MCMA_",n_date_projs,".RData"))
 
 # Observed data
 load("data/l_targets_2020-12-13.RData")
 
 # Hospitalization data
+# load(paste0("data/df_hosp_MCMA.RData"))
 load(paste0("data/df_hosp_MCMA_2020-12-21.RData"))
 
 
@@ -131,8 +151,8 @@ number_ticks <- function(n) {
 
 # Set vector of interventions and labels
 v_interv_names <- c(BaseCase           = "Policy A. Physical distancing: status quo; Schooling: not in-person",
-                    IncreaseSD         = "Policy B. Physical distancing: +27% compared to status quo; Schooling: not in-person",
-                    IncreaseSDSchoolSD = "Policy C. Physical distancing: +27% compared to status quo; Schooling: in-person",
+                    IncreaseSD         = "Policy B. Physical distancing: +26% (SA: +24%) compared to status quo; Schooling: not in-person",
+                    IncreaseSDSchoolSD = "Policy C. Physical distancing: +26% (SA: +24%) compared to status quo; Schooling: in-person",
                     SchoolSD           = "Policy D. Physical distancing: status quo; Schooling: in-person")
 
 # Rename interventions
@@ -161,7 +181,7 @@ v_proj_labels <- c(SQ = "Base-case",
 # Projection type names
 df_out_total_prob$proj_type_label <- ""
 df_out_total_prob_all$proj_type_label <- ""
-for(n_proj_type in c("SQ", "SA")){
+for(n_proj_type in c("SQ", "SA")){ 
   df_out_total_prob$proj_type_label[df_out_total_prob$proj_type == n_proj_type] <- v_proj_labels[n_proj_type]
   df_out_total_prob_all$proj_type_label[df_out_total_prob_all$proj_type == n_proj_type] <- v_proj_labels[n_proj_type]
 }
@@ -222,7 +242,7 @@ v_hosp_outcomes <- c("Total hospitalizations",
                      "Hospitalizations with ventilator")
 
 if(offset_flag){
-  for(n_proj_type in c("SQ")){
+  for(n_proj_type in c("SQ", "SA")){
     for(n_hosp_outcome in c(v_hosp_outcomes)){
       denominator <- df_hosp_MCMA$hosp_tot[df_hosp_MCMA$dates == n_date_offset] 
       
@@ -236,13 +256,13 @@ if(offset_flag){
       # Modify data 
       df_out_total_prob_all$value[df_out_total_prob_all$proj_type == n_proj_type &
                                     df_out_total_prob_all$Outcome == n_hosp_outcome] <- df_out_total_prob_all$value[df_out_total_prob_all$proj_type == n_proj_type &
-                                                                                                                                df_out_total_prob_all$Outcome == n_hosp_outcome]/offset_hosp_ratio
+                                                                                                                      df_out_total_prob_all$Outcome == n_hosp_outcome]/offset_hosp_ratio
       df_out_total_prob_all$lb[df_out_total_prob_all$proj_type == n_proj_type &
                                  df_out_total_prob_all$Outcome == n_hosp_outcome] <- df_out_total_prob_all$lb[df_out_total_prob_all$proj_type == n_proj_type &
-                                                                                                                          df_out_total_prob_all$Outcome == n_hosp_outcome]/offset_hosp_ratio
+                                                                                                                df_out_total_prob_all$Outcome == n_hosp_outcome]/offset_hosp_ratio
       df_out_total_prob_all$ub[df_out_total_prob_all$proj_type == n_proj_type &
                                  df_out_total_prob_all$Outcome == n_hosp_outcome] <- df_out_total_prob_all$ub[df_out_total_prob_all$proj_type == n_proj_type &
-                                                                                                                          df_out_total_prob_all$Outcome == n_hosp_outcome]/offset_hosp_ratio
+                                                                                                                df_out_total_prob_all$Outcome == n_hosp_outcome]/offset_hosp_ratio
       
     }
   }
@@ -279,9 +299,9 @@ df_covid_obs_data$Outcome[df_covid_obs_data$Outcome == "Incident COVID19 deaths 
 
 # Weekly data
 df_covid_obs_data_week <- rbind(l_targets$cases,
-                           l_targets$cases_inc,
-                           l_targets$deaths,
-                           l_targets$deaths_inc) %>%
+                                l_targets$cases_inc,
+                                l_targets$deaths,
+                                l_targets$deaths_inc) %>%
   ungroup() %>%
   filter(state %in% unique(df_out_total_prob$state) &
            Date <= n_date_last) %>%
@@ -312,8 +332,8 @@ df_covid_obs_data_week <- rbind(l_targets$cases,
 
 
 df_covid_obs_data_week <- df_covid_obs_data_week[,c("state", "s_code", "type", "BaseCase_type", "Intervention",
-                                          "intervention_type", "Outcome", "dates", "value", "median",
-                                          "sd", "lb", "ub","time_stamp")]
+                                                    "intervention_type", "Outcome", "dates", "value", "median",
+                                                    "sd", "lb", "ub","time_stamp")]
 
 df_covid_obs_data_week$Outcome <- as.character(df_covid_obs_data_week$Outcome)
 df_covid_obs_data_week$Outcome[df_covid_obs_data_week$Outcome == "Incident confirmed infections"] <- "Incident cases"
@@ -321,54 +341,175 @@ df_covid_obs_data_week$Outcome[df_covid_obs_data_week$Outcome == "Cumulative con
 df_covid_obs_data_week$Outcome[df_covid_obs_data_week$Outcome == "Cumulative COVID19 deaths infections"] <-"Cumulative deaths" 
 df_covid_obs_data_week$Outcome[df_covid_obs_data_week$Outcome == "Incident COVID19 deaths infections"] <- "Incident deaths"
 
-# ABSTRACT ----------------------------------------------------------------
 
-# # Interventions
-# select_intervention <- c("SchoolSD",
-#                          "IncreaseSD",
-#                          "IncreaseSDSchoolSD",
-#                          "BaseCase")
-# 
-# df_AbstractCases <-  df_out_total_prob_all %>%
-#   filter(dates >= "2020-12-07" &
-#            # BaseCase_type=="Holidays" &
-#            intervention_type %in% select_intervention &
-#            Outcome == "Incident cases") %>%
-#   group_by(county, type, BaseCase_type, Intervention, intervention_type, Outcome,
-#            simulation, proj_type, proj_type_label) %>%
-#   summarise(cum_value = sum(value)) %>%
-#   group_by(county, type, BaseCase_type, Intervention, intervention_type, Outcome,
-#            proj_type, proj_type_label) %>%
-#   summarise(value = round(mean(cum_value/1e6),2),
-#             sd    = round(sd(cum_value/1e6),2),
-#             lb     = round(quantile(cum_value/1e6, probs = 0.025, names = FALSE), 2),
-#             ub     = round(quantile(cum_value/1e6, probs = 0.975, names = FALSE), 2)) %>%
-#   mutate(time_stamp = n_time_stamp) %>%
-#   rename(state = county)
-# 
-# df_AbstractHosp <-  df_out_total_prob_all %>%
-#   filter(dates >= "2020-12-07" &
-#            intervention_type %in% select_intervention &
-#            Outcome == "Total hospitalizations") %>%
-#   group_by(county, type, BaseCase_type, Intervention, intervention_type, Outcome,
-#            proj_type, proj_type_label, dates) %>%
-#   summarise(mean = round(mean(value),2),
-#             sd    = round(sd(value),2),
-#             lb     = round(quantile(value, probs = 0.025, names = FALSE), 2),
-#             ub     = round(quantile(value, probs = 0.975, names = FALSE), 2)) %>%
-#   mutate(time_stamp = n_time_stamp) %>%
-#   rename(state = county)
-# 
-# # First value: 
-# df_AbstractHosp[df_AbstractHosp$BaseCase_type == "Holidays" & 
-#                   df_AbstractHosp$intervention_type == "BaseCase" & 
-#                   df_AbstractHosp$mean == max(df_AbstractHosp$mean[df_AbstractHosp$BaseCase_type == "Holidays" & 
-#                                                                      df_AbstractHosp$intervention_type == "BaseCase"]),]
-# # Second value
-# df_AbstractHosp[df_AbstractHosp$BaseCase_type == "StatusQuo" & 
-#                   df_AbstractHosp$intervention_type == "IncreaseSDSchoolSD" & 
-#                   df_AbstractHosp$mean == max(df_AbstractHosp$mean[df_AbstractHosp$BaseCase_type == "StatusQuo" & 
-#                                                                      df_AbstractHosp$intervention_type == "IncreaseSDSchoolSD"]),]
+# Figure: comparison between approaches ---------------------------------
+
+# Interventions
+select_intervention <- c("SchoolSD",
+                         "IncreaseSD",
+                         "IncreaseSDSchoolSD",
+                         "BaseCase")
+
+# Outcomes
+select_outcome <- c("Incident cases",
+                    "Incident deaths")
+
+# Scenarios
+select_basecase <- c("Holidays",
+                     "StatusQuo")
+
+# Create data.frame
+df_figX <-  df_out_total_prob_all %>%
+  filter((dates > "2020-12-07" & dates <= "2021-03-07") &
+           Outcome %in% select_outcome &
+           BaseCase_type %in% select_basecase &
+           intervention_type %in% select_intervention) %>%
+  group_by(county, type, BaseCase, BaseCase_type, Intervention, intervention_type, 
+           Outcome, proj_type, proj_type_label, simulation) %>%
+  summarise(cum_value = sum(value)) %>%
+  mutate(time_stamp = n_time_stamp) %>%
+  rename(state = county,
+         value = cum_value) %>%
+  ungroup()
+
+
+# Summarise data
+df_figX_summ <- df_figX %>%
+  group_by(state, type, BaseCase, BaseCase_type, Intervention, intervention_type, 
+           Outcome, proj_type, proj_type_label) %>%
+  summarise(mean = mean(value),
+            sd = sd(value),
+            median = quantile(value, probs = 0.50, names = FALSE),
+            Q1 = quantile(value, probs = 0.25, names = FALSE),
+            Q3 = quantile(value, probs = 0.75, names = FALSE),
+            IQR = Q3 - Q1,
+            min = Q1 - 1.5*IQR,
+            max = Q3 + 1.5*IQR,
+            lb = quantile(value, probs = 0.025, names = FALSE),
+            ub = quantile(value, probs = 0.975, names = FALSE)) %>%
+  rename(value = mean)
+
+# Save data
+save(df_figX, file = "figs/figs_SA/data_frames/df_figX_Diff_SQ_SA.RData")
+
+
+## Plot specifications ----------------------------------------------------
+
+# Set vector of interventions and labels
+v_interv_labels <- c(BaseCase           = "Policy A",
+                     IncreaseSD         = "Policy B",
+                     IncreaseSDSchoolSD = "Policy C",
+                     SchoolSD           = "Policy D" 
+)
+
+# Caption
+plot_caption <- ""
+for(intv in unique(df_figX$Intervention)){
+  plot_caption <- paste0(plot_caption, paste0(intv,"\n"))
+}
+
+# Colors
+v_names_colours <- c(as.character(levels(df_figX$proj_type_label)))
+v_colors_colour <- c("#0F57CA", "#008450")
+names(v_colors_colour) <- v_names_colours
+
+# Vector of colors to fill
+v_colors_fill <- v_colors_colour
+names(v_colors_fill) <- v_names_colours
+
+
+## Plot -------------------------------------------------------------------
+l_plot_figX <- vector(mode = "list", length = 4)
+i <- 1
+
+for(n_outcome in select_outcome){
+  for(n_policy in unique(df_figX$intervention_type)){
+    
+    abbrev_plot <- names(v_outcomes)[which(v_outcomes == n_outcome)]
+    
+    # Plot's title
+    if(n_outcome == "Incident cases"){
+      gg_title <- "Cumulative cases from 12/07 until 03/07"
+    }else if(n_outcome == "Incident deaths"){
+      gg_title <- "Cumulative deaths from 12/07 until 03/07"
+    }
+    
+    # Plot subtitle
+    gg_subtitle <- v_interv_names[which(names(v_interv_names) == n_policy)]
+    
+    # Plot
+    l_plot_figX[[i]] <- ggplot(subset(df_figX, Outcome == n_outcome & 
+                                        intervention_type == n_policy), 
+                               aes(x     = proj_type_label, 
+                                   y     = value,
+                                   color = proj_type_label)) +
+      geom_boxplot(size = 1) +
+      facet_wrap( ~ BaseCase, ncol = 2, scales = "fixed") +
+      scale_colour_manual("", values = v_colors_colour) +
+      scale_x_discrete("", labels = NULL) +
+      scale_y_continuous("", 
+                         breaks = number_ticks(5),
+                         labels = scales::comma) + # trans = "log"
+      labs(subtitle = gg_subtitle) +
+      theme(text = element_text(size = text_size),
+            plot.caption = element_text(hjust = 0,
+                                        size = 19),
+            axis.text.x = element_text(angle = 0, 
+                                       hjust = 0.5, 
+                                       vjust = 0.5,
+                                       colour = "black"),
+            axis.text.y = element_text(colour = "black"),
+            panel.background = element_rect(fill = "white", 
+                                            colour = "gray", 
+                                            size = 0.15, 
+                                            linetype = "solid"),
+            panel.border = element_rect(colour = "black", 
+                                        fill = NA, 
+                                        size = 0.7), 
+            strip.background = element_rect(fill   = "transparent",
+                                            colour = "transparent"),
+            legend.position = "top", 
+            legend.justification = "center", 
+            legend.direction = "horizontal", 
+            legend.title = element_blank(),
+            legend.text = element_text(size = 22),
+            legend.key = element_rect(fill   = "transparent", 
+                                      colour = "transparent",
+                                      size   = unit(4, "cm")))
+    
+    if(n_policy == "BaseCase"){
+      l_plot_figX[[i]] <- l_plot_figX[[i]] +
+        labs(title = gg_title)
+    }
+    
+    i <- i + 1 
+  }
+  
+  i <- 1
+  
+  plot_figX <- ggarrange(l_plot_figX[[i]],
+                         NULL,
+                         l_plot_figX[[i+1]],
+                         NULL,
+                         l_plot_figX[[i+2]],
+                         NULL,
+                         l_plot_figX[[i+3]],
+                         ncol = 1,
+                         common.legend = T,
+                         legend = "bottom",
+                         heights = c(1,0.05, 1,0.05,1,0.05,1),
+                         # labels = c("Policy A","",
+                         #            "Policy B","", 
+                         #            "Policy C","", 
+                         #            "Policy D"),
+                         hjust = 0,vjust = 1.5,
+                         font.label = list(size = 26, face = "bold"))
+  
+  # Save plot
+  ggsave(file = paste0("figs/figs_SA/figX_Diff_",abbrev_plot,"_SA_SQ.jpg"),
+         width = 18, height = 24, dpi = 300)
+  
+}
 
 
 # FIGURE 1: cases and deaths ----------------------------------------------
@@ -385,7 +526,8 @@ df_outcome_int <- df_out_total_prob_all %>%
   filter(county == state_i &
            Outcome %in% v_outcome &
            intervention_type == "BaseCase" &
-           dates <= max_date) %>%
+           dates <= max_date &
+           proj_type == "SA") %>%
   group_by(county, type, BaseCase, BaseCase_type, Intervention, 
            intervention_type, Outcome, dates, proj_type, proj_type_label) %>%
   summarise(mean = mean(value),
@@ -408,13 +550,13 @@ df_outcome_obs <- rbind.data.frame(
   subset(df_covid_obs_data_week, Intervention == "Observed") %>%
     mutate(BaseCase_type   = "Holidays",
            BaseCase        = v_basecase_names["Holidays"],
-           proj_type       = "SQ",
-           proj_type_label = "Base-case"),
+           proj_type       = "SA",
+           proj_type_label = "Lower Covid-19 risk in children"),
   subset(df_covid_obs_data_week, Intervention == "Observed") %>%
     mutate(BaseCase_type   = "StatusQuo",
            BaseCase        = v_basecase_names["StatusQuo"],
-           proj_type       = "SQ",
-           proj_type_label = "Base-case")) %>%
+           proj_type       = "SA",
+           proj_type_label = "Lower Covid-19 risk in children")) %>%
   select(state, type, BaseCase, BaseCase_type, Intervention, 
          intervention_type, Outcome, dates, value, lb, ub, time_stamp, 
          proj_type, proj_type_label)
@@ -427,7 +569,7 @@ df_fig1_CasesDeaths <- rbind.data.frame(df_outcome_int,
 
 # Save data
 save(df_fig1_CasesDeaths,
-     file = paste0("figs/figs_paper/data_frames/df_fig1_CasesDeaths.RData"))
+     file = paste0("figs/figs_SA/data_frames/df_fig1_CasesDeaths.RData"))
 
 
 ## Plot specifications ----------------------------------------------------
@@ -470,8 +612,8 @@ calib_day <- grobTree(textGrob("Last day used for calibration",
 l_plots_fig1 <- vector(mode = "list", length = 4)
 i <- 1
 
-for(n_proj_type in c("SQ")){ # n_proj_type = "SA"
-
+for(n_proj_type in c("SA")){ # n_proj_type = "SA"
+  
   for(outcome in v_outcome){
     
     # Abbreviation for outcome to save the plot
@@ -573,7 +715,7 @@ for(n_proj_type in c("SQ")){ # n_proj_type = "SA"
   
   i <- 1
   
- # Combine graphs
+  # Combine graphs
   plot_inc <- ggarrange(l_plots_fig1[[i]], 
                         NULL,
                         l_plots_fig1[[i+1]],
@@ -601,9 +743,9 @@ for(n_proj_type in c("SQ")){ # n_proj_type = "SA"
                          ncol = 1)
   
   # Save plot
-  ggsave(paste0("figs/figs_paper/fig1_CasesDeaths_",n_proj_type,".jpg"),
+  ggsave(paste0("figs/figs_SA/fig1_CasesDeaths_",n_proj_type,".jpg"),
          width = 18, height = 32, dpi = 300)
-
+  
 }
 
 # FIGURE 2: Hospitalizations ----------------------------------------------
@@ -620,7 +762,8 @@ df_Hosp_proj <- df_out_total_prob_all %>%
   filter(county == state_i &
            intervention_type == "BaseCase" &
            Outcome == outcome &
-           dates <= max_date) %>%
+           dates <= max_date &
+           proj_type == "SA") %>%
   group_by(county, type, BaseCase, BaseCase_type, Intervention, 
            intervention_type, Outcome, dates, proj_type, proj_type_label) %>%
   summarise(mean = round(mean(value),0),
@@ -661,12 +804,12 @@ df_hosp_tot$Intervention <- as.factor(df_hosp_tot$Intervention)
 # Create data.frame with two set of base-case
 df_hosp_observed <- rbind.data.frame(df_hosp_tot %>% mutate(BaseCase_type   = "Holidays",
                                                             BaseCase        = v_basecase_names["Holidays"],
-                                                            proj_type       = "SQ",
-                                                            proj_type_label = "Base-case"),
+                                                            proj_type       = "SA",
+                                                            proj_type_label = "Lower Covid-19 risk in children"),
                                      df_hosp_tot %>% mutate(BaseCase_type   = "StatusQuo",
                                                             BaseCase        = v_basecase_names["StatusQuo"],
-                                                            proj_type       = "SQ",
-                                                            proj_type_label = "Base-case")) %>%
+                                                            proj_type       = "SA",
+                                                            proj_type_label = "Lower Covid-19 risk in children")) %>%
   select(state, type, BaseCase, BaseCase_type, Intervention, 
          intervention_type, Outcome, dates, value, lb, ub, cap_tot, time_stamp,
          proj_type, proj_type_label
@@ -679,11 +822,11 @@ df_fig2_HospTot <- rbind.data.frame(df_Hosp_proj,
 # Save
 if(offset_flag){
   save(df_fig2_HospTot, 
-       file = paste0("figs/figs_paper/data_frames/df_fig2_HospTot_offset.RData"))
+       file = paste0("figs/figs_SA/data_frames/df_fig2_HospTot_offset.RData"))
   
 }else{
   save(df_fig2_HospTot, 
-       file = paste0("figs/figs_paper/data_frames/df_fig2_HospTot.RData"))
+       file = paste0("figs/figs_SA/data_frames/df_fig2_HospTot.RData"))
 }
 
 
@@ -728,7 +871,7 @@ calib_day <- grobTree(textGrob("Last day used for calibration",
 l_plot_fig2 <- vector(mode = "list", length = 2)
 i <- 1
 
-for(n_proj_type in c("SQ")){
+for(n_proj_type in c("SA")){
   
   # Abbreviation for outcome to save the plot
   abbrev_outcome <- names(v_outcomes)[which(v_outcomes == outcome)]
@@ -842,10 +985,10 @@ for(n_proj_type in c("SQ")){
   
   # Save plot
   if(offset_flag){
-    ggsave(paste0("figs/figs_paper/fig2_HospTot_offset_",n_proj_type,".jpg"),
+    ggsave(paste0("figs/figs_SA/fig2_HospTot_offset_",n_proj_type,".jpg"),
            width = 16, height = 9, dpi = 300)
   }else{
-    ggsave(paste0("figs/figs_paper/fig2_HospTot_",n_proj_type,".jpg"),
+    ggsave(paste0("figs/figs_SA/fig2_HospTot_",n_proj_type,".jpg"),
            width = 16, height = 9, dpi = 300)
   }
   
@@ -873,7 +1016,8 @@ df_fig3_CasesDeaths_interv <- df_out_total_prob_all %>%
            Outcome %in% v_outcome &
            intervention_type %in% select_intervention &
            dates > n_date_last &
-           dates <= max_date) %>%
+           dates <= max_date &
+           proj_type == "SA") %>%
   group_by(county, type, BaseCase, BaseCase_type, Intervention, 
            intervention_type, Outcome, dates, proj_type, proj_type_label) %>%
   summarise(mean = mean(value),
@@ -883,6 +1027,25 @@ df_fig3_CasesDeaths_interv <- df_out_total_prob_all %>%
             ub = quantile(value, probs = 0.975, names = FALSE)) %>%
   rename(value = mean)
 
+# Set vector of interventions and labels
+v_interv_names <- c(BaseCase           = "Policy A. Physical distancing: status quo; Schooling: not in-person",
+                    IncreaseSD         = "Policy B. Physical distancing: +24% compared to status quo; Schooling: not in-person",
+                    IncreaseSDSchoolSD = "Policy C. Physical distancing: +24% compared to status quo; Schooling: in-person",
+                    SchoolSD           = "Policy D. Physical distancing: status quo; Schooling: in-person")
+
+# Rename interventions
+df_fig3_CasesDeaths_interv$Intervention <- as.character(df_fig3_CasesDeaths_interv$Intervention)
+
+for(n_interv in names(v_interv_names)){ 
+  interv_type <- v_interv_names[which(names(v_interv_names) == n_interv)]
+  
+  df_fig3_CasesDeaths_interv$Intervention[df_fig3_CasesDeaths_interv$intervention_type == n_interv] <- interv_type
+}
+
+df_fig3_CasesDeaths_interv$Intervention <- factor(df_fig3_CasesDeaths_interv$Intervention,
+                                                  levels = v_interv_names,
+                                                  ordered = TRUE)
+
 # Order outcomes
 v_outcom <- as.character(unique(df_fig3_CasesDeaths_interv$Outcome))
 df_fig3_CasesDeaths_interv$Outcome <- ordered(df_fig3_CasesDeaths_interv$Outcome,
@@ -890,7 +1053,7 @@ df_fig3_CasesDeaths_interv$Outcome <- ordered(df_fig3_CasesDeaths_interv$Outcome
 
 # Save data.frame
 save(df_fig3_CasesDeaths_interv,
-     file = paste0("figs/figs_paper/data_frames/df_fig3_CasesDeaths_interv.RData"))
+     file = paste0("figs/figs_SA/data_frames/df_fig3_CasesDeaths_interv.RData"))
 
 
 ## Plot specifications ----------------------------------------------------
@@ -924,7 +1087,7 @@ NPI_update <- grobTree(textGrob("Policy start date",
 i <- 1
 l_plots_fig3 <- vector(mode = "list", length = 4)
 
-for(n_proj_type in c("SQ")){
+for(n_proj_type in c("SA")){
   
   # Plot incident cases
   l_plots_fig3[[i]] <- ggplot(
@@ -1044,7 +1207,7 @@ for(n_proj_type in c("SQ")){
                          font.label = list(size = 26, face = "bold"))
   
   # Save plot
-  ggsave(paste0("figs/figs_paper/fig3_CasesDeaths_interv_",n_proj_type,".jpg"),
+  ggsave(paste0("figs/figs_SA/fig3_CasesDeaths_interv_",n_proj_type,".jpg"),
          width = 16, height = 18, dpi = 300)
   
   i <- i + 2
@@ -1079,10 +1242,13 @@ df_hosp_fig4 <- df_hosp_fig4 %>%
   mutate(Intervention = "Observed") %>%
   filter(dates <= n_date_last)
 
+df_hosp_fig4$Intervention <- as.factor(df_hosp_fig4$Intervention)
+
 # Data.frame
 df_fig4_HospTot_interv <- df_hosp_all_INT_fig4 %>%
   filter(county == state_i &
-           intervention_type %in% select_intervention) %>%
+           intervention_type %in% select_intervention &
+           proj_type == "SA") %>%
   group_by(county, type, BaseCase, BaseCase_type, Intervention, 
            intervention_type, Outcome, dates, proj_type, proj_type_label) %>%
   summarise(mean = round(mean(value),0),
@@ -1099,13 +1265,32 @@ df_fig4_HospTot_interv <- df_hosp_all_INT_fig4 %>%
 
 df_fig4_HospTot_interv$dates <- as.Date(df_fig4_HospTot_interv$dates)
 
+# Set vector of interventions and labels
+v_interv_names <- c(BaseCase           = "Policy A. Physical distancing: status quo; Schooling: not in-person",
+                    IncreaseSD         = "Policy B. Physical distancing: +24% compared to status quo; Schooling: not in-person",
+                    IncreaseSDSchoolSD = "Policy C. Physical distancing: +24% compared to status quo; Schooling: in-person",
+                    SchoolSD           = "Policy D. Physical distancing: status quo; Schooling: in-person")
+
+# Rename interventions
+df_fig4_HospTot_interv$Intervention <- as.character(df_fig4_HospTot_interv$Intervention)
+
+for(n_interv in names(v_interv_names)){ 
+  interv_type <- v_interv_names[which(names(v_interv_names) == n_interv)]
+  
+  df_fig4_HospTot_interv$Intervention[df_fig4_HospTot_interv$intervention_type == n_interv] <- interv_type
+}
+
+df_fig4_HospTot_interv$Intervention <- factor(df_fig4_HospTot_interv$Intervention,
+                                                  levels = v_interv_names,
+                                                  ordered = TRUE)
+
 # Save
 if(offset_flag){
   save(df_fig4_HospTot_interv,
-       file = paste0("figs/figs_paper/data_frames/df_fig4_HospTot_interv_offset.RData"))
+       file = paste0("figs/figs_SA/data_frames/df_fig4_HospTot_interv_offset.RData"))
 }else{
   save(df_fig4_HospTot_interv,
-       file = paste0("figs/figs_paper/data_frames/df_fig4_HospTot_interv.RData"))
+       file = paste0("figs/figs_SA/data_frames/df_fig4_HospTot_interv.RData"))
 }
 
 
@@ -1142,7 +1327,7 @@ NPI_update <- grobTree(textGrob("Policy start date",
 l_plot_fig4 <- vector(mode = "list", length = 2)
 i <- 1
 
-for(n_proj_type in c("SQ")){
+for(n_proj_type in c("SA")){
   
   # Plot
   l_plot_fig4[[i]] <- ggplot(
@@ -1221,10 +1406,10 @@ for(n_proj_type in c("SQ")){
   
   # Save plot
   if(offset_flag){
-    ggsave(paste0("figs/figs_paper/fig4_HospTot_interv_offset_",n_proj_type,".jpg"),
+    ggsave(paste0("figs/figs_SA/fig4_HospTot_interv_offset_",n_proj_type,".jpg"),
            width = 16, height = 9, dpi = 300)
   }else{
-    ggsave(paste0("figs/figs_paper/fig4_HospTot_interv_",n_proj_type,".jpg"),
+    ggsave(paste0("figs/figs_SA/fig4_HospTot_interv_",n_proj_type,".jpg"),
            width = 16, height = 9, dpi = 300)
   }
   
@@ -1253,7 +1438,8 @@ v_hosp_capacity <- c(Hosp_tot   = 9667,
 df_fig5_ExceedHospCap <- df_out_total_prob_all %>%
   filter(Outcome == outcome &
            intervention_type %in% select_intervention &
-           dates >= n_date_last) %>%
+           dates >= n_date_last  &
+           proj_type == "SA") %>%
   mutate(cap_tot = df_hosp_MCMA$cap_tot[df_hosp_MCMA$dates == n_date_last]) %>%
   mutate(exceed_cap = ifelse(value > cap_tot, 1, 0)) %>%
   group_by(county, type, BaseCase, BaseCase_type, Intervention, intervention_type, 
@@ -1278,13 +1464,32 @@ df_fig5_ExceedHospCap$intervention_label <- factor(df_fig5_ExceedHospCap$interve
                                                    levels = v_interv_labels,
                                                    ordered = TRUE)
 
+# Set vector of interventions and labels
+v_interv_names <- c(BaseCase           = "Policy A. Physical distancing: status quo; Schooling: not in-person",
+                    IncreaseSD         = "Policy B. Physical distancing: +24% compared to status quo; Schooling: not in-person",
+                    IncreaseSDSchoolSD = "Policy C. Physical distancing: +24% compared to status quo; Schooling: in-person",
+                    SchoolSD           = "Policy D. Physical distancing: status quo; Schooling: in-person")
+
+# Rename interventions
+df_fig5_ExceedHospCap$Intervention <- as.character(df_fig5_ExceedHospCap$Intervention)
+
+for(n_interv in names(v_interv_names)){ 
+  interv_type <- v_interv_names[which(names(v_interv_names) == n_interv)]
+  
+  df_fig5_ExceedHospCap$Intervention[df_fig5_ExceedHospCap$intervention_type == n_interv] <- interv_type
+}
+
+df_fig5_ExceedHospCap$Intervention <- factor(df_fig5_ExceedHospCap$Intervention,
+                                              levels = v_interv_names,
+                                              ordered = TRUE)
+
 # Save
 if(offset_flag){
-save(df_fig5_ExceedHospCap,
-     file = paste0("figs/figs_paper/data_frames/df_fig5_ExceedHospCap_",abbrev_outcome,"_offset.RData"))
+  save(df_fig5_ExceedHospCap,
+       file = paste0("figs/figs_SA/data_frames/df_fig5_ExceedHospCap_",abbrev_outcome,"_offset.RData"))
 }else{
-save(df_fig5_ExceedHospCap,
-     file = paste0("figs/figs_paper/data_frames/df_fig5_ExceedHospCap_",abbrev_outcome,".RData"))
+  save(df_fig5_ExceedHospCap,
+       file = paste0("figs/figs_SA/data_frames/df_fig5_ExceedHospCap_",abbrev_outcome,".RData"))
 }
 
 # Plot specifications -----------------------------------------------------
@@ -1309,116 +1514,68 @@ for(intv in unique(df_fig5_ExceedHospCap$Intervention)){
 l_plots_fig5 <- vector(mode = "list", length = 2)
 i <- 1
 
-for(n_proj_type in c("SQ")){
+for(n_proj_type in c("SA")){
   
-      # Abbrev outcome
-      abbrev_outcome <- names(v_outcomes)[which(v_outcomes == outcome)]
-      
-      # Plot
-      l_plots_fig5[[i]] <- ggplot(data = subset(df_fig5_ExceedHospCap, proj_type == n_proj_type), 
-             aes(x    = dates, 
-                 y    = intervention_label, 
-                 fill = value)) +
-        geom_raster() +
-        labs(y = "", fill = "Probability of\nexceeding hospital\ncapacity (%)") +
-        scale_fill_gradientn(colours = color_map,
-                             breaks = c(0.0, 25.0, 50.0, 75.0, 100.0),
-                             labels = c("0", "25", "50", "75", "100"),
-                             limits = c(0,100)) +  # Hawre's jet map
-        facet_wrap( ~ BaseCase, ncol = 1) +
-        scale_x_date(label_x_axis,
-                     date_labels = "%b/%d", #Change the format of the date in the x axis
-                     # breaks = seq.Date(from = first(df_hosp_all_INT_daily$week),
-                     #                   to = last(df_hosp_all_INT_daily$week),
-                     #                   by = "week")
-                     breaks = "week") + 
-        labs(caption = plot_caption,
-             title = outcome) +
-        theme(text = element_text(size = text_size),
-              plot.caption = element_text(hjust = 0,
-                                          size = 19), 
-              axis.text.x = element_text(angle = 90, 
-                                         hjust = 0.5, 
-                                         vjust = 0.5,
-                                         colour = "black"),
-              axis.text.y = element_text(colour = "black"),
-              panel.background = element_rect(fill = "white", 
-                                              colour = "gray", 
-                                              size = 0.15, 
-                                              linetype = "solid"),
-              panel.border = element_rect(colour = "black", 
-                                          fill = NA, 
-                                          size = 0.7), 
-              strip.background = element_rect(fill   = "transparent",
-                                              colour = "transparent"),
-              legend.position = "right", 
-              legend.title = element_text(size = 18),
-              legend.justification = "center", 
-              legend.direction = "vertical", 
-              legend.key.width = unit(0.9, "cm"),
-              legend.key.height = unit(1.2, "cm"),
-              legend.title.align = 0,
-              legend.key = element_rect(fill   = "transparent", 
-                                        colour = "transparent"))
-      
-      if(offset_flag){
-        ggsave(paste0("figs/figs_paper/fig5_ExceedHospCap_",abbrev_outcome,"_",n_proj_type,"_offset.jpg"),
-               width = 16, height = 11, dpi = 300)
-      }else{
-        ggsave(paste0("figs/figs_paper/fig5_ExceedHospCap_",abbrev_outcome,"_",n_proj_type,".jpg"),
-               width = 16, height = 11, dpi = 300)
-      }
-      
-      i <- i + 1
+  # Abbrev outcome
+  abbrev_outcome <- names(v_outcomes)[which(v_outcomes == outcome)]
+  
+  # Plot
+  l_plots_fig5[[i]] <- ggplot(data = subset(df_fig5_ExceedHospCap, proj_type == n_proj_type), 
+                              aes(x    = dates, 
+                                  y    = intervention_label, 
+                                  fill = value)) +
+    geom_raster() +
+    labs(y = "", fill = "Probability of\nexceeding hospital\ncapacity (%)") +
+    scale_fill_gradientn(colours = color_map,
+                         breaks = c(0.0, 25.0, 50.0, 75.0, 100.0),
+                         labels = c("0", "25", "50", "75", "100"),
+                         limits = c(0,100)) +  # Hawre's jet map
+    facet_wrap( ~ BaseCase, ncol = 1) +
+    scale_x_date(label_x_axis,
+                 date_labels = "%b/%d", #Change the format of the date in the x axis
+                 # breaks = seq.Date(from = first(df_hosp_all_INT_daily$week),
+                 #                   to = last(df_hosp_all_INT_daily$week),
+                 #                   by = "week")
+                 breaks = "week") + 
+    labs(caption = plot_caption,
+         title = outcome) +
+    theme(text = element_text(size = text_size),
+          plot.caption = element_text(hjust = 0,
+                                      size = 19), 
+          axis.text.x = element_text(angle = 90, 
+                                     hjust = 0.5, 
+                                     vjust = 0.5,
+                                     colour = "black"),
+          axis.text.y = element_text(colour = "black"),
+          panel.background = element_rect(fill = "white", 
+                                          colour = "gray", 
+                                          size = 0.15, 
+                                          linetype = "solid"),
+          panel.border = element_rect(colour = "black", 
+                                      fill = NA, 
+                                      size = 0.7), 
+          strip.background = element_rect(fill   = "transparent",
+                                          colour = "transparent"),
+          legend.position = "right", 
+          legend.title = element_text(size = 18),
+          legend.justification = "center", 
+          legend.direction = "vertical", 
+          legend.key.width = unit(0.9, "cm"),
+          legend.key.height = unit(1.2, "cm"),
+          legend.title.align = 0,
+          legend.key = element_rect(fill   = "transparent", 
+                                    colour = "transparent"))
+  
+  if(offset_flag){
+    ggsave(paste0("figs/figs_SA/fig5_ExceedHospCap_",abbrev_outcome,"_",n_proj_type,"_offset.jpg"),
+           width = 16, height = 11, dpi = 300)
+  }else{
+    ggsave(paste0("figs/figs_SA/fig5_ExceedHospCap_",abbrev_outcome,"_",n_proj_type,".jpg"),
+           width = 16, height = 11, dpi = 300)
+  }
+  
+  i <- i + 1
 }
-
-# First value in abstract: 
-df_fig5_ExceedHospCap[df_fig5_ExceedHospCap$BaseCase_type == "Holidays" & 
-                  df_fig5_ExceedHospCap$intervention_type == "BaseCase" & 
-                  df_fig5_ExceedHospCap$dates == "2021-01-25",]
-# Second value in abstract:
-df_fig5_ExceedHospCap[df_fig5_ExceedHospCap$BaseCase_type == "StatusQuo" & 
-                  df_fig5_ExceedHospCap$intervention_type == "IncreaseSDSchoolSD" & 
-                  df_fig5_ExceedHospCap$dates == "2021-01-19",]
-
-
-
-# Table S2: cases and deaths ----------------------------------------------
-
-v_outcome <- c("Incident cases",
-               "Cumulative cases",
-               "Incident deaths",
-               "Cumulative deaths")
-
-# Interventions
-select_intervention <- c("SchoolSD",
-                         "IncreaseSD",
-                         "IncreaseSDSchoolSD",
-                         "BaseCase")
-
-# Intervention data
-df_tableS2 <- df_out_total_prob_all %>%
-  ungroup() %>%
-  filter(county == state_i &
-           intervention_type %in% select_intervention &
-           Outcome %in% v_outcome &
-           dates == max_date) %>%
-  group_by(county, type, BaseCase, BaseCase_type, Intervention,
-           intervention_type, Outcome, dates, proj_type, proj_type_label) %>%
-  summarise(mean = round(mean(value),0),
-            median = quantile(value, probs = 0.5, names = FALSE),
-            sd = round(sd(value),0),
-            lb = round(quantile(value, probs = 0.025, names = FALSE),0),
-            ub = round(quantile(value, probs = 0.975, names = FALSE),0)) %>%
-  rename(value = mean,
-         state = county) %>%
-  mutate(time_stamp = n_time_stamp) %>%
-  select(state, type, BaseCase, BaseCase_type, Intervention,
-         intervention_type, Outcome, dates, value, lb, ub, time_stamp,
-         proj_type, proj_type_label)
-
-# Save
-save(df_tableS2, file = "figs/figs_paper/data_frames/df_tableS2.RData")
 
 
 # Figure S4: Effective Reproduction Number --------------------------------
@@ -1434,7 +1591,27 @@ df_outcome_Rt <- df_out_total_prob %>%
   ungroup() %>%
   filter(state == state_i &
            Outcome == outcome_eng &
-           dates <= max_date)
+           dates <= max_date & 
+           proj_type == "SA")
+
+# Set vector of interventions and labels
+v_interv_names <- c(BaseCase           = "Policy A. Physical distancing: status quo; Schooling: not in-person",
+                    IncreaseSD         = "Policy B. Physical distancing: +24% compared to status quo; Schooling: not in-person",
+                    IncreaseSDSchoolSD = "Policy C. Physical distancing: +24% compared to status quo; Schooling: in-person",
+                    SchoolSD           = "Policy D. Physical distancing: status quo; Schooling: in-person")
+
+# Rename interventions
+df_outcome_Rt$Intervention <- as.character(df_outcome_Rt$Intervention)
+
+for(n_interv in names(v_interv_names)){ 
+  interv_type <- v_interv_names[which(names(v_interv_names) == n_interv)]
+  
+  df_outcome_Rt$Intervention[df_outcome_Rt$intervention_type == n_interv] <- interv_type
+}
+
+df_outcome_Rt$Intervention <- factor(df_outcome_Rt$Intervention,
+                                     levels = v_interv_names,
+                                     ordered = TRUE)
 
 # Create data.frame for BaseCase
 df_Rt_BaseCase <- subset(df_outcome_Rt, intervention_type == "BaseCase")
@@ -1447,13 +1624,13 @@ df_RTt_INT <- subset(df_outcome_Rt, intervention_type %in% c("SchoolSD", "Increa
 df_figS4_Rt <- rbind.data.frame(df_Rt_BaseCase,
                                 df_RTt_INT)
 save(df_figS4_Rt,
-     file = paste0("figs/figs_paper/data_frames/df_figS4_Rt.RData"))
+     file = paste0("figs/figs_SA/data_frames/df_figS4_Rt.RData"))
 
 # List of plots
 l_plots_S4 <- vector(mode = "list", length = 4)
 i <- 1
 
-for(n_proj_type in c("SQ")){
+for(n_proj_type in c("SA")){
   
   ### Plot: SQ --------------------------------------------------------------
   
@@ -1492,7 +1669,7 @@ for(n_proj_type in c("SQ")){
                                  hjust = 0,
                                  gp = gpar(col = "#393F3E", 
                                            fontsize = annotation_size)))
-
+  
   # Plot
   l_plots_S4[[i]] <- ggplot(data = subset(df_Rt_BaseCase, proj_type == n_proj_type)) +
     geom_line(aes(x = dates, 
@@ -1559,7 +1736,7 @@ for(n_proj_type in c("SQ")){
   
   # Abbreviation for outcome to save the plot
   abbrev_outcome <- names(v_outcomes)[which(v_outcomes == outcome)]
- 
+  
   # Colors
   v_names_colours <- c(as.character(levels(df_RTt_INT$Intervention)[-1]))
   
@@ -1675,7 +1852,7 @@ for(n_proj_type in c("SQ")){
                           labels = c("A","","B"), hjust = 0,vjust = 1.5,label.x = c(0,0,0), label.y = c(1,1,1),
                           font.label = list(size = 26, face = "bold"))
   
-  ggsave(paste0("figs/figs_paper/figS4_Rt_BaseCase_INT_",n_proj_type,".jpg"), 
+  ggsave(paste0("figs/figs_SA/figS4_Rt_BaseCase_INT_",n_proj_type,".jpg"), 
          width = 16, height = 18, dpi = 300)
   
   i <- i + 2
@@ -1687,16 +1864,18 @@ for(n_proj_type in c("SQ")){
 df_outcome_all_detec_inf <- df_out_total_prob_all %>%
   ungroup() %>%
   filter(county == state_i &
-           Outcome == "Cumulative cases" & BaseCase_type == "Holidays" &
-           intervention_type == "BaseCase" &
-           dates <= max_date)
+           Outcome == "Cumulative cases" & 
+           BaseCase_type == "Holidays" &
+           intervention_type == "BaseCase" & 
+           proj_type == "SA")
 
 df_outcome_all_total_inf <- df_out_total_prob_all %>%
   ungroup() %>%
   filter(county == state_i &
-           Outcome == "Cumulative infections" & BaseCase_type == "Holidays" &
-           intervention_type == "BaseCase" &
-           dates <= max_date)
+           Outcome == "Cumulative infections" & 
+           BaseCase_type == "Holidays" &
+           intervention_type == "BaseCase" & 
+           proj_type == "SA")
 
 df_outcome_all_detec_inf$Intervention <- "Model-projected"
 df_outcome_all_total_inf$Intervention <- "Model-projected"
@@ -1723,7 +1902,7 @@ df_figS6_DetecInf_prop$Intervention <- as.factor(df_figS6_DetecInf_prop$Interven
 
 # Save
 save(df_figS6_DetecInf_prop,
-     file = paste0("figs/figs_paper/data_frames/df_figS6_DetecInf_prop.RData"))
+     file = paste0("figs/figs_SA/data_frames/df_figS6_DetecInf_prop.RData"))
 
 # Abbreviation for outcome to save the plot
 abbrev_outcome <- "DetecInf_prop"
@@ -1761,7 +1940,7 @@ calib_day <- grobTree(textGrob("Last day used for calibration",
                                          fontsize = annotation_size)))
 
 ## Plot -------------------------------------------------------------------
-for(n_proj_type in c("SQ")){
+for(n_proj_type in c("SA")){
   
   ggplot(data = subset(df_figS6_DetecInf_prop, proj_type == n_proj_type)) +
     geom_line(aes(x = dates,
@@ -1816,9 +1995,71 @@ for(n_proj_type in c("SQ")){
                                     colour = "transparent")) 
   
   # Save plot
-  ggsave(paste0("figs/figs_paper/figS6_DetecInf_prop_",n_proj_type,".jpg"),
+  ggsave(paste0("figs/figs_SA/figS6_DetecInf_prop_",n_proj_type,".jpg"),
          width = 12, height = 9, dpi = 300)
 }
+
+
+# ## Plot: facet ------------------------------------------------------------
+# 
+# ggplot(data = df_figS6_DetecInf_prop) +
+#   geom_line(aes(x = dates,
+#                 y = value,
+#                 colour = Intervention),
+#             size = 0.9) +
+#   geom_ribbon(aes(x = dates,
+#                   y = value,
+#                   ymin = lb,
+#                   ymax = ub,
+#                   fill = Intervention),
+#               alpha = 0.4,
+#               colour = NA) +
+#   facet_wrap(~proj_type_label) +
+#   scale_color_manual("", values = rep(v_colors_colour, 2)) +
+#   scale_fill_manual("", values =  rep(v_colors_fill,2)) +
+#   geom_vline(xintercept = c(as.numeric(as.Date("2020-03-23")), as.numeric(n_date_last)),
+#              show.legend = TRUE,
+#              size = 0.5,
+#              linetype = rep(c("dashed", "twodash"),2),
+#              color = "#393F3E") +
+#   annotation_custom(npi_date) +
+#   # annotation_custom(calib_day) +
+#   scale_x_date(label_x_axis,
+#                date_labels = "%b/%d", #Change the format of the date in the x axis
+#                breaks = v_dates_breaks
+#   ) +
+#   scale_y_continuous("",
+#                      breaks = number_ticks(8),
+#                      labels = scales::percent) + # trans = "log"
+#   # labs(title    = "COVID-19 total infections in MCMA, Mexico" #, caption  = gg_caption
+#   # ) +
+#   theme(text = element_text(size = text_size),
+#         axis.text.x = element_text(angle = angle_x_axis,
+#                                    hjust = 0.5,
+#                                    vjust = 0.5,
+#                                    colour = "black"),
+#         axis.text.y = element_text(colour = "black"),
+#         panel.background = element_rect(fill = "white", 
+#                                         colour = "gray", 
+#                                         size = 0.15, 
+#                                         linetype = "solid"),
+#         panel.border = element_rect(colour = "black", 
+#                                     fill = NA, 
+#                                     size = 0.7), 
+#         strip.background = element_rect(fill   = "transparent",
+#                                         colour = "transparent"),
+#         legend.position = "none",
+#         legend.justification = "center",
+#         legend.direction = "vertical",
+#         legend.title = element_blank(),
+#         legend.key = element_rect(fill   = "transparent",
+#                                   colour = "transparent")) 
+# 
+# # Save plot
+# ggsave(paste0("figs/figs_SA/figS6_DetecInf_prop_SA_SQ.jpg"),
+#        width = 18, height = 9, dpi = 300)
+
+
 
 # FIGURE S5: Cumulative proportion of population ever been infected -------
 
@@ -1831,14 +2072,15 @@ df_figS5_Rec_prop <- df_out_total_prob %>%
   filter(state == state_i &
            Outcome == outcome_eng & BaseCase_type == "Holidays" &
            intervention_type == "BaseCase" &
-           dates <= max_date)
+           dates <= max_date & 
+           proj_type == "SA")
 
 # Set type as factor
 df_figS5_Rec_prop$type <- as.factor(df_figS5_Rec_prop$type)
 
 # Save
 save(df_figS5_Rec_prop,
-     file = paste0("figs/figs_paper/data_frames/df_figS5_Rec_prop.RData"))
+     file = paste0("figs/figs_SA/data_frames/df_figS5_Rec_prop.RData"))
 
 
 # Plot specifications -----------------------------------------------------
@@ -1882,7 +2124,7 @@ calib_day <- grobTree(textGrob("Last day used for calibration",
 
 ## Plot --------------------------------------------------------------
 
-for(n_proj_type in c("SQ")){
+for(n_proj_type in c("SA")){
   
   ggplot(data = subset(df_figS5_Rec_prop, proj_type == n_proj_type)) +
     geom_line(aes(x = dates, 
@@ -1939,9 +2181,72 @@ for(n_proj_type in c("SQ")){
                                     colour = "transparent")) 
   
   # Save plot
-  ggsave(paste0("figs/figs_paper/figS5_Rec_prop_",n_proj_type,".jpg"), 
+  ggsave(paste0("figs/figs_SA/figS5_Rec_prop_",n_proj_type,".jpg"), 
          width = 12, height = 9, dpi = 300)
 }
+
+
+# # Plot: facets ------------------------------------------------------------
+# 
+# ggplot(data = df_figS5_Rec_prop) +
+#   geom_line(aes(x = dates, 
+#                 y = value, 
+#                 colour = type),
+#             size = 0.9) +
+#   geom_ribbon(aes(x = dates,
+#                   y = value,
+#                   ymin = lb,
+#                   ymax = ub,
+#                   fill = type),
+#               alpha = 0.4,
+#               colour = NA) +
+#   facet_wrap(~ proj_type_label) +
+#   scale_color_manual("", values = rep(v_colors_colour, 2)) + 
+#   scale_fill_manual("", values =  rep(v_colors_fill, 2))  +
+#   geom_vline(xintercept = c(as.numeric(as.Date("2020-03-23")), as.numeric(n_date_last)),
+#              show.legend = TRUE,
+#              size = 0.5, 
+#              linetype = rep(c("dashed", "twodash"), 2),
+#              color = "#393F3E") +
+#   annotation_custom(npi_date) +
+#   # annotation_custom(calib_day) +
+#   scale_x_date(label_x_axis,
+#                date_labels = "%b/%d", #Change the format of the date in the x axis
+#                breaks = v_dates_breaks
+#   ) + 
+#   scale_y_continuous("",#outcome_eng, 
+#                      breaks = number_ticks(8),
+#                      labels = scales::percent) + # trans = "log"
+#   # labs(title    = "COVID-19 total recovered in MCMA, Mexico" #, caption  = gg_caption
+#   # ) +
+#   theme(text = element_text(size = text_size),
+#         # plot.caption = element_text(hjust = 0,
+#         #                             size = caption_size), 
+#         axis.text.x = element_text(angle = angle_x_axis, 
+#                                    hjust = 0.5,
+#                                    vjust = 0.5,
+#                                    colour = "black"),
+#         axis.text.y = element_text(colour = "black"),
+#         panel.background = element_rect(fill = "white", 
+#                                         colour = "gray", 
+#                                         size = 0.15, 
+#                                         linetype = "solid"),
+#         panel.border = element_rect(colour = "black", 
+#                                     fill = NA, 
+#                                     size = 0.7), 
+#         strip.background = element_rect(fill   = "transparent",
+#                                         colour = "transparent"),
+#         legend.position = "none", 
+#         legend.justification = "center", 
+#         legend.direction = "vertical", 
+#         legend.title = element_blank(), 
+#         legend.key = element_rect(fill   = "transparent", 
+#                                   colour = "transparent")) 
+# 
+# # Save plot
+# ggsave(paste0("figs/figs_SA/figS5_Rec_prop_SA_SQ.jpg"), 
+#        width = 18, height = 9, dpi = 300)
+
 
 
 # FIGURE S7: Percentage difference STATUS QUO VS HOLIDAYS -----------------
@@ -1958,7 +2263,8 @@ df_CasesDeaths_daily <- df_out_total_prob_all %>%
   filter(county == state_i &
            Outcome %in% v_outcome &
            intervention_type == "BaseCase" &
-           dates > n_date_last)
+           dates > n_date_last & 
+           proj_type == "SA")
 
 # Replicate status quo value
 df_CasesDeaths_daily$BaseCase_value <- 0 
@@ -1979,7 +2285,7 @@ df_figS7_PercDiff <- df_CasesDeaths_daily %>%
 
 # Save
 save(df_figS7_PercDiff,
-     file = paste0("figs/figs_paper/data_frames/df_figS7_PercDiff.RData"))
+     file = paste0("figs/figs_SA/data_frames/df_figS7_PercDiff.RData"))
 
 # Order outcomes
 df_figS7_PercDiff$Outcome <- factor(df_figS7_PercDiff$Outcome,
@@ -2018,7 +2324,7 @@ end_holidays <- grobTree(textGrob("End holidays",
 
 ## Plot -------------------------------------------------------------------
 
-for(n_proj_type in c("SQ")){
+for(n_proj_type in c("SA")){
   
   ggplot(data = subset(df_figS7_PercDiff, proj_type == n_proj_type),
          aes(x = dates,
@@ -2101,7 +2407,120 @@ for(n_proj_type in c("SQ")){
                                     colour = "transparent"))
   
   # Save plot
-  ggsave(paste0("figs/figs_paper/figS7_PercDiff_SQ_Holidays_",n_proj_type,".jpg"),
+  ggsave(paste0("figs/figs_SA/figS7_PercDiff_SQ_Holidays_",n_proj_type,".jpg"),
          width = 21, height = 15, dpi = 300)
 }
 
+
+# # Plot: facet -------------------------------------------------------------
+# 
+# # List of plots
+# l_plots_figS7 <- vector(mode = "list", length = 4)
+# i <- 1
+# 
+# for(n_outcome in v_outcome){
+#   
+#   l_plots_figS7[[i]] <- ggplot(data = subset(df_figS7_PercDiff, Outcome == n_outcome),
+#                                aes(x = dates,
+#                                    y = value,
+#                                    colour = Outcome,
+#                                    ymin = lb,
+#                                    ymax = ub,
+#                                    shape = Outcome)) +
+#     geom_point(#position = position_dodge(width = 5),
+#       size = 4) +
+#     geom_errorbar(#position = position_dodge(width = 5),
+#       size = 1.1) +
+#     facet_wrap(~ proj_type_label, ncol = 2, scales = "fixed") +
+#     # geom_ribbon(aes(x = dates,
+#     #                 y = mean_percent,
+#     #                 ymin = lb_percent,
+#     #                 ymax = ub_percent,
+#     #                 fill = Intervention),
+#     #             alpha = 0.4,
+#     #             colour = NA) +
+#     scale_color_manual(values = rep(v_colors_colour, 2)) +
+#     scale_fill_manual(values =  rep(v_colors_fill, 2))  +
+#     scale_shape_manual(values = rep(v_colors_shape, 2)) +
+#     guides(shape = guide_legend(title = ""),
+#            color = guide_legend(title = "",
+#                                 ncol = 1,
+#                                 override.aes = list(#linetype = v_linetype,
+#                                   color    = rep(v_colors_colour, 2),
+#                                   # fill     = v_colors_fill,
+#                                   shape    = rep(v_colors_shape, 2)))) +
+#     geom_vline(xintercept = c(as.Date("2020-12-24"),
+#                               as.Date("2021-01-06")),
+#                show.legend = TRUE,
+#                size = 0.5,
+#                linetype = rep(c("dashed", "twodash"),2),
+#                color = "#393F3E") +
+#     # annotation_custom(start_holidays) +
+#     # annotation_custom(end_holidays) +
+#     scale_x_date(label_x_axis,
+#                  date_labels = "%b/%d", #Change the format of the date in the x axis
+#                  breaks = c(as.Date("2020-12-07"), as.Date("2020-12-14"),
+#                             as.Date("2020-12-21"), as.Date("2020-12-28"),
+#                             as.Date("2021-01-04"), as.Date("2021-01-11"),
+#                             as.Date("2021-01-18"), as.Date("2021-01-25"),
+#                             as.Date("2021-02-01"), as.Date("2021-02-08"),
+#                             as.Date("2021-02-15"), as.Date("2021-02-22"),
+#                             as.Date("2021-03-01"))
+#                  # breaks = "week"
+#     ) +
+#     scale_y_continuous("",
+#                        breaks = number_ticks(6),
+#                        labels = scales::percent
+#     ) + # trans = "log"
+#     labs(subtitle = n_outcome
+#     ) +
+#     theme(text = element_text(size = text_size),
+#           plot.caption = element_text(hjust = 0,
+#                                       size = caption_size),
+#           axis.text.x = element_text(angle = 90,
+#                                      hjust = 0.5,
+#                                      vjust = 0.5,
+#                                      colour = "black"),
+#           axis.text.y = element_text(colour = "black"),
+#           panel.background = element_rect(fill = "white",
+#                                           colour = "gray",
+#                                           size = 0.15,
+#                                           linetype = "solid"),
+#           strip.background = element_rect(fill   = "transparent",
+#                                           colour = "transparent"),
+#           panel.border = element_rect(colour = "black",
+#                                       fill = NA,
+#                                       size = 0.7),
+#           legend.position = "none", # c(0.44,0.5),
+#           legend.text = element_text(size = 20),
+#           legend.justification = "center",
+#           legend.direction = "vertical",
+#           legend.title = element_blank(),
+#           legend.key = element_rect(fill   = "transparent",
+#                                     colour = "transparent"))
+#   
+#   if(n_outcome == "Incident cases"){
+#     l_plots_figS7[[i]] <- l_plots_figS7[[i]] +
+#       labs(title = "Difference between higher social contacts and status quo")
+#   }
+#   
+#   i <- i + 1
+# }
+# 
+# # Combine graphs
+# plot_S7 <- ggarrange(l_plots_figS7[[1]], 
+#                      NULL,
+#                      l_plots_figS7[[3]],
+#                      NULL,
+#                      l_plots_figS7[[2]], 
+#                      NULL,
+#                      l_plots_figS7[[4]],
+#                      ncol = 1,
+#                      heights = c(1, 0.05, 1, 0.05, 1, 0.05, 1),
+#                      # labels = c("C","","D"), 
+#                      hjust = 0,vjust = 1.5,
+#                      font.label = list(size = 26, face = "bold"))
+# 
+# # Save plot
+# ggsave(paste0("figs/figs_SA/figS7_PercDiff_SQ_Holidays_SA_SQ.jpg"),
+#        plot = plot_S7, width = 17, height = 32, dpi = 300)

@@ -217,7 +217,7 @@ for(n_proj_type in c("SQ", "SA")){ # n_proj_type = "SA"
   n_offset_NPI_3 <- n_date0_NPI_3 - n_date0_NPI_2
   
   # Define intervention 4 timing
-  n_date_NPI_4 <- df_NPIs$Date_INT5[df_NPIs$state == state_i] #- 11
+  n_date_NPI_4 <- df_NPIs$Date_INT5[df_NPIs$state == state_i] 
   n_date0_NPI_4 <- as.numeric(n_date_NPI_4 - n_date_ini)
   n_offset_NPI_4 <- n_date0_NPI_4 - n_date0_NPI_3
   
@@ -348,20 +348,48 @@ for(n_proj_type in c("SQ", "SA")){ # n_proj_type = "SA"
   m_calib_post <- l_fit_imis$resample
   
   # Prior vs posterior distribution
-  df_samp_prior <- reshape2::melt(cbind(PDF = "Prior", 
-                                        as.data.frame(sample.prior(n_resamp))), 
-                                  variable.name = "Parameter")
+  m_calib_post_eff <- m_calib_post
+  m_calib_post_eff[, 3:7] <- 1 - m_calib_post[, 3:7]
   
-  df_samp_post_imis  <- reshape2::melt(cbind(PDF = "Posterior IMIS", 
-                                             as.data.frame(m_calib_post)), 
-                                       variable.name = "Parameter")
+  m_samp_prior <- sample.prior(n_resamp)
+  m_samp_prior_eff <- m_samp_prior
+  m_samp_prior_eff[, 3:7] <- 1-m_samp_prior_eff[, 3:7]
   
+  # Ordered prior vs posterior distribution in terms of NPI effectiveness
+  df_samp_prior_eff <- melt(cbind(PDF = "Prior", 
+                                          as.data.frame(m_samp_prior_eff)), 
+                                    variable.name = "Parameter")
+  df_samp_post_imis_eff  <- melt(cbind(PDF = "Posterior IMIS", 
+                                               as.data.frame(m_calib_post_eff)), 
+                                         variable.name = "Parameter")
+  df_samp_prior_post_eff <- bind_rows(df_samp_prior_eff, 
+                                              df_samp_post_imis_eff)
+  df_samp_prior_post_eff$PDF <- ordered(df_samp_prior_post_eff$PDF, 
+                                                levels = c("Prior", "Posterior IMIS")) # "Posterior SIR", 
+  gg_post_imis_eff <- ggplot(df_samp_prior_post_eff, 
+                                     aes(x = value, y = ..density.., fill = PDF)) +
+    facet_wrap(~Parameter, scales = "free", ncol = 3) +
+    scale_x_continuous(breaks = number_ticks(6)) +
+    geom_density(alpha=0.5) +
+    theme_bw(base_size = 16) +
+    theme(legend.position = "bottom")
+  
+  #Save plot  
+  ggsave(plot = gg_post_imis_eff,
+         paste0("figs/03_posterior_vs_prior_marginals_",abbrev_state,"_", n_time_stamp,"_eff.jpg"), 
+         width = 10, height = 8, dpi = 300)
+  
+  # Prior vs posterior distribution
+  df_samp_prior <- melt(cbind(PDF = "Prior", 
+                              as.data.frame(m_samp_prior)), 
+                        variable.name = "Parameter")
+  df_samp_post_imis  <- melt(cbind(PDF = "Posterior IMIS", 
+                                   as.data.frame(m_calib_post)), 
+                             variable.name = "Parameter")
   df_samp_prior_post <- bind_rows(df_samp_prior, 
                                   df_samp_post_imis)
-  
   df_samp_prior_post$PDF <- ordered(df_samp_prior_post$PDF, 
-                                    levels = c("Prior", "Posterior IMIS")) # "Posterior SIR" 
-  
+                                    levels = c("Prior", "Posterior IMIS")) # "Posterior SIR", 
   gg_post_imis <- ggplot(df_samp_prior_post, 
                          aes(x = value, y = ..density.., fill = PDF)) +
     facet_wrap(~Parameter, scales = "free", ncol = 3) +
@@ -370,9 +398,10 @@ for(n_proj_type in c("SQ", "SA")){ # n_proj_type = "SA"
     theme_bw(base_size = 16) +
     theme(legend.position = "bottom")
   
+  # Save plot
   ggsave(plot = gg_post_imis,
-         paste0("figs/03_posterior_vs_prior_marginals_", abbrev_state,"_",n_proj_type,"_", n_time_stamp,".pdf"), 
-         width = 8, height = 6)
+         paste0("figs/03_posterior_vs_prior_marginals_",abbrev_state,"_", n_time_stamp,".jpg"), 
+         width = 10, height = 8, dpi = 300)
   
   
   ### Summary statistics of posterior distribution --------------------------
@@ -419,8 +448,6 @@ for(n_proj_type in c("SQ", "SA")){ # n_proj_type = "SA"
                                        check.names = FALSE)
   
   rownames(df_calib_post_map_IMIS) <- v_param_names
-  
-  
   
   #### Save summary statistics ----------------------------------------------
   
