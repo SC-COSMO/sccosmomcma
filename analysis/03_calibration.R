@@ -400,7 +400,8 @@ for(n_proj_type in c("SQ", "SA")){ # n_proj_type = "SA"
   
   # Save plot
   ggsave(plot = gg_post_imis,
-         paste0("figs/03_posterior_vs_prior_marginals_",abbrev_state,"_", n_time_stamp,".jpg"), 
+         paste0("figs/03_posterior_vs_prior_marginals_",abbrev_state,"_",n_proj_type,
+                "_", n_time_stamp,".jpg"), 
          width = 10, height = 8, dpi = 300)
   
   

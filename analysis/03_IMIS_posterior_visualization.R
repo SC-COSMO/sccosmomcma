@@ -28,6 +28,8 @@ number_ticks <- function(n) {
 
 for(n_proj_type in c("SQ", "SA")){
   
+  cat("Projection scenario:",n_proj_type,"\n")
+  
   # Projection type directory
   if(n_proj_type == "SA"){
     n_dir_proj <- "figs_SA/"
@@ -48,25 +50,53 @@ for(n_proj_type in c("SQ", "SA")){
   # Right after NPI implementation in March 23
   mean(m_calib_post[, "r_soc_dist_factor"])
   quantile(m_calib_post[, "r_soc_dist_factor"], probs = c(0.025, 0.975))
+  
   # At the end of calibration period
   mean(m_calib_post[, "r_soc_dist_factor_5"])
   quantile(m_calib_post[, "r_soc_dist_factor_5"], probs = c(0.025, 0.975))
   
+  # Stricter NPI
   stricter_npi <- matrixStats::rowMins(m_calib_post[, 3:7])
   mean(stricter_npi)
   quantile(stricter_npi, probs = c(0.025, 0.975))
+  
+  stricter_npi_sq <- (stricter_npi - m_calib_post[, "r_soc_dist_factor_5"])/m_calib_post[, "r_soc_dist_factor_5"]
+  
+  cat("Stricter NPI: ",
+      round(mean(stricter_npi_sq)*100),"%", 
+      " [",round(quantile(stricter_npi_sq, probs = 0.025)*100,2),", ",
+      round(quantile(stricter_npi_sq, probs = 0.975)*100,2),"]", " physical distancing compared to status quo\n",
+      sep = "")
+  
+  # Holiday bump
+  holiday_bump <- m_calib_post[, "r_soc_dist_factor_5"] + 0.3
+  mean(holiday_bump)
+  quantile(holiday_bump, probs = c(0.025, 0.975))
+  
+  holiday_bump_sq <- (holiday_bump - m_calib_post[, "r_soc_dist_factor_5"])/m_calib_post[, "r_soc_dist_factor_5"]
+  
+  cat("Holiday bump: ", round(mean(holiday_bump_sq)*100,2), "%", 
+      " [",round(quantile(holiday_bump_sq, probs = 0.025)*100,2),", ",
+      round(quantile(holiday_bump_sq, probs = 0.975)*100,2),"]", " contacts compared to status quo\n",
+      sep = "")
   
   ## Effectiveness
   # Right after NPI implementation in March 23
   mean(m_calib_post_eff[, "r_soc_dist_factor"])
   quantile(m_calib_post_eff[, "r_soc_dist_factor"], probs = c(0.025, 0.975))
+  
   # At the end of calibration period
   mean(m_calib_post_eff[, "r_soc_dist_factor_5"])
   quantile(m_calib_post_eff[, "r_soc_dist_factor_5"], probs = c(0.025, 0.975))
   
-  holiday_bump <- m_calib_post_eff[, "r_soc_dist_factor_5"] - 0.3
-  mean(holiday_bump)
-  quantile(holiday_bump, probs = c(0.025, 0.975))
+  holiday_bump_eff <- m_calib_post_eff[, "r_soc_dist_factor_5"] - 0.3
+  mean(holiday_bump_eff)
+  quantile(holiday_bump_eff, probs = c(0.025, 0.975))
+
+  cat("Holiday bump: ", round(mean(holiday_bump_eff)*100,2), "%", 
+      " [",round(quantile(holiday_bump_eff, probs = 0.025)*100,2),", ",
+      round(quantile(holiday_bump_eff, probs = 0.975)*100,2),"]", " physical distancing - pre-pandemic levels\n",
+      sep = "")
   
   stricter_npi_eff <- matrixStats::rowMaxs(m_calib_post_eff[, 3:7])
   mean(stricter_npi_eff)
@@ -104,8 +134,7 @@ for(n_proj_type in c("SQ", "SA")){
           axis.title.y = element_blank(),
           axis.text.y  = element_blank(),
           axis.ticks.y = element_blank())
-  gg_post_pairs_corr
-  
+
   # Save plot
   ggsave(gg_post_pairs_corr,
          filename = paste0("figs/",n_dir_proj,"figS2_posterior-IMIS-correlation-1k_",n_proj_type,".jpg"),

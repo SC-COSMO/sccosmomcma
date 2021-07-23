@@ -169,7 +169,6 @@ for(n_proj_type in c("SQ", "SA")){ # n_proj_type = "SA"
         
         
         ### Plot model-predicted outputs vs. targets ---------------------------
-        source("R/04_validation_functions.R")
         gg_validate_imis <- plot_model_out_vs_targets(df_all_targets = df_valid_targets,
                                                       df_model_out   = l_out_post_summ$df_out_all_summ)
         

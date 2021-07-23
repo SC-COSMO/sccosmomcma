@@ -151,8 +151,8 @@ number_ticks <- function(n) {
 
 # Set vector of interventions and labels
 v_interv_names <- c(BaseCase           = "Policy A. Physical distancing: status quo; Schooling: not in-person",
-                    IncreaseSD         = "Policy B. Physical distancing: +26% (SA: +24%) compared to status quo; Schooling: not in-person",
-                    IncreaseSDSchoolSD = "Policy C. Physical distancing: +26% (SA: +24%) compared to status quo; Schooling: in-person",
+                    IncreaseSD         = "Policy B. Physical distancing: +27% (SA: +24%) compared to status quo; Schooling: not in-person",
+                    IncreaseSDSchoolSD = "Policy C. Physical distancing: +27% (SA: +24%) compared to status quo; Schooling: in-person",
                     SchoolSD           = "Policy D. Physical distancing: status quo; Schooling: in-person")
 
 # Rename interventions
@@ -566,6 +566,8 @@ df_outcome_obs$Intervention <- as.factor(df_outcome_obs$Intervention)
 # Create and save data.frame
 df_fig1_CasesDeaths <- rbind.data.frame(df_outcome_int,
                                         df_outcome_obs) 
+
+df_fig1_CasesDeaths$Intervention <- as.factor(df_fig1_CasesDeaths$Intervention)
 
 # Save data
 save(df_fig1_CasesDeaths,
