@@ -1,15 +1,15 @@
-#' Computing force of infection at each time step for
-#' The Stanford-CIDE COronavirus Simulation MOdel (SC-COSMO)
+#' Computing force of infection at each time step for the Stanford-CIDE 
+#' COronavirus Simulation MOdel (SC-COSMO)
 #'
 #' \code{get_betas} provides a wrapper to compute the force of infection
 #' at each time step for the SC-COSMO model. It handles
 #' applying intervention effects and timing to various WAIFW matrices.
 #' 
-#' @param time current time model is evaluating
-#' @param l_params_all List with all parameters of decision model
+#' @param time Current time at which the model is evaluated.
+#' @param l_params_all List with all parameters of decision model.
 #' @return 
-#' a matrix of the beta components of the forces of infection for each subgroup 
-#' applied to the overall (composite) mixing matrix in the model
+#' A matrix of the beta components of the forces of infection for each subgroup 
+#' applied to the overall (composite) mixing matrix in the model.
 #' 
 #' @export
 get_betas <-function(time, l_params_all) {
@@ -20,17 +20,17 @@ get_betas <-function(time, l_params_all) {
   )
 }
 
-#' Gets correct mixing matrices for
-#' The Stanford-CIDE COronavirus Simulation MOdel (SC-COSMO)
+#' Gets correct mixing matrices for the Stanford-CIDE COronavirus Simulation 
+#' MOdel (SC-COSMO)
 #'
 #' \code{get_waifw} provides a wrapper to determine which WAIFW matrices
 #' are the correct ones given intervention timings. 
 #' 
-#' @param time current time model is evaluating
-#' @param l_params_all List with all parameters of decision model
+#' @param time Time at which the model is evaluated.
+#' @param l_params_all List with all parameters of decision model.
 #' @return 
-#' an overall WAIFW matrix appropriate for the model given the 
-#' current time and interventions being used
+#' An overall WAIFW matrix appropriate for the model given the 
+#' current time and interventions being used.
 #' 
 #' @export
 get_waifw <- function(time, l_params_all) {
@@ -42,17 +42,17 @@ get_waifw <- function(time, l_params_all) {
   )
 }
 
-#' Gets correct intervention effect multipliers for
-#' The Stanford-CIDE COronavirus Simulation MOdel (SC-COSMO)
+#' Gets correct intervention effect multipliers for the Stanford-CIDE COronavirus
+#' Simulation MOdel (SC-COSMO)
 #'
 #' \code{get_intervention_effects} provides a wrapper to determine
-#' the intervention effectsgiven intervention timings. 
+#' the intervention effects given intervention timings. 
 #' 
-#' @param time current time model is evaluating
-#' @param l_params_all List with all parameters of decision model
+#' @param time Current time at which the model is evaluated.
+#' @param l_params_all List with all parameters of decision model.
 #' @return 
-#' a vector of intervention effects appropriate for the model given the 
-#' current time and interventions being used
+#' A vector of intervention effects appropriate for the model given the 
+#' current time and interventions being used.
 #' 
 #' @export
 get_intervention_effects <- function(time, l_params_all) {
@@ -64,19 +64,19 @@ get_intervention_effects <- function(time, l_params_all) {
 }
 
 #' Efficiency by precomputing WAIFW matrices at each time step for
-#' The Stanford-CIDE COronavirus Simulation MOdel (SC-COSMO)
+#' the Stanford-CIDE COronavirus Simulation MOdel (SC-COSMO)
 #'
 #' \code{gen_all_waifws} provides a way to precompute all WAIFW matrices
 #' given the pattern of interventions at each time step for the 
 #' SC-COSMO model. 
 #' 
-#' @param l_interventions list of interventions and timing
-#' @param l_contact_info list of WAIFW matrix inputs
-#' @param v_names_ages vector of names for rows and columns of WAIFW matrices
-#' @param max_time how many time steps to precompute WAIFW matrices for
+#' @param l_interventions List of interventions and timing.
+#' @param l_contact_info List of WAIFW matrix inputs.
+#' @param v_names_ages Vector of names for rows and columns of WAIFW matrices.
+#' @param max_time Number of time steps to precompute WAIFW matrices for.
 #' 
 #' @return 
-#' a 3D matrix of appropriate WAIFW matrices for each time step in the model
+#' A 3D matrix of appropriate WAIFW matrices for each time step in the model.
 #' 
 #' @export
 gen_all_waifws <- function(l_interventions, l_contact_info, v_names_ages, max_time) {
@@ -125,19 +125,18 @@ gen_all_waifws <- function(l_interventions, l_contact_info, v_names_ages, max_ti
 }
 
 #' Efficiency by precomputing intervention effects at each time step for
-#' The Stanford-CIDE COronavirus Simulation MOdel (SC-COSMO)
+#' the Stanford-CIDE COronavirus Simulation MOdel (SC-COSMO)
 #'
 #' \code{gen_all_intervention_effects} provides a way to precompute all 
-#' intervention effects at each time step for the 
-#' SC-COSMO model. 
+#' intervention effects at each time step for the SC-COSMO model. 
 #' 
-#' @param l_interventions list of interventions and timing
-#' @param v_names_ages vector of names for rows and columns of WAIFW matrices
-#' @param max_time how many time steps to precompute intervention effects for
+#' @param l_interventions List of interventions and timing.
+#' @param v_names_ages Vector of names for rows and columns of WAIFW matrices.
+#' @param max_time Number of time steps to precompute intervention effects for.
 #' 
 #' @return 
-#' a 2D matrix of appropriate intervention vectors for each time step 
-#' in the model
+#' A 2D matrix of appropriate intervention vectors for each time step 
+#' in the model.
 #' 
 #' @export
 gen_all_intervention_effects <- function(l_interventions, v_names_ages, max_time) {
@@ -226,21 +225,20 @@ gen_all_intervention_effects <- function(l_interventions, v_names_ages, max_time
 }
 
 #' Efficiency by precomputing beta component of force of infection 
-#' at each time step for
-#' The Stanford-CIDE COronavirus Simulation MOdel (SC-COSMO)
+#' at each time step for the Stanford-CIDE COronavirus Simulation MOdel (SC-COSMO)
 #'
 #' \code{gen_all_betas} provides a way to precompute all beta matrices
 #' given the pattern of interventions and WAIFW matrices
 #' at each time step for the SC-COSMO model. 
 #' 
-#' @param l_interventions list of interventions and timing
-#' @param l_contact_info list of WAIFW matrix inputs
-#' @param v_names_ages vector of names for rows and columns of WAIFW matrices
-#' @param max_time how many time steps to precompute WAIFW matrices for
-#' @param r_beta the beta component of force of infection w/o intervention
+#' @param l_interventions List of interventions and timing.
+#' @param l_contact_info List of WAIFW matrix inputs.
+#' @param v_names_ages Vector of names for rows and columns of WAIFW matrices.
+#' @param max_time Number of time steps to precompute WAIFW matrices for.
+#' @param r_beta Beta component of force of infection w/o intervention.
 #' 
 #' @return 
-#' a 3D matrix of appropriate beta matrices for each time step in the model
+#' A 3D matrix of appropriate beta matrices for each time step in the model.
 #' 
 #' @export
 gen_all_betas <- function(l_interventions, l_contact_info, 

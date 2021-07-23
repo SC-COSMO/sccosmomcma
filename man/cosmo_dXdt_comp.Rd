@@ -8,6 +8,6 @@ infectious states}
 cosmo_dXdt_comp(time, v_pop, l_params_all)
 }
 \description{
-\code{cosmo_dXdt_comp} Compiled version of the Stanford-CIDE COronavirus
+\code{cosmo_dXdt_comp} compiled version of the Stanford-CIDE COronavirus
 Simulation MOdel (SC-COSMO).
 }

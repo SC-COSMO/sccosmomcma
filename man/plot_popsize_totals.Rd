@@ -7,15 +7,18 @@
 plot_popsize_totals(l_out_cosmo, only_all = TRUE, print_plot = TRUE)
 }
 \arguments{
-\item{l_out_cosmo}{List with output from SC-COSMO and all parameters}
+\item{l_out_cosmo}{List with output from SC-COSMO and all parameters.}
 
-\item{only_all}{logical. Should only overall total infections be plotted}
+\item{only_all}{Flag (default is TRUE) of whether only overall ("All") population
+should be plotted.}
+
+\item{print_plot}{Flag (default is TRUE) of whether the plot should be printed
+in screen.}
 }
 \value{
-A data.frame with the total population by age group and in total
-as columns over time
+A ggplot object.
 }
 \description{
-\code{plot_popsize_totals} Plot total population by age group and/or
+\code{plot_popsize_totals} plot total population by age group and/or
 in total over time.
 }

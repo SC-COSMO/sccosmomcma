@@ -1,7 +1,8 @@
-#' The Stanford-CIDE COronavirus Simulation MOdel (SC-COSMO)
+#' Proportion (age-specific) of detected cases that die
 #'
-#' \code{get_cfr} pulls age-specific fraction of detected cases that die at a given time
-#' @param time the time (numeric, in days) at which v_cfr is evaluated
+#' \code{get_cfr} pulls age-specific fraction of detected cases that die at a
+#' given time.
+#' @param time Time (numeric, in days) at which \code{v_cfr} is evaluated.
 #' @param l_params_all List with all parameters of decision model.
 #' @return 
 #' Proportion (age-specific) of detected cases that die at a given point in time.
@@ -18,10 +19,11 @@ get_cfr <- function(time, l_params_all) {
 #  )
 }
 
-#' The Stanford-CIDE COronavirus Simulation MOdel (SC-COSMO)
+#' Get the fraction of undetected cases that die
 #'
-#' \code{get_ifr} pulls age-specific fraction of undetected cases that die at a given time
-#' @param time the time (numeric, in days) at which v_ifr is evaluated
+#' \code{get_ifr} pulls age-specific fraction of undetected cases that die at a 
+#' given time.
+#' @param time Time (numeric, in days) at which \code{v_ifr} is evaluated.
 #' @param l_params_all List with all parameters of decision model.
 #' @return 
 #' Proportion (age-specific) of undetected cases that die at a given point in time.

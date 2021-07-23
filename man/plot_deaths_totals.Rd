@@ -2,7 +2,7 @@
 % Please edit documentation in R/02_model_output_calc_plot_functions.R
 \name{plot_deaths_totals}
 \alias{plot_deaths_totals}
-\title{Plot total COVID19 deaths}
+\title{Plot total Covid-19 deaths}
 \usage{
 plot_deaths_totals(
   l_out_cosmo,
@@ -13,15 +13,24 @@ plot_deaths_totals(
 )
 }
 \arguments{
-\item{l_out_cosmo}{List with output from SC-COSMO and all parameters}
+\item{l_out_cosmo}{List with output from SC-COSMO and all parameters.}
 
-\item{only_all}{logical. Should only overall total deaths from COVID19 be plotted}
+\item{proportion}{Flag (default is FALSE) of whether to divide total deaths
+from Covid-19 by total population.}
+
+\item{age_proportion}{Flag (default is FALSE) of whether to divide
+total deaths from Covid-19 by age-specific total population.}
+
+\item{only_all}{Flag (default is TRUE) of whether only overall ("All")
+total deaths from Covid-19 should be plotted.}
+
+\item{print_plot}{Flag (default is TRUE) of whether the plot should be printed
+in screen.}
 }
 \value{
-A data.frame with the total number of deaths from COVID19 by age group and in total
-as columns over time
+A ggplot object.
 }
 \description{
-\code{plot_deaths_totals} Plot total number of deaths from COVID19
+\code{plot_deaths_totals} plot total number of deaths from Covid-19
 by age group and/or in total over time.
 }

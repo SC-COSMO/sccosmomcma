@@ -13,15 +13,15 @@ obtain_setting_data(
 )
 }
 \arguments{
-\item{v_init_age_grps}{Vector with initial ages of age groups}
+\item{v_init_age_grps}{Vector with initial ages of age groups.}
 
-\item{ctry}{Country}
+\item{ctry}{Country.}
 
-\item{ste}{State}
+\item{ste}{State.}
 
-\item{cty}{County or municipality}
+\item{cty}{County or municipality.}
 
-\item{year}{Year}
+\item{year}{Year.}
 }
 \value{
 An array with the initial population at each class by age group.

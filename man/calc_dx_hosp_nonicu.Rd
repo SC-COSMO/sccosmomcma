@@ -8,14 +8,14 @@ calc_dx_hosp_nonicu(l_hosp, l_out_cosmo)
 }
 \arguments{
 \item{l_hosp}{List with output from the hospitalization simulation
-(prep_hospitalizations)}
+(\code{prep_dx_hospitalizations}).}
 
-\item{l_out_cosmo}{List with output from SC-COSMO and all parameters}
+\item{l_out_cosmo}{List with output from SC-COSMO and all parameters.}
 }
 \value{
 A data.frame with the total number of total number of prevalent diagnosed
 Non-ICU hospitalizations by age group and overall as columns over time.
 }
 \description{
-Calculate total number of prevalent diagnosed Non-ICU hospitalizations.
+\code{calc_dx_hosp_nonicu} calculate total number of prevalent diagnosed Non-ICU hospitalizations.
 }

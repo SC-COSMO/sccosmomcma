@@ -7,13 +7,14 @@
 add_period(l_period_def = NULL, l_period_add)
 }
 \arguments{
-\item{l_period_def}{the existing list of period definitions}
+\item{l_period_def}{Existing list of period definitions.}
 
-\item{l_period_add}{the period to add to the full list, should be defined using make_period}
+\item{l_period_add}{Period to add to the full list, should be defined
+using \code{make_period}.}
 }
 \value{
-List (l_period_def) appended with l_period_add as a new entry
+List (\code{l_period_def}) appended with \code{l_period_add} as a new entry.
 }
 \description{
-\code{add_period} Adds time periods as new entries in list of time periods
+\code{add_period} adds time periods as new entries in list of time periods
 }

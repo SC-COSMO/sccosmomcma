@@ -1,10 +1,10 @@
 #' Get crude birth rates for MX states
 #'
-#' \code{get_population_birth_mx} returns a dataframe with all of the
+#' \code{get_population_birth_mx} returns a data.frame with all of the
 #' processed information on crude birth rate.
 #'
-#' @param reload a flag (default is FALSE) of whether to
-#' redownload and process the data file
+#' @param reload Flag (default is FALSE) of whether to redownload and process 
+#' the data file.
 #'
 #' @export
 get_population_birth_mx <- function(reload = FALSE) {
@@ -23,13 +23,15 @@ get_population_birth_mx <- function(reload = FALSE) {
 #' \code{get_population_birth} wrapper function that allows user to
 #' subset data from various sources.
 #' If only county is specified (other parameters = ""), 
-#' it provides national level data
+#' it provides national level data.
 #' If county is also specified (and the dataset contains counties),
-#' then only those counties within the state(s) are returned
+#' then only those counties within the state(s) are returned.
 #' 
-#' @param reload a flag (default is FALSE) of whether to 
-#' redownload and process the data file
-#'
+#' @param country Country of desired data.
+#' @param state State of desired data.
+#' @param county County of desired data.
+#' @return 
+#' A data.frame with all of the processed information on crude birth rate.
 #' @export
 get_population_birth <- function(country = "", 
                                  state = "",

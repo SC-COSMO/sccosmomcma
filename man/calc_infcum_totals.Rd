@@ -11,9 +11,9 @@ calc_infcum_totals(l_out_cosmo)
 }
 \value{
 A data.frame with the total number of cumulative infections by age group and overall
-as columns over time
+as columns over time.
 }
 \description{
-\code{calc_infcum_totals} Calculate total number of cumulative infections by age group and
+\code{calc_infcum_totals} calculate total number of cumulative infections by age group and
 overall over time.
 }

@@ -2,19 +2,19 @@
 % Please edit documentation in R/02_beta_mixing_interventions_functions.R
 \name{get_betas}
 \alias{get_betas}
-\title{Computing force of infection at each time step for
-The Stanford-CIDE COronavirus Simulation MOdel (SC-COSMO)}
+\title{Computing force of infection at each time step for the Stanford-CIDE
+COronavirus Simulation MOdel (SC-COSMO)}
 \usage{
 get_betas(time, l_params_all)
 }
 \arguments{
-\item{time}{current time model is evaluating}
+\item{time}{Current time at which the model is evaluated.}
 
-\item{l_params_all}{List with all parameters of decision model}
+\item{l_params_all}{List with all parameters of decision model.}
 }
 \value{
-a matrix of the beta components of the forces of infection for each subgroup
-applied to the overall (composite) mixing matrix in the model
+A matrix of the beta components of the forces of infection for each subgroup
+applied to the overall (composite) mixing matrix in the model.
 }
 \description{
 \code{get_betas} provides a wrapper to compute the force of infection

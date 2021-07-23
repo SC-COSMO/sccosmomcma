@@ -11,24 +11,23 @@ calc_reproduction_number_wt(l_out_cosmo, v_time = 2:20, nsim_chosen = 200)
 \item{l_out_cosmo}{List with output from SC-COSMO and all parameters.}
 
 \item{v_time}{Vector with times at which the time-dependent reproduction
-number is desired to be calculated}
+number is desired to be calculated.}
 
-\item{nsim_chosen}{number of simulations used by the WT algorithm to
+\item{nsim_chosen}{Number of simulations used by the WT algorithm to
 compute confidence intervals which are often not used. Hence the number
 is small. The default for WT in the package is 10,000 which uses a very
 large amount of memory and is not appropriate for parallelization because
-we will run out of RAM. The default is set to a much smaller number}
+we will run out of RAM. The default is set to a much smaller number.}
 }
 \value{
 A data.frame with with the time-dependent reproduction number.
 }
 \description{
-\code{calc_reproduction_number_wt} Calculates the time-dependent reproduction
+\code{calc_reproduction_number_wt} calculates the time-dependent reproduction
 number according to Wallinga & Teunis.
 }
 \references{
 \enumerate{
-\item
 \item Wallinga, J., & Teunis, P. (2004). Different epidemic curves for severe
 acute respiratory syndrome reveal similar impacts of control measures.
 American Journal of Epidemiology, 160(6), 509–516.

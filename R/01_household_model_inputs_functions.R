@@ -1,10 +1,9 @@
 #' Generate household possibilities
 #' 
-#' \code{gen_hh_n} generates household transmission (i.e., 
-#' force of infection).
+#' \code{gen_hh_n} generates household transmission (i.e., force of infection).
 #' 
-#' @param n_hhsize Household size
-#' @param v_names_states_hh vector with state names of household model
+#' @param n_hhsize Household size.
+#' @param v_names_states_hh Vector with state names of household model.
 #' @return 
 #' A data.frame with possible combinations of household members within each 
 #' epidemic compartment.
@@ -33,25 +32,25 @@ gen_hh_n <- function(n_hhsize, v_names_states_hh){
 
 #' Generate household matrices
 #' 
-#' \code{gen_household_matrices} generates transition matrices for within 
+#' \code{gen_household_matrices_mc_seir} generates transition matrices for within 
 #' household epidemics.
-#' @param n_hhsize Household size
-#' @param n_hh_mod Number of household model states
-#' @param v_names_states_hh Vector with names of household MC SEIR model
-#' @param v_names_exp_hh Vector with names of exposed states
-#' @param v_names_inf_hh Vector with names of infectious states
-#' @param v_index_hh_sus Indexing column vector of susceptibles
-#' @param v_index_hh_exp Indexing column vector of exposed
-#' @param v_index_hh_inf Indexing column vector of infectious
-#' @param v_index_hh_rec Indexing column vector of recovered
-#' @param m_possibilities Matrix with possible combinations of household 
+#' @param n_hhsize Household size.
+#' @param n_hh_mod Number of household model states.
+#' @param v_names_states_hh Vector with names of household MC SEIR model.
+#' @param v_names_exp_hh Vector with names of exposed states.
+#' @param v_names_inf_hh Vector with names of infectious states.
+#' @param v_index_hh_sus Indexing column vector of susceptible.
+#' @param v_index_hh_exp Indexing column vector of exposed.
+#' @param v_index_hh_inf Indexing column vector of infectious.
+#' @param v_index_hh_rec Indexing column vector of recovered.
+#' @param m_possibilities Matrix with possible combinations of household. 
 #' @param r_sigma  Daily rate of progression of exposed individuals 
-#' (Latent period)
+#' (Latent period).
 #' @param r_gamma Daily rate of recovery of infectious individuals 
 #' (Infectiousness period).
 #' @return 
 #' A list with three transition matrices: 1) community transmission matrix; 2) 
-#' household transmission matric; and 3) hosehold recovered matrix
+#' household transmission matrix; and 3) household recovered matrix.
 #' @export
 gen_household_matrices_mc_seir <- function(n_hhsize, 
                                            n_hh_mod,
@@ -255,28 +254,28 @@ gen_household_matrices_mc_seir <- function(n_hhsize,
 }
 
 #' Compute inflows considering competing risks using convolution of binomials
-
-#' \code{compute_inflows} computes inflows 
-#' @param n_hhsize Household size
-#' @param n_hh_mod Number of household model states
-#' @param v_names_hh Vector with all names of household MC SEIR model
-#' @param v_names_states Vector with names of household MC SEIR model
-#' @param v_names_source Vector with names of source states
-#' @param v_names_destiny Vector with names of destiny states
-#' @param v_names_source_destiny Vector with names of source and destiny states
-#' @param v_index_hh_source Vector with indexes of source states
-#' @param v_index_hh_destiny Vector with indexes of destiny states
-#' @param v_index_keep_source Vector with indexes of destiny states to keep
+#'
+#' \code{compute_inflows} computes inflows. 
+#' @param n_hhsize Household size.
+#' @param n_hh_mod Number of household model states.
+#' @param v_names_hh Vector with all names of household MC SEIR model.
+#' @param v_names_states Vector with names of household MC SEIR model.
+#' @param v_names_source Vector with names of source states.
+#' @param v_names_destiny Vector with names of destiny states.
+#' @param v_names_source_destiny Vector with names of source and destiny states.
+#' @param v_index_hh_source Vector with indexes of source states.
+#' @param v_index_hh_destiny Vector with indexes of destiny states.
+#' @param v_index_keep_source Vector with indexes of destiny states to keep.
 #' @param v_index_souce_destiny_hh Vector with indexes of source and destiny 
-#' states of the household model
+#' states of the household model.
 #' @param m_possibilities Matrix with possible combinations of household 
-#' @param r_flow Daily rate of flow
-#' @param n_source_states Number of source states
+#' @param r_flow Daily rate of flow.
+#' @param n_source_states Number of source states.
 #' @param m_hh_out Matrix with outflows from the source states, which are the 
 #' flows that we are going to balance with the inflows we will compute inside
-#' the function
+#' the function.
 #' @return 
-#' A matrix with inflow rates to the destiny states
+#' A matrix with inflow rates to the destiny states.
 #' @export
 compute_inflows <- function(n_hhsize,
                             n_hh_mod,

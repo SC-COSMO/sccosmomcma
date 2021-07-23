@@ -4,14 +4,14 @@
 #' \code{get_projection_scenarios} generates interventions input 
 #' list for performing projections with the SC-COSMO model 
 #' for selected state.
-#' @param n_t simulation total time
+#' @param n_t Simulation total time.
 #' @param v_soc_dist_factor Vector with social distancing multipliers for the 
-#' different mobility segments calibrated to 
+#' different mobility segments calibrated to.
 #' @param v_mean_soc_dist_factor Vector with mean social distancing multipliers 
-#' for different mobility segments calibrated to 
-#' @param v_n_date0_NPI Vector with the time steps (0=date_init) at which effect 
-#' of NPI changed in the calibration period
-#' @param date_proj0 the time step (0=date_init) where projection starts
+#' for different mobility segments calibrated to.
+#' @param v_n_date0_NPI Vector with the time steps (0 = \code{date_init}) at 
+#' which effect of NPI changed in the calibration period.
+#' @param date_proj0 the time step (0 = \code{date_init}) where projection starts
 #' (calibration period is over).
 #' @return 
 #' A list of named (scenarios) of intervention lists formatted for
@@ -19,8 +19,7 @@
 #' @export
 get_projection_scenarios <- function(n_t , 
                                      v_soc_dist_factor, 
-                                     v_mean_soc_dist_factor, 
-                                     #date_sd0, 
+                                     v_mean_soc_dist_factor,
                                      v_n_date0_NPI,
                                      date_proj0) {
   
@@ -440,15 +439,16 @@ get_projection_scenarios <- function(n_t ,
 
 #' Calculate epidemiological outcomes projections from SC-COSMO
 #'
-#' \code{project_epi_out} projects epideimiological outcomes from the 
+#' \code{project_epi_out} projects epidemiological outcomes from the 
 #' SC-COSMO model for selected states in Mexico.
-#' @param v_states_project Vector with Mexican states names
+#' 
+#' @param v_states_project Vector specifying the name of the states to be
+#' projected.
 #' @param l_params_all List of all SC-COSMO model parameters.
-#' @param n_date_ini Initial calendar date of the simulation
+#' @param n_date_ini Initial calendar date of the simulation.
 #' @param n_lag_inf Lag in time series of infectious individuals.
-# #' @param l_params_all List with all parameters of decision model
 #' @return 
-#' A data frame with epidemiological outcomes.
+#' A list with epidemiological outcomes.
 #' @export
 project_epi_out <- function(v_states_project,
                             l_params_all,
@@ -981,16 +981,16 @@ acomb <- function(...) abind::abind(..., along=3)
 #' of interventions
 #'
 #' @param m_calib_post Matrix with calibrated parameters from posterior 
-#' distribution
+#' distribution.
 #' @param n_date_ini Initial date of calibration.
-#' @param v_n_date0_NPI Vector with the time steps (0=date_init) at which effect 
-#' of NPI changed in the calibration period
+#' @param v_n_date0_NPI Vector with the time steps (\code{0 = date_init}) at 
+#' which effect of NPI changed in the calibration period.
 #' @param n_t_calib Number of calibration days.
 #' @param n_t_project Number of projection days.
 #' @param n_lag_inf Lag in time series of infectious individuals.
 #' @return
-#' A list with outputs for validation.
-#' 
+#' A list with probabilistic projections of interventions.
+#' @export
 project_interventions_probabilistic <- function(m_calib_post,
                                                 n_date_ini,
                                                 v_n_date0_NPI,
@@ -1003,21 +1003,6 @@ project_interventions_probabilistic <- function(m_calib_post,
   
   ### Number of posterior samples
   n_samp <- nrow(m_calib_post)
-  # #### Initialize matrices to store model outputs ####
-  # ### Detected cases
-  # ## Incident
-  # m_out_infdx_inc <- matrix(NA, nrow = n_samp, ncol = n_dates)
-  # colnames(m_out_infdx_inc) <- as.character(v_dates)
-  # ## Cumulative
-  # m_out_infdx_cum <- matrix(NA, nrow = n_samp, ncol = n_dates)
-  # colnames(m_out_infdx_cum) <- as.character(v_dates)
-  # ### Detected COVID deaths
-  # ## Incident
-  # m_out_DXDcov_inc <- matrix(NA, nrow = n_samp, ncol = n_dates)
-  # colnames(m_out_DXDcov_inc) <- as.character(v_dates)
-  # ## Cumulative
-  # m_out_DXDcov_cum <- matrix(NA, nrow = n_samp, ncol = n_dates)
-  # colnames(m_out_DXDcov_cum) <- as.character(v_dates)
   
   #### Compute model-predicted outputs for al interventions for each sample of posterior distribution ####
   v_mean_soc_dist_factor <- colMeans(m_calib_post[, c("r_soc_dist_factor", 
@@ -1176,24 +1161,7 @@ project_interventions_probabilistic <- function(m_calib_post,
           #                              df_out_scenario_ages)
           
         }
-        # df_out_mex_total$BaseCaseValue <- NA
-        # for(outcome in unique(df_out_mex_total$Outcome)){ # outcome = "R effective"
-        #   # print(outcome)
-        #   for(int_type in unique(df_out_mex_total$intervention_type)){ # int_type = "SchoolSD"
-        #     # print(int_type)
-        #     df_out_mex_total$BaseCaseValue[df_out_mex_total$Outcome == outcome &
-        #                                      df_out_mex_total$intervention_type == int_type] <- df_out_mex_total$value[df_out_mex_total$intervention_type == "BaseCase" & 
-        #                                                                                                                  df_out_mex_total$BaseCase_type == "StatusQuo" &
-        #                                                                                                                  df_out_mex_total$Outcome == outcome]
-        #   }
-        # }
-        # 
-        # # Calculate difference between interventions and base-case
-        # df_out_mex_total$Percent    <- (df_out_mex_total$value - df_out_mex_total$BaseCaseValue)/df_out_mex_total$BaseCaseValue
-        # df_out_mex_total$Difference <- (df_out_mex_total$value - df_out_mex_total$BaseCaseValue)
-        # 
-        # write_log_file(msg=paste(Sys.time(),":  FINISHING iteration:",i,"\n"),log_flag=GLOBAL_LOGGING_ENABLED)
-        
+
         # Return data.frame
         df_out_mex_total
       }
@@ -1350,25 +1318,7 @@ project_interventions_probabilistic <- function(m_calib_post,
                                                 #                              df_out_scenario_ages)
                                                 
                                               }
-                                              
-                                              # df_out_mex_total$BaseCaseValue <- NA
-                                              # for(outcome in unique(df_out_mex_total$Outcome)){ # outcome = "R effective"
-                                              #   # print(outcome)
-                                              #   for(int_type in unique(df_out_mex_total$intervention_type)){ # int_type = "SchoolSD"
-                                              #     # print(int_type)
-                                              #     df_out_mex_total$BaseCaseValue[df_out_mex_total$Outcome == outcome &
-                                              #                                      df_out_mex_total$intervention_type == int_type] <- df_out_mex_total$value[df_out_mex_total$intervention_type == "BaseCase" & 
-                                              #                                                                                                                  df_out_mex_total$BaseCase_type == "StatusQuo" &
-                                              #                                                                                                                  df_out_mex_total$Outcome == outcome]
-                                              #   }
-                                              # }
-                                              # 
-                                              # # Calculate difference between interventions and base-case
-                                              # df_out_mex_total$Percent    <- ifelse(df_out_mex_total$BaseCaseValue != 0, (df_out_mex_total$value - df_out_mex_total$BaseCaseValue)/df_out_mex_total$BaseCaseValue,0)
-                                              # df_out_mex_total$Difference <- (df_out_mex_total$value - df_out_mex_total$BaseCaseValue)
-                                              # 
-                                              # # write_log_file(msg=paste(Sys.time(),":  FINISHING iteration:",i,"\n"),log_flag=GLOBAL_LOGGING_ENABLED)
-                                              # 
+
                                               # Return data.frame
                                               df_out_mex_total
                                             }
@@ -1385,42 +1335,9 @@ project_interventions_probabilistic <- function(m_calib_post,
               sd = sd(value),
               lb = quantile(value, probs = 0.025, names = FALSE),
               ub = quantile(value, probs = 0.975, names = FALSE)
-              ### Percent Difference between interventions and base-case
-              # mean_percent = mean(Percent),
-              # median_percent = quantile(Percent, probs = 0.5, names = FALSE),
-              # sd_percent = sd(Percent),
-              # lb_percent = quantile(Percent, probs = 0.025, names = FALSE),
-              # ub_percent = quantile(Percent, probs = 0.975, names = FALSE),
-              # ### Absolute Difference between interventions and base-case
-              # mean_difference = mean(Difference),
-              # median_difference = quantile(Difference, probs = 0.5, names = FALSE),
-              # sd_difference = sd(Difference),
-              # lb_difference = quantile(Difference, probs = 0.025, names = FALSE),
-              # ub_difference = quantile(Difference, probs = 0.975, names = FALSE)
               ) 
   
   colnames(df_out_projection_post_all_summ)[colnames(df_out_projection_post_all_summ)=="mean"] <- "value"
   return(list(df_all  = df_out_projection_post_all,
               df_summ = df_out_projection_post_all_summ))
-}
-
-#' Get operating system
-#' 
-#' @return 
-#' A string with the operating system.
-#' @export
-get_os <- function(){
-  sysinf <- Sys.info()
-  if (!is.null(sysinf)){
-    os <- sysinf['sysname']
-    if (os == 'Darwin')
-      os <- "MacOSX"
-  } else { ## mystery machine
-    os <- .Platform$OS.type
-    if (grepl("^darwin", R.version$os))
-      os <- "osx"
-    if (grepl("linux-gnu", R.version$os))
-      os <- "linux"
-  }
-  tolower(os)
 }

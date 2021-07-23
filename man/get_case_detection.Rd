@@ -2,22 +2,23 @@
 % Please edit documentation in R/02_case_detection_functions.R
 \name{get_case_detection}
 \alias{get_case_detection}
-\title{The Stanford-CIDE COronavirus Simulation MOdel (SC-COSMO)}
+\title{Case detection parameters}
 \usage{
 get_case_detection(time, l_params_all, severity)
 }
 \arguments{
-\item{time}{the time (numeric, in days) at which case detection rate is evaluated}
+\item{time}{Time (numeric, in days) at which case detection rate is evaluated.}
 
 \item{l_params_all}{List with all parameters of decision model.
-Case detection rates should be stored as a list within l_params_all$l_case_detection}
+Case detection rates should be stored as a list within
+\code{l_params_all$l_case_detection}.}
 
-\item{severity}{defines the severity level and state (exp1, exp2, inf1, inf2)}
+\item{severity}{Severity level and state (exp1, exp2, inf1, inf2).}
 }
 \value{
 Case detection rate for a given severity (1, 2) or state (exp, inf) at a
 given point in time.
 }
 \description{
-\code{get_case_detection} pulls case detection parameters for a given time
+\code{get_case_detection} pulls case detection parameters for a given time.
 }

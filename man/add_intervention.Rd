@@ -8,15 +8,15 @@ the Stanford-CIDE COronavirus Simulation MOdel (SC-COSMO)}
 add_intervention(interventions = NULL, intervention)
 }
 \arguments{
-\item{interventions}{a list of the current interventions to append to.
+\item{interventions}{List of the current interventions to append to.
 If NULL, we construct a new intervention list and then append to it. For
 first add to list should be called omitting (or setting to NULL) this
-param}
+param.}
 
-\item{intervention}{an intervention "object" to add to intervention list}
+\item{intervention}{Intervention "object" to add to intervention list.}
 }
 \value{
-a list object containing interventions including the one just added
+A list object containing interventions including the one just added.
 }
 \description{
 \code{add_intervention} constructs a list to hold the

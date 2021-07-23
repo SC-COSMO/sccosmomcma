@@ -7,13 +7,13 @@
 calc_popsize_totals(l_out_cosmo)
 }
 \arguments{
-\item{l_out_cosmo}{List with output from SC-COSMO and all parameters}
+\item{l_out_cosmo}{List with output from SC-COSMO and all parameters.}
 }
 \value{
 A data.frame with the total population by age group and overall
-as columns over time
+as columns over time.
 }
 \description{
-\code{calc_popsize_totals} Calculate total population by age group and
+\code{calc_popsize_totals} calculate total population by age group and
 overall over time.
 }

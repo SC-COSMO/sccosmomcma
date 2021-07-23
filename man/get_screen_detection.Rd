@@ -2,22 +2,24 @@
 % Please edit documentation in R/02_screen_detection_functions.R
 \name{get_screen_detection}
 \alias{get_screen_detection}
-\title{The Stanford-CIDE COronavirus Simulation MOdel (SC-COSMO)}
+\title{Get screen detection parameters for the Stanford-CIDE COronavirus Simulation
+MOdel (SC-COSMO)}
 \usage{
 get_screen_detection(time, l_params_all, severity)
 }
 \arguments{
-\item{time}{the time (numeric, in days) at which screen detection rate is evaluated}
+\item{time}{Time (numeric, in days) at which screen detection rate is evaluated.}
 
 \item{l_params_all}{List with all parameters of decision model.
-Screen detection rates should be stored as a list within l_params_all$l_screen_detection}
+Screen detection rates should be stored as a list within
+\code{l_params_all$l_screen_detection}.}
 
-\item{severity}{defines the severity level and state (exp1, exp2, inf1, inf2)}
+\item{severity}{defines the severity level and state (exp1, exp2, inf1, inf2).}
 }
 \value{
 Screen detection rate for a given severity (1, 2) or state (exp, inf) at a
 given point in time.
 }
 \description{
-\code{get_screen_detection} pulls screen detection parameters for a given time
+\code{get_screen_detection} pulls screen detection parameters for a given time.
 }

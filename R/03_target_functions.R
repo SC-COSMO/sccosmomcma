@@ -1,16 +1,16 @@
-#' Generate calibration targets for Mexico
+#' Generate calibration targets
 #'
 #' \code{gen_targets} generates state-specific calibration targets for 
-#' Mexico based on symptomatic cases. 
+#' Mexico City Metropolitan Area based on symptomatic cases. 
 #'
-#' @param v_states_calib States in Mexico used for calibration.
-#' @param n_time_stamp   Date at which COVID19 series were released by Mexican SSA
-#' @param n_date_ini     Initial date to generate targets
-#' @param n_date_last    Last date to generate targets
+#' @param v_states_calib Vector of states used for calibration.
+#' @param n_time_stamp   Date at which Covid-19 series were released by the
+#' Epidemiology Department of the Ministry of Health.
+#' @param n_date_ini     Initial date to generate targets.
+#' @param n_date_last    Last date to generate targets.
 #' @return 
-#' A data.frame with state-specific calibration targets for Mexico.
+#' A data.frame with state-specific calibration targets.
 #' @export
-#'
 gen_targets <-function(v_states_calib = "MCMA", 
                        n_time_stamp   = "2020-09-13",
                        n_date_ini     = NULL,
@@ -357,30 +357,16 @@ gen_targets <-function(v_states_calib = "MCMA",
               
 }
 
-#' Number of ticks for \code{ggplot2} plots
-#'
-#' Function for determining number of ticks on axis of \code{ggplot2} plots.
-#' @param n integer giving the desired number of ticks on axis of
-#' \code{ggplot2} plots. Non-integer values are rounded down.
-#' @section Details:
-#' Based on function \code{pretty}.
-#' @export
-number_ticks <- function(n) {
-  function(limits) {
-    pretty(limits, n + 1)
-  }
-}
-
 #' Plot Targets
 #'
-#' \code{plot_targets} plots targets.
+#' \code{plot_targets} plots calibration targets.
 #'
-#' @param l_targets List with calibration targets
-#' @param print_plot Logical. Print plots
-#' @param save_plot Logical. Save plots
+#' @param l_targets List with calibration targets.
+#' @param print_plot Flag (default is FALSE) of whether to print plot.
+#' @param save_plot Flag (default is FALSE) of whether to save plot.
 #' @return
-#' A ggplot2 object.
-#' 
+#' A ggplot object.
+#' @export
 plot_targets <- function(l_targets, print_plot = TRUE, save_plot = TRUE){
   ### Obtain time stamp
   n_time_stamp <- max(l_targets$df_all_targets$DateLast, na.rm = TRUE)
@@ -462,7 +448,7 @@ plot_targets <- function(l_targets, print_plot = TRUE, save_plot = TRUE){
 #' @param v_sd Vector of standard deviations (or standard errors)
 #' @return
 #' A covariance matrix.
-#'
+#' @export
 acor2cov <- function(v_acor, v_sd){
   n_y <- length(v_acor)
   m_cor <- matrix(0, n_y, n_y)

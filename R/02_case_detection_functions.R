@@ -1,15 +1,16 @@
-#' The Stanford-CIDE COronavirus Simulation MOdel (SC-COSMO)
+#' Case detection parameters
 #'
-#' \code{get_case_detection} pulls case detection parameters for a given time
-#' @param time the time (numeric, in days) at which case detection rate is evaluated
+#' \code{get_case_detection} pulls case detection parameters for a given time.
+#' 
+#' @param time Time (numeric, in days) at which case detection rate is evaluated.
 #' @param l_params_all List with all parameters of decision model.
-#' Case detection rates should be stored as a list within l_params_all$l_case_detection
-#' @param severity defines the severity level and state (exp1, exp2, inf1, inf2)
+#' Case detection rates should be stored as a list within 
+#' \code{l_params_all$l_case_detection}.
+#' @param severity Severity level and state (exp1, exp2, inf1, inf2).
 #' @return 
 #' Case detection rate for a given severity (1, 2) or state (exp, inf) at a
 #' given point in time.
 #' @export
-
 get_case_detection <- function(time, l_params_all, severity) {
 #with(as.list(l_params_all), {
     
@@ -41,30 +42,3 @@ get_case_detection <- function(time, l_params_all, severity) {
 #  }
 #  )
 }
-
-
-
-## Testing graveyard
-
-# v_case_detection_r_nu_exp1_dx <- general_logit(0.1, 0.05, .2, 40, 0:100)
-# v_case_detection_r_nu_exp2_dx <- general_logit(0.2, 0.25, .2, 40, 101:200)
-# 
-# l_params_all$l_case_detection[["r_nu_exp1_dx"]][["values"]] <- v_case_detection_r_nu_exp1_dx
-# l_params_all$l_case_detection[["r_nu_exp2_dx"]][["values"]] <- v_case_detection_r_nu_exp1_dx
-# 
-# 
-# cdr1 <- make_period(functional_form = "general_logit", time_start = 0, time_stop = 100, val_start = .1, val_end = .05,
-#                             v_logit_change_rate = .2, v_logit_change_mid = 40)
-# cdr2 <- make_period(functional_form = "general_logit", time_start = 100, time_stop = 200, val_start = .05, val_end = .2,
-#                             v_logit_change_rate = .2, v_logit_change_mid = 150)
-# cdr3 <- make_period(functional_form = "linear", time_start = 200, time_stop = 300, val_start = .2, val_end = .1)
-# cdr4 <- make_period(functional_form = "constant", time_start = 300, time_stop = 400, val_start = .1, val_end = .1)
-# 
-# l_case_detection <- add_period(l_period_def = NULL, l_period_add = cdr1)
-# l_case_detection <- add_period(l_period_def = l_case_detection, l_period_add = cdr2)
-# l_case_detection <- add_period(l_period_def = l_case_detection, l_period_add = cdr3)
-# l_case_detection <- add_period(l_period_def = l_case_detection, l_period_add = cdr4)
-
-# test <- approxfun(x = 1:length(gen_time_varying(l_period_def = l_case_detection, max_time = 450)), y = gen_time_varying(l_period_def = l_case_detection, max_time = 450))
-# 
-# plot(gen_time_varying(l_period_def = l_case_detection, max_time = 450))

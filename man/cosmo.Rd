@@ -7,13 +7,14 @@
 cosmo(l_params_all)
 }
 \arguments{
-\item{l_params_all}{List with all parameters of decision model}
+\item{l_params_all}{List with all parameters of decision model.}
 }
 \value{
-A data.frame with population for each class by age group over time.
+A data.frame with population for each class by age group over time and a
+list with all pareameters of decision model.
 }
 \description{
 \code{cosmo} implements the Stanford-CIDE COronavirus Simulation MOdel
 (SC-COSMO), which is an age-structure Susceptible-Exposed-Infectious-Recovered
-(SEIR) model of the coronavirus disease (COVID-19).
+(SEIR) model of the Coronavirus disease (Covid-19).
 }

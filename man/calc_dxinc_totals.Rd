@@ -7,13 +7,13 @@
 calc_dxinc_totals(l_out_cosmo)
 }
 \arguments{
-\item{l_out_cosmo}{List with output from SC-COSMO and all parameters}
+\item{l_out_cosmo}{List with output from SC-COSMO and all parameters.}
 }
 \value{
-A data.frame with the total number of incident diagnosed infections (E and I) by age group and overall
-as columns over time
+A data.frame with the total number of incident diagnosed infections (E and I)
+by age group and overall as columns over time.
 }
 \description{
-\code{calc_dxinc_totals} Calculate total number of incident diagnosed
+\code{calc_dxinc_totals} calculate total number of incident diagnosed
 infections (E and I) by age group and overall over time.
 }

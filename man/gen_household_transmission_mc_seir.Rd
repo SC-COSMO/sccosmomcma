@@ -17,25 +17,25 @@ gen_household_transmission_mc_seir(
 )
 }
 \arguments{
-\item{r_tau}{Transmission rate in the household model}
+\item{r_tau}{Transmission rate in the household model.}
 
-\item{n_hhsize}{Household size (integer)}
+\item{n_hhsize}{Household size (integer).}
 
-\item{n_contacts_hh}{Average number of within household contacts}
+\item{n_contacts_hh}{Average number of within household contacts.}
 
-\item{v_HH}{State vector of within household epidemics}
+\item{v_HH}{State vector of within household epidemics.}
 
-\item{v_index_hh_sus}{Indexing column vector of susceptibles}
+\item{v_index_hh_sus}{Indexing column vector of susceptible.}
 
-\item{v_index_hh_inf}{Indexing column vector of infectious}
+\item{v_index_hh_inf}{Indexing column vector of infectious.}
 
-\item{v_index_hh_rec}{Indexing column vector of recovered}
+\item{v_index_hh_rec}{Indexing column vector of recovered.}
 
 \item{m_possibilities}{Matrix with possible combinations of household
-members within each epidemic compartment}
+members within each epidemic compartment.}
 }
 \value{
-A scalar with the force of infection
+A scalar with the force of infection.
 }
 \description{
 \code{gen_household_transmission} generates household transmission (i.e.,

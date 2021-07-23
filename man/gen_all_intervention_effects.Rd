@@ -3,23 +3,22 @@
 \name{gen_all_intervention_effects}
 \alias{gen_all_intervention_effects}
 \title{Efficiency by precomputing intervention effects at each time step for
-The Stanford-CIDE COronavirus Simulation MOdel (SC-COSMO)}
+the Stanford-CIDE COronavirus Simulation MOdel (SC-COSMO)}
 \usage{
 gen_all_intervention_effects(l_interventions, v_names_ages, max_time)
 }
 \arguments{
-\item{l_interventions}{list of interventions and timing}
+\item{l_interventions}{List of interventions and timing.}
 
-\item{v_names_ages}{vector of names for rows and columns of WAIFW matrices}
+\item{v_names_ages}{Vector of names for rows and columns of WAIFW matrices.}
 
-\item{max_time}{how many time steps to precompute intervention effects for}
+\item{max_time}{Number of time steps to precompute intervention effects for.}
 }
 \value{
-a 2D matrix of appropriate intervention vectors for each time step
-in the model
+A 2D matrix of appropriate intervention vectors for each time step
+in the model.
 }
 \description{
 \code{gen_all_intervention_effects} provides a way to precompute all
-intervention effects at each time step for the
-SC-COSMO model.
+intervention effects at each time step for the SC-COSMO model.
 }

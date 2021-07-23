@@ -2,7 +2,7 @@
 % Please edit documentation in R/01_model_inputs_functions.R
 \name{load_params_init}
 \alias{load_params_init}
-\title{Base-case inital parameter set}
+\title{Base-case initial parameter set}
 \usage{
 load_params_init(
   n_t = 30,
@@ -50,6 +50,7 @@ load_params_init(
   l_interventions = add_intervention(interventions = NULL, intervention =
     make_intervention(intervention_type = "StatusQuo", time_start = 0, time_stop = n_t)),
   l_idx_scale_factor = get_const_multiage_list(n_t, rep(0.2, 8)),
+  v_reduced_sus = rep(1, 8),
   v_alpha_dx = NULL,
   l_p_hosp = get_const_multiage_list(n_t, c(1e-05, 2e-04, 0.005, 0.035, 0.06, 0.095,
     0.13, 0.17)),
@@ -57,11 +58,11 @@ load_params_init(
     0.2875)/2, 0.2875, 0.2875),
   v_p_icu_s_hosp = c(0.191, 0.191, 0.191, 0.191, 0.191, 0.191, 0.191, 0.191),
   v_p_icu_ns_hosp = c(0.024, 0.024, 0.024, 0.024, 0.024, 0.024, 0.024, 0.024),
-  m_r_exit_hns = c(1/3.1, 1/3.1, 1/((3.1 + 4.2)/2), 1/4.2, 1/4.3, 1/4.3, 1/4.6, 1/4.6),
+  m_r_exit_tot = c(1/3.1, 1/3.1, 1/((3.1 + 4.2)/2), 1/4.2, 1/4.3, 1/4.3, 1/4.6, 1/4.6),
   m_r_exit_icu = c(1/7.7, 1/7.7, 1/((7.7 + 7.2)/2), 1/7.2, 1/7.3, 1/7.3, 1/7.1, 1/7.1),
-  m_r_exit_hs = 0.5 * m_r_exit_hns + 0.5 * m_r_exit_icu,
-  m_sigma_hns = c(2, 2, 2, 2, 2, 2, 2, 2),
-  m_sigma_hs = c(2, 2, 2, 2, 2, 2, 2, 2),
+  m_r_exit_nonicu = 0.5 * m_r_exit_tot + 0.5 * m_r_exit_icu,
+  m_sigma_tot = c(2, 2, 2, 2, 2, 2, 2, 2),
+  m_sigma_nonicu = c(2, 2, 2, 2, 2, 2, 2, 2),
   m_sigma_icu = c(1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5),
   n_hhsize = 3,
   r_tau = 0,
@@ -71,15 +72,16 @@ load_params_init(
 )
 }
 \arguments{
-\item{n_t}{Time horizon in day.}
+\item{n_t}{Time horizon in days.}
 
 \item{time_step}{Model evaluations per day.}
 
-\item{comp}{Logical. Should the compiled version of SC-COSMO be used?}
+\item{comp}{Flag (default TRUE) of whether the compiled version of SC-COSMO
+should be used.}
 
 \item{v_init_age_grps}{Vector with initial ages of age groups.}
 
-\item{v_inf_init_ages}{Vector with number of individuals in first .
+\item{v_inf_init_ages}{Vector with number of individuals in first
 infectious class for each age group. Default will assign 1 for each age
 group.}
 
@@ -90,95 +92,105 @@ group.}
 \item{cty}{County or municipality.}
 
 \item{l_contact_info}{A list with overall and setting specific contact
-matrices, typically obtained from \code{sccosmoData}.}
+matrices.}
 
 \item{r_birth}{Daily birth rate (crude).}
 
 \item{r_beta}{Transmission parameters.}
 
 \item{v_sigma}{Age-specific daily rate of progression of exposed individuals
-(Latent period)}
+(Latent period).}
 
 \item{v_gamma}{Age-specific daily rate of recovery of infectious individuals
-(Infectiousness period)}
+(Infectiousness period).}
 
 \item{v_omega}{Age-specific daily rate of waning immunity of recovered
-individuals}
+individuals.}
 
-\item{l_nu_exp1_dx}{list specifying time-varying case detection when exposed l=1}
+\item{l_nu_exp1_dx}{List specifying time-varying case detection when exposed
+\code{l = 1}.}
 
-\item{l_nu_exp2_dx}{list specifying time-varying case detection when exposed l=2}
+\item{l_nu_exp2_dx}{List specifying time-varying case detection when exposed
+\code{l = 2}.}
 
-\item{l_nu_inf1_dx}{list specifying time-varying case detection when infectious l=1}
+\item{l_nu_inf1_dx}{List specifying time-varying case detection when infectious
+\code{l = 1}.}
 
-\item{l_nu_inf2_dx}{list specifying time-varying case detection when infectious l=2}
+\item{l_nu_inf2_dx}{List specifying time-varying case detection when infectious
+\code{l = 2}.}
 
-\item{l_phi_exp1_dx}{list specifying time-varying screen detection when exposed l=1}
+\item{l_phi_exp1_dx}{List specifying time-varying screen detection when exposed
+\code{l = 1}.}
 
-\item{l_phi_exp2_dx}{list specifying time-varying screen detection when exposed l=2}
+\item{l_phi_exp2_dx}{List specifying time-varying screen detection when exposed
+\code{l = 2}.}
 
-\item{l_phi_inf1_dx}{list specifying time-varying screen detection when infectious l=1}
+\item{l_phi_inf1_dx}{List specifying time-varying screen detection when
+infectious \code{l = 1}.}
 
-\item{l_phi_inf2_dx}{list specifying time-varying screen detection when infectious l=2}
+\item{l_phi_inf2_dx}{List specifying time-varying screen detection when
+infectious \code{l = 2}.}
 
-\item{l_interventions}{a list of intervention "objects" defining type, timing, and
-effects of interventions.}
+\item{l_cfr}{Age-specific case fatality rate.}
 
-\item{v_alpha_dx}{Age-specific reduction in mortality on detected infectious vs undetected infectious}
+\item{l_ifr}{Age-specific infection fatality rate.}
 
-\item{v_p_s_hosp}{Age-specific Proportion of hospitalizations that are
-severe based on NEJM definition}
+\item{l_interventions}{List of intervention "objects" defining type, timing,
+and effects of interventions.}
 
-\item{v_p_icu_s_hosp}{Age-specific Probability of going to ICU given that
-you are severe hospitalization}
+\item{l_idx_scale_factor}{Age-specific infectiousness reduction factor on
+detected cases.}
 
-\item{v_p_icu_ns_hosp}{Age-specific Probability of going to ICU given that
-you are non-severe hospitalization}
+\item{v_reduced_sus}{Age-specific reduction factor on susceptibility.}
 
-\item{m_r_exit_hns}{Age-specific rate of non-severe hospital exit}
+\item{v_alpha_dx}{Age-specific reduction in mortality on detected infectious
+vs undetected infectious.}
+
+\item{l_p_hosp}{Age-specific probability of hospitalization for detected (prevalent or
+incident) cases.}
+
+\item{v_p_s_hosp}{Age-specific proportion of hospitalizations that are
+severe based on NEJM definition.}
+
+\item{v_p_icu_s_hosp}{Age-specific probability of going to ICU given that
+you are severe hospitalization.}
+
+\item{v_p_icu_ns_hosp}{Age-specific probability of going to ICU given that
+you are non-severe hospitalization.}
+
+\item{m_r_exit_tot}{Age-specific rate of non-severe hospital exit}
 
 \item{m_r_exit_icu}{Age-specific rate of ICU hospital exit}
 
-\item{m_r_exit_hs}{Age-specific rate of severe hospital exit}
+\item{m_r_exit_nonicu}{Age-specific rate of severe hospital exit}
 
-\item{m_sigma_hns}{Age-specific sigma (gamma distrib) non-severe hosp dur}
+\item{m_sigma_tot}{Age-specific sigma (gamma distribution) total
+hospitalization duration.}
 
-\item{m_sigma_hs}{Age-specific sigma (gamma distrib) severe hosp dur}
+\item{m_sigma_nonicu}{Age-specific sigma (gamma distribution) non ICU
+hospitalizations duration.}
 
-\item{m_sigma_icu}{Age-specific sigma (gamma distrib) ICU hosp dur}
+\item{m_sigma_icu}{Age-specific sigma (gamma distribution) ICU hospitalization
+duration.}
 
-\item{n_hhsize}{Household size (integer)}
+\item{n_hhsize}{Household size (integer).}
 
-\item{r_tau}{Transmission rate in the household model}
+\item{r_tau}{Transmission rate in the household model.}
 
 \item{r_sigma}{Daily rate of progression of exposed individuals
-(Latent period). Default to the first entry of the age-specific v_sigma}
+(Latent period). Default to the first entry of the age-specific \code{v_sigma}.}
 
 \item{r_gamma}{Daily rate of recovery of infectious individuals
 (Infectiousness period). Default to the first entry of the age-specific
-v_gamma}
+\code{v_gamma}.}
 
 \item{r_omega}{Waning rate for the household model (default to the first
-entry of the age-specific v_omega)
+entry of the age-specific \code{v_omega}).
 Default will assign a reduction factor of 1 (i.e., no social distancing).}
-
-\item{v_cfr}{Age-specific case fatality rate. Default from \code{data-raw}
-folder.}
-
-\item{v_ifr}{Age-specific infection fatality rate. Default from \code{data-raw}
-folder.}
-
-\item{v_idx_scale_factor}{Age-specific infectiousness reduction factor on detected cases}
-
-\item{l_l_hospitalizations}{list of lists specifying age-specific,
-time-varying probability of hospitalizations}
-
-\item{v_p_hosp}{Age-specific Probability of hospitalization for detected (prevalent or
-incident) cases}
 }
 \value{
 List of all parameters
 }
 \description{
-\code{load_params_init} generates the initial values of the SC-COSMO parameters
+\code{load_params_init} generates the initial values of the SC-COSMO parameters.
 }

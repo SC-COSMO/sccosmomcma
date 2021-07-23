@@ -7,15 +7,14 @@
 gen_hh_n(n_hhsize, v_names_states_hh)
 }
 \arguments{
-\item{n_hhsize}{Household size}
+\item{n_hhsize}{Household size.}
 
-\item{v_names_states_hh}{vector with state names of household model}
+\item{v_names_states_hh}{Vector with state names of household model.}
 }
 \value{
 A data.frame with possible combinations of household members within each
 epidemic compartment.
 }
 \description{
-\code{gen_hh_n} generates household transmission (i.e.,
-force of infection).
+\code{gen_hh_n} generates household transmission (i.e., force of infection).
 }

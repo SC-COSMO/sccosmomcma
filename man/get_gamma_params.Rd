@@ -8,18 +8,18 @@ get_gamma_params(m_r_exit, m_sigma_exit, gamma_times)
 }
 \arguments{
 \item{m_r_exit}{Matrix or vector with mean rates of exiting by age groups
-over time (matrix) or for a given day (vector)}
+over time (matrix) or for a given day (vector).}
 
 \item{m_sigma_exit}{Matrix or vector with standard deviations of time to
-exiting by age groups over time (matrix) or for a given day (vector)}
+exiting by age groups over time (matrix) or for a given day (vector).}
 
 \item{gamma_times}{Number of times for which time-varying gamma parameters
 should be produced.}
 }
 \value{
-List with time-specific shape and rate parameters for the gamma distribution
+List with time-specific shape and rate parameters for the gamma distribution.
 }
 \description{
-\code{get_gamma_params} Get parameters for gamma distribution based on mean
+\code{get_gamma_params} get parameters for gamma distribution based on mean
 rates of exiting and standard deviation of time to exiting over time
 }

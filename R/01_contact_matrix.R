@@ -1,27 +1,10 @@
-# library(sccosmoData)
-# library(stringi)
-# library(usmap)
-# library(countrycode)
-# 
-# ### Define country and state
-# choose_country <- "Mexico"
-# choose_state <- "MCMA"
-# 
-# ### Get contact matrices from sccosmoData
-# l_contact_matrices <- sccosmoData::get_contact_matrix(country = choose_country, 
-#                                                       state = choose_state, 
-#                                                       density = 141341)
-# ### Create .rda object of setting-specific contact matrices for an exemplary 
-# ### population and stor it in 'data' folder
-# usethis::use_data(l_contact_matrices, overwrite = TRUE)
-
-#' Get contact matrices df
+#' Get contact matrices
 #'
-#' \code{get_contact_matrices_world} returns a dataframe with all of the 
+#' \code{get_contact_matrices_world} returns a data.frame with all of the 
 #' processed contact matrices for all countries. 
 #' 
-#' @param reload a flag (default is FALSE) of whether to 
-#' redownload and process the data file
+#' @param reload Flag (default is FALSE) of whether to 
+#' redownload and process the data file.
 #'
 #' @export
 get_contact_matrices_world <- function(reload = FALSE) {
@@ -32,23 +15,25 @@ get_contact_matrices_world <- function(reload = FALSE) {
 #'
 #' \code{get_contact_matrix} wrapper function that allows user to
 #' subset data from various sources.
-#' If only county is specified (other parameters = ""), 
-#' it provides national level data.If county is also specified (and the dataset 
-#' contains counties), then only those counties within the state(s) are returned.
+#' If only county is specified (other parameters = ""), it provides national 
+#' level data. 
+#' If county is also specified (and the dataset contains counties), then only
+#' those counties within the state(s) are returned.
 #' 
-#' @param v_init_age_grps vector that specifies the age bins to aggregate and return
-#' @param country country of desired data
-#' @param state state of desired data
-#' @param county county of desired data
-#' @param src_country country to use for contact matrix structure 
-#'                    if country is not in dataframe
-#' @param density population density of country/state/county 
-#' @param v_custom_prop_pop vector that specifies the proportion of total population for each age group.
-#' @param recache TRUE/FALSE. If true, will run function and replace existing cache. If false, will check for cache
-#' and use if cached matrix exists.
-
-#' Must be same length as v_init_age_grps+1 and be listed in the same order as v_init_age_grps.
-#'
+#' @param v_init_age_grps Vector that specifies the age bins to aggregate and
+#' return.
+#' @param country Country of desired data.
+#' @param state State of desired data.
+#' @param county County of desired data.
+#' @param src_country Country to use for contact matrix structure if country 
+#' is not in data.frame.
+#' @param density Population density of country/state/county.
+#' @param v_custom_prop_pop Vector that specifies the proportion of total
+#' population for each age group.
+#' @param recache Flag (default is FALSE) of whether to run function and replace 
+#' existing cache. If FALSE, will check for cache and use if cached matrix exists.
+#' @return
+#' A list with overall and setting specific contact matrices.
 #' @export
 get_contact_matrix <- function(v_init_age_grps = c(0, 5, 15, 25, 45, 55, 65, 70),
                                country = "", 
@@ -67,9 +52,7 @@ get_contact_matrix <- function(v_init_age_grps = c(0, 5, 15, 25, 45, 55, 65, 70)
   match_county  <- stringi::stri_trans_general(county, "latin-ascii")
   src_country   <- stringi::stri_trans_general(src_country, "latin-ascii")
   
-  ##############################
-  #### Error checking for inputs
-  ##############################
+  #### Error checking for inputs ####
   if (length(match_country) > 1 | length(match_state) > 1 | length(match_county) > 1 | length(density) > 1 | length(src_country) > 1) {
     stop("This function processes only one input at a time. If running for multiple locations, consider using apply or a loop.")
   }
@@ -82,9 +65,7 @@ get_contact_matrix <- function(v_init_age_grps = c(0, 5, 15, 25, 45, 55, 65, 70)
     src_country <- match_country
   }
   
-  ##############################
-  #### Prepare Contact Matrix
-  ##############################
+  #### Prepare Contact Matrix ####
   
   ## Pull contact matrix for home (does not need to be scaled)
   df_contacts_home <- wrangle_contact_matrix(setting = "home",
@@ -225,15 +206,15 @@ get_contact_matrix <- function(v_init_age_grps = c(0, 5, 15, 25, 45, 55, 65, 70)
 
 #' Get wrangle contact matrix
 #'
-#' \code{wrangle_contact_matrix} returns a dataframe with all of the 
+#' \code{wrangle_contact_matrix} returns a data.frame with all of the 
 #' processed information on population age structure. 
 #' 
-#' @param setting character that specifies which contact matrix to return. 
+#' @param setting Character that specifies which contact matrix to return. 
 #' Options: all_locations, home, non_home, school, work, other_locations.
-#' @param src_country character that specifies which country contact matrix to 
-#' return
-#' @param v_init_age_grps vector that specifies the age bins to aggregate and 
-#' return
+#' @param src_country Character that specifies which country contact matrix to 
+#' return.
+#' @param v_init_age_grps Vector that specifies the age bins to aggregate and 
+#' return.
 #'
 #' @export
 wrangle_contact_matrix <- function(setting = "all_locations", 
@@ -282,16 +263,16 @@ wrangle_contact_matrix <- function(setting = "all_locations",
 
 #' Aggregate population ages into age groups of interest
 #'
-#' \code{aggregate_pop_ages} returns a dataframe with all of the 
+#' \code{aggregate_pop_ages} returns a data.frame with all of the 
 #' processed information on population age structure. 
 #' 
-#' @param match_country character that specifies which country population age 
-#' structure to return
-#' @param match_state character that specifies which state population age 
-#' structure to return
-#' @param match_county character that specifies which county population age 
-#' structure to return
-#' @param ages_to_cut vector that specifies the age bins to aggregate and return
+#' @param match_country Character that specifies which country population age 
+#' structure to return.
+#' @param match_state Character that specifies which state population age 
+#' structure to return.
+#' @param match_county Character that specifies which county population age 
+#' structure to return.
+#' @param ages_to_cut Vector that specifies the age bins to aggregate and return.
 #'
 #' @export
 aggregate_pop_ages <- function(match_country = "",

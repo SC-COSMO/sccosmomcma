@@ -2,21 +2,21 @@
 % Please edit documentation in R/02_beta_mixing_interventions_functions.R
 \name{get_intervention_effects}
 \alias{get_intervention_effects}
-\title{Gets correct intervention effect multipliers for
-The Stanford-CIDE COronavirus Simulation MOdel (SC-COSMO)}
+\title{Gets correct intervention effect multipliers for the Stanford-CIDE COronavirus
+Simulation MOdel (SC-COSMO)}
 \usage{
 get_intervention_effects(time, l_params_all)
 }
 \arguments{
-\item{time}{current time model is evaluating}
+\item{time}{Current time at which the model is evaluated.}
 
-\item{l_params_all}{List with all parameters of decision model}
+\item{l_params_all}{List with all parameters of decision model.}
 }
 \value{
-a vector of intervention effects appropriate for the model given the
-current time and interventions being used
+A vector of intervention effects appropriate for the model given the
+current time and interventions being used.
 }
 \description{
 \code{get_intervention_effects} provides a wrapper to determine
-the intervention effectsgiven intervention timings.
+the intervention effects given intervention timings.
 }

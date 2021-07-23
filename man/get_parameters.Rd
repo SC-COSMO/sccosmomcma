@@ -2,22 +2,25 @@
 % Please edit documentation in R/02_parameter_lookup_functions.R
 \name{get_parameters}
 \alias{get_parameters}
-\title{The Stanford-CIDE COronavirus Simulation MOdel (SC-COSMO)}
+\title{Get time-varying parameters for the Stanford-CIDE COronavirus Simulation
+MOdel (SC-COSMO)}
 \usage{
 get_parameters(param, time, l_params_all)
 }
 \arguments{
-\item{param}{single character string defining which parameter to pull.
-Currently available parameters: r_nu_exp1_dx, r_nu_exp2_dx, r_nu_inf1_dx, r_nu_inf2_dx,
-r_phi_exp1_dx, r_phi_exp2_dx, r_phi_inf1_dx, r_phi_inf2_dx, m_Beta, v_cfr, v_p_hosp}
+\item{param}{Single character string defining which parameter to pull.
+Currently available parameters: r_nu_exp1_dx, r_nu_exp2_dx, r_nu_inf1_dx,
+r_nu_inf2_dx, r_phi_exp1_dx, r_phi_exp2_dx, r_phi_inf1_dx, r_phi_inf2_dx,
+m_Beta, v_cfr, v_p_hosp.}
 
-\item{time}{single numeric value defining time in days since model start}
+\item{time}{Time (numeric, in days) since model start.}
 
-\item{l_params_all}{List with all parameters of decision model}
+\item{l_params_all}{List with all parameters of decision model.}
 }
 \value{
-Parameter values for the parameter specified in "param", either a number, vector, or matrix.
+Parameter values for the parameter specified in "param", either a number,
+vector, or matrix.
 }
 \description{
-\code{get_parameters} wraps functions that pull time-varying parameters
+\code{get_parameters} wraps functions that pull time-varying parameters.
 }

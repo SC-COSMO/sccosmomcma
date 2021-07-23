@@ -1,10 +1,10 @@
-#' Get population density for MX subnational regions
+#' Get population density for Mexico subnational regions
 #'
-#' \code{get_densities_mx} returns a dataframe with all of the 
+#' \code{get_densities_mx} returns a data.frame with all of the 
 #' processed information on weighted population density. 
 #' 
-#' @param reload a flag (default is FALSE) of whether to 
-#' redownload and process the data file
+#' @param reload Flag (default is FALSE) of whether to 
+#' redownload and process the data file.
 #'
 #' @export
 get_densities_mx <- function(reload = FALSE) {
@@ -16,20 +16,27 @@ get_densities_mx <- function(reload = FALSE) {
   return(df_densities_mx)
 }
 
-#' Get population and age structure 
+#' Get population density 
 #'
-#' \code{get_densities} wrapper function that allows user to
-#' subset data from various sources.
-#' If only county is specified (other parameters = ""), 
-#' it provides national level data
+#' \code{get_densities} wrapper function that allows user to subset data from 
+#' various sources. 
+#' If only county is specified (other parameters = ""), it provides
+#' national level data.
 #' Currently for US, if state(s) is specified, then it returns
 #' lowest geographical level (state or county) that it has
-#' within those specified state(s)
-#' If county is also specified (and the dataset contains counties),
-#' then only those counties within the state(s) are returned
+#' within those specified state(s). 
+#' If county is also specified (and the dataset contains counties), then only 
+#' those counties within the state(s) are returned.
+#' If county is also specified (and the dataset contains counties), then only 
+#' those counties within the state(s) are returned.
 #' 
-#' @param reload a flag (default is FALSE) of whether to 
-#' redownload and process the data file
+#' @param country Country of desired data.
+#' @param state State of desired data.
+#' @param county County of desired data.
+#' @param reload Flag (default is FALSE) of whether to redownload and process 
+#' the data file.
+#' @return 
+#' A data.frame with population density of desired country/state/county.
 #'
 #' @export
 get_densities <- function(country = "", 
@@ -67,7 +74,9 @@ get_countrycode <- function(country) {
 #' Get FIPS codes for Mexican states
 #'
 #' \code{get_fipscodes_mx} returns a string with the FIPS code 
-#' for Mexican states' names.
+#' for Mexican states.
+#' 
+#' @param state State of desired data.
 #'
 #' @export
 get_fipscodes_mx <- function(state){

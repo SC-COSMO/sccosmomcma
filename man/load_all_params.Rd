@@ -13,9 +13,11 @@ load_all_params(
 \arguments{
 \item{l_params_init}{List with initial set of parameters}
 
-\item{file.init}{String with the location and name of the file with initial set of parameters}
+\item{file.init}{String with the location and name of the file with initial
+set of parameters.}
 
-\item{file.mort}{String with the location and name of the file with mortality data}
+\item{file.mort}{String with the location and name of the file with mortality
+data.}
 }
 \value{
 A list of all parameters used for the decision model.

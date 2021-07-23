@@ -2,8 +2,7 @@
 % Please edit documentation in R/01_household_model_inputs_functions.R
 \name{compute_inflows}
 \alias{compute_inflows}
-\title{Compute inflows considering competing risks using convolution of binomials
-\code{compute_inflows} computes inflows}
+\title{Compute inflows considering competing risks using convolution of binomials}
 \usage{
 compute_inflows(
   n_hhsize,
@@ -24,43 +23,42 @@ compute_inflows(
 )
 }
 \arguments{
-\item{n_hhsize}{Household size}
+\item{n_hhsize}{Household size.}
 
-\item{n_hh_mod}{Number of household model states}
+\item{n_hh_mod}{Number of household model states.}
 
-\item{v_names_hh}{Vector with all names of household MC SEIR model}
+\item{v_names_hh}{Vector with all names of household MC SEIR model.}
 
-\item{v_names_states}{Vector with names of household MC SEIR model}
+\item{v_names_states}{Vector with names of household MC SEIR model.}
 
-\item{v_names_source}{Vector with names of source states}
+\item{v_names_source}{Vector with names of source states.}
 
-\item{v_names_destiny}{Vector with names of destiny states}
+\item{v_names_destiny}{Vector with names of destiny states.}
 
-\item{v_names_source_destiny}{Vector with names of source and destiny states}
+\item{v_names_source_destiny}{Vector with names of source and destiny states.}
 
-\item{v_index_hh_source}{Vector with indexes of source states}
+\item{v_index_hh_source}{Vector with indexes of source states.}
 
-\item{v_index_hh_destiny}{Vector with indexes of destiny states}
+\item{v_index_hh_destiny}{Vector with indexes of destiny states.}
 
-\item{v_index_keep_source}{Vector with indexes of destiny states to keep}
+\item{v_index_keep_source}{Vector with indexes of destiny states to keep.}
 
 \item{v_index_souce_destiny_hh}{Vector with indexes of source and destiny
-states of the household model}
+states of the household model.}
 
 \item{m_possibilities}{Matrix with possible combinations of household}
 
-\item{r_flow}{Daily rate of flow}
+\item{r_flow}{Daily rate of flow.}
 
-\item{n_source_states}{Number of source states}
+\item{n_source_states}{Number of source states.}
 
 \item{m_hh_out}{Matrix with outflows from the source states, which are the
 flows that we are going to balance with the inflows we will compute inside
-the function}
+the function.}
 }
 \value{
-A matrix with inflow rates to the destiny states
+A matrix with inflow rates to the destiny states.
 }
 \description{
-Compute inflows considering competing risks using convolution of binomials
-\code{compute_inflows} computes inflows
+\code{compute_inflows} computes inflows.
 }

@@ -13,24 +13,24 @@ m_general_logit(
 )
 }
 \arguments{
-\item{v_logit_lb}{Age-specific lower asymptote}
+\item{v_logit_lb}{Age-specific lower asymptote.}
 
-\item{v_logit_ub}{Age-specific upper asymptote}
+\item{v_logit_ub}{Age-specific upper asymptote.}
 
 \item{v_logit_change_rate}{Age-specific rate of change from lower to upper
-asymptote}
+asymptote.}
 
 \item{v_logit_change_mid}{Age-specific point in time (t) where function has
-gone halfway from lb to ub}
+gone halfway from lb to ub.}
 
-\item{logit_t}{time point(s) at which function should be evaluated}
+\item{logit_t}{time point(s) at which function should be evaluated.}
 }
 \value{
-Matrix with value(s) of generalized logit function | inputs
+Matrix with value(s) of generalized logit function | inputs.
 }
 \description{
-\code{m_general_logit} Computes a generalized logistic function whose
+\code{m_general_logit} computes a generalized logistic function whose
 starting (lb) and ending values (ub) are determined by parameters.
-Rate of change from lb to ub and timing of change are also controled by
+Rate of change from lb to ub and timing of change are also controlled by
 parameters.
 }

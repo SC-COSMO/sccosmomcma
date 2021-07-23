@@ -2,21 +2,28 @@
 
 #' Plot COSMO data
 #' 
-#' \code{plot_cosmo_data} A generic function called by various wrapper 
-#' funcitons to plot a data frame returned by one of our calc methods by 
+#' \code{plot_cosmo_data} a generic function called by various wrapper 
+#' functions to plot a data frame returned by one of our \code{calc} methods by 
 #' age group and/or in total over time.
 #' 
-#' @param df_plotting data frame of data to be plotted
-#' @param proportion Logical. Divides cumulative infections by total population
-#' @param age_proportion Logical. Divides cumulative infections by age-specific total population
-#' @param only_all logical. Should only overall total infections be plotted
-#' @param print_plot logical. Should show it?
+#' @param df_plotting Data.frame of data to be plotted.
+#' @param proportion Flag (default is FALSE) of whether to divide the outcome
+#' of interest by total population.
+#' @param age_proportion Flag (default is FALSE) of whether to divide 
+#' the outcome of interest by age-specific total population.
+#' @param only_all Flag (default is TRUE) of whether only overall ("All") data
+#' should be plotted.
+#' @param print_plot Flag (default is TRUE) of whether the plot should be printed
+#' in screen.
+#' @param label_y y-axis label.
 #' @return 
-#' A ggplot object
+#' A ggplot object.
 #' @export
 plot_cosmo_data <- function(df_plotting, 
-                            proportion = FALSE, age_proportion = FALSE,
-                            only_all = TRUE, print_plot = TRUE,
+                            proportion = FALSE, 
+                            age_proportion = FALSE,
+                            only_all = TRUE, 
+                            print_plot = TRUE,
                             label_y)
   
 {
@@ -62,13 +69,13 @@ plot_cosmo_data <- function(df_plotting,
 
 #' Total population 
 #' 
-#' \code{calc_popsize_totals} Calculate total population by age group and 
+#' \code{calc_popsize_totals} calculate total population by age group and 
 #' overall over time.
 #' 
-#' @param l_out_cosmo List with output from SC-COSMO and all parameters
+#' @param l_out_cosmo List with output from SC-COSMO and all parameters.
 #' @return 
 #' A data.frame with the total population by age group and overall 
-#' as columns over time
+#' as columns over time.
 #' @export
 calc_popsize_totals <- function(l_out_cosmo){
   df_out_cosmo <- l_out_cosmo$df_out_cosmo
@@ -97,17 +104,21 @@ calc_popsize_totals <- function(l_out_cosmo){
 
 #' Plot total population
 #' 
-#' \code{plot_popsize_totals} Plot total population by age group and/or 
+#' \code{plot_popsize_totals} plot total population by age group and/or 
 #' in total over time.
 #' 
-#' @param l_out_cosmo List with output from SC-COSMO and all parameters
-#' @param only_all logical. Should only overall total infections be plotted
+#' @param l_out_cosmo List with output from SC-COSMO and all parameters.
+#' @param only_all Flag (default is TRUE) of whether only overall ("All") population
+#' should be plotted.
+#' @param print_plot Flag (default is TRUE) of whether the plot should be printed
+#' in screen.
 #' @return 
-#' A data.frame with the total population by age group and in total 
-#' as columns over time
+#' A ggplot object.
 #' @export
 plot_popsize_totals <- function(l_out_cosmo,
-                                only_all = TRUE, print_plot = TRUE){
+                                only_all = TRUE, 
+                                print_plot = TRUE){
+  
   df_popize_plot <- calc_popsize_totals(l_out_cosmo)
   df_popsize_plot_lng <- reshape2::melt(df_popize_plot, id.vars = "time", 
                                         variable.name = "Age group",
@@ -131,13 +142,13 @@ plot_popsize_totals <- function(l_out_cosmo,
 
 #' Total cumulative infections
 #' 
-#' \code{calc_infcum_totals} Calculate total number of cumulative infections by age group and 
+#' \code{calc_infcum_totals} calculate total number of cumulative infections by age group and 
 #' overall over time.
 #' 
 #' @param l_out_cosmo List with output from SC-COSMO and all parameters
 #' @return 
 #' A data.frame with the total number of cumulative infections by age group and overall 
-#' as columns over time
+#' as columns over time.
 #' @export
 calc_infcum_totals <- function(l_out_cosmo){
   df_out_cosmo <- l_out_cosmo$df_out_cosmo
@@ -156,20 +167,26 @@ calc_infcum_totals <- function(l_out_cosmo){
 
 #' Plot total cumulative infections
 #' 
-#' \code{plot_infcum_totals} Plot total number of cumulative infections by 
+#' \code{plot_infcum_totals} plot total number of cumulative infections by 
 #' age group and/or in total over time.
 #' 
-#' @param l_out_cosmo List with output from SC-COSMO and all parameters
-#' @param proportion Logical. Divides cumulative infections by total population
-#' @param age_proportion Logical. Divides cumulative infections by age-specific total population
-#' @param only_all logical. Should only overall total infections be plotted
+#' @param l_out_cosmo List with output from SC-COSMO and all parameters.
+#' @param proportion Flag (default is FALSE) of whether to divide total number
+#' of cumulative infections by total population.
+#' @param age_proportion Flag (default is FALSE) of whether to divide 
+#' total number of cumulative infections by age-specific total population.
+#' @param only_all Flag (default is TRUE) of whether only overall ("All") total 
+#' number of cumulative infections should be plotted.
+#' @param print_plot Flag (default is TRUE) of whether the plot should be printed
+#' in screen.
 #' @return 
-#' A data.frame with the total number of cumulative infections by age group and in total 
-#' as columns over time
+#' A ggplot object.
 #' @export
 plot_infcum_totals <- function(l_out_cosmo, 
-                               proportion = FALSE, age_proportion = FALSE,
-                               only_all = TRUE, print_plot = TRUE){
+                               proportion = FALSE, 
+                               age_proportion = FALSE,
+                               only_all = TRUE, 
+                               print_plot = TRUE){
   
   df_Inftot_plot <- calc_infcum_totals(l_out_cosmo)
   label_y <- "Cumulative Infections"
@@ -184,13 +201,13 @@ plot_infcum_totals <- function(l_out_cosmo,
 
 #' Total incident infections
 #' 
-#' \code{calc_infinc_totals} Calculate total number of incident infections by 
+#' \code{calc_infinc_totals} calculate total number of incident infections by 
 #' age group and overall over time.
 #' 
-#' @param l_out_cosmo List with output from SC-COSMO and all parameters
+#' @param l_out_cosmo List with output from SC-COSMO and all parameters.
 #' @return 
 #' A data.frame with the total number of incident infections by age group and overall 
-#' as columns over time
+#' as columns over time.
 #' @export
 calc_infinc_totals <- function(l_out_cosmo){
   df_out_cosmo <- l_out_cosmo$df_out_cosmo
@@ -212,20 +229,27 @@ calc_infinc_totals <- function(l_out_cosmo){
 
 #' Plot total incident infections
 #' 
-#' \code{plot_infinc_totals} Plot total number of incident infections by age group 
+#' \code{plot_infinc_totals} plot total number of incident infections by age group 
 #' and/or in total over time.
 #' 
-#' @param l_out_cosmo List with output from SC-COSMO and all parameters
-#' @param proportion Logical. Divides incident infections by total population
-#' @param age_proportion Logical. Divides incident infections by age-specific total population
-#' @param only_all logical. Should only overall total infections be plotted
+#' @param l_out_cosmo List with output from SC-COSMO and all parameters.
+#' @param proportion Flag (default is FALSE) of whether to divide total number of
+#' incident infections by total population.
+#' @param age_proportion Flag (default is FALSE) of whether to divide 
+#' total number of incident infections by age-specific total population.
+#' @param only_all Flag (default is TRUE) of whether only overall ("All") total 
+#' number of incident infections should be plotted.
+#' @param print_plot Flag (default is TRUE) of whether the plot should be printed
+#' in screen.
 #' @return 
-#' A data.frame with the total number of incident infections by age group and in total 
-#' as columns over time
+#' A ggplot object.
 #' @export
 plot_infinc_totals <- function(l_out_cosmo, 
-                               proportion = FALSE, age_proportion = FALSE,
-                               only_all = TRUE, print_plot = TRUE){
+                               proportion = FALSE, 
+                               age_proportion = FALSE,
+                               only_all = TRUE, 
+                               print_plot = TRUE){
+  
   df_InfInctot_plot <- calc_infinc_totals(l_out_cosmo)
   label_y <- "Incident Infections"
   gg_InfInctot <- plot_cosmo_data(df_plotting = df_InfInctot_plot, 
@@ -239,13 +263,13 @@ plot_infinc_totals <- function(l_out_cosmo,
 
 #' Total cumulative diagnosed infectious infections
 #' 
-#' \code{calc_idxcum_totals} Calculate total number of cumulative diagnosed 
+#' \code{calc_idxcum_totals} calculate total number of cumulative diagnosed 
 #' infectious infections by age group and overall over time.
 #' 
-#' @param l_out_cosmo List with output from SC-COSMO and all parameters
+#' @param l_out_cosmo List with output from SC-COSMO and all parameters.
 #' @return 
 #' A data.frame with the total number of cumulative diagnosed infectious infections by age group and overall 
-#' as columns over time
+#' as columns over time.
 #' @export
 calc_idxcum_totals <- function(l_out_cosmo){
   df_out_cosmo <- l_out_cosmo$df_out_cosmo
@@ -264,20 +288,26 @@ calc_idxcum_totals <- function(l_out_cosmo){
 
 #' Plot total cumulative diagnosed infectious infections
 #' 
-#' \code{plot_idxcum_totals} Plot total number of cumulative diagnosed infectious 
+#' \code{plot_idxcum_totals} plot total number of cumulative diagnosed infectious 
 #' infections by age group and/or in total over time.
 #' 
-#' @param l_out_cosmo List with output from SC-COSMO and all parameters
-#' @param proportion Logical. Divides cumulative diagnosed infections by total population
-#' @param age_proportion Logical. Divides cumulative diagnosed infections by age-specific total population
-#' @param only_all logical. Should only overall total infections be plotted
+#' @param l_out_cosmo List with output from SC-COSMO and all parameters.
+#' @param proportion Flag (default is FALSE) of whether to divide total number of 
+#' cumulative diagnosed infectious by total population.
+#' @param age_proportion Flag (default is FALSE) of whether to divide 
+#' total number of cumulative diagnosed infectious by age-specific total population.
+#' @param only_all Flag (default is TRUE) of whether only overall ("All") total 
+#' total number of cumulative diagnosed infectious should be plotted.
+#' @param print_plot Flag (default is TRUE) of whether the plot should be printed
+#' in screen.
 #' @return 
-#' A data.frame with the total number of cumulative diagnosed infectious infections by age group and in total 
-#' as columns over time
+#' A ggplot object.
 #' @export
 plot_idxcum_totals <- function(l_out_cosmo, 
-                               proportion = FALSE, age_proportion = FALSE,
-                               only_all = TRUE, print_plot = TRUE){
+                               proportion = FALSE, 
+                               age_proportion = FALSE,
+                               only_all = TRUE, 
+                               print_plot = TRUE){
 
   df_IDXtot_plot <- calc_idxcum_totals(l_out_cosmo)
   label_y <- "Incident Diagnosed Infectious Infections"
@@ -292,13 +322,13 @@ plot_idxcum_totals <- function(l_out_cosmo,
 
 #' Total incident diagnosed infectious infections
 #' 
-#' \code{calc_idxinc_totals} Calculate total number of incident diagnosed infectious 
+#' \code{calc_idxinc_totals} calculate total number of incident diagnosed infectious 
 #' infections by age group and overall over time.
 #' 
-#' @param l_out_cosmo List with output from SC-COSMO and all parameters
+#' @param l_out_cosmo List with output from SC-COSMO and all parameters.
 #' @return 
-#' A data.frame with the total number of incident diagnosed infectious infections by age group and overall 
-#' as columns over time
+#' A data.frame with the total number of incident diagnosed infectious infections 
+#' by age group and overall as columns over time.
 #' @export
 calc_idxinc_totals <- function(l_out_cosmo){
   df_out_cosmo <- l_out_cosmo$df_out_cosmo
@@ -319,16 +349,20 @@ calc_idxinc_totals <- function(l_out_cosmo){
 
 #' Plot total incident diagnosed infectious infections
 #' 
-#' \code{plot_idxinc_totals} Plot total number of incident diagnosed 
+#' \code{plot_idxinc_totals} plot total number of incident diagnosed 
 #' infectious infections by age group and/or in total over time.
 #' 
-#' @param l_out_cosmo List with output from SC-COSMO and all parameters
-#' @param proportion Logical. Divides incident diagnosed infections by total population
-#' @param age_proportion Logical. Divides incident diagnosed infections by age-specific total population
-#' @param only_all logical. Should only overall total infections be plotted
+#' @param l_out_cosmo List with output from SC-COSMO and all parameters.
+#' @param proportion Flag (default is FALSE) of whether to divide total number of 
+#' incident diagnosed infectious by total population.
+#' @param age_proportion Flag (default is FALSE) of whether to divide 
+#' total number of incident diagnosed infectious by age-specific total population.
+#' @param only_all Flag (default is TRUE) of whether only overall ("All") total 
+#' total number of incident diagnosed infectious should be plotted.
+#' @param print_plot Flag (default is TRUE) of whether the plot should be printed
+#' in screen.
 #' @return 
-#' A data.frame with the total number of incident diagnosed infectious infections by age group and in total 
-#' as columns over time
+#' A ggplot object.
 #' @export
 plot_idxinc_totals <- function(l_out_cosmo, 
                                proportion = FALSE, age_proportion = FALSE,
@@ -346,13 +380,13 @@ plot_idxinc_totals <- function(l_out_cosmo,
 
 #' Total cumulative diagnosed infections (E and I)
 #' 
-#' \code{calc_dxcum_totals} Calculate total number of cumulative diagnosed 
+#' \code{calc_dxcum_totals} calculate total number of cumulative diagnosed 
 #' infections (E and I) by age group and overall over time.
 #' 
-#' @param l_out_cosmo List with output from SC-COSMO and all parameters
+#' @param l_out_cosmo List with output from SC-COSMO and all parameters.
 #' @return 
-#' A data.frame with the total number of cumulative diagnosed infections (E and I) by age group and overall 
-#' as columns over time
+#' A data.frame with the total number of cumulative diagnosed infections 
+#' (E and I) by age group and overall as columns over time.
 #' @export
 calc_dxcum_totals <- function(l_out_cosmo){
   df_out_cosmo <- l_out_cosmo$df_out_cosmo
@@ -371,20 +405,27 @@ calc_dxcum_totals <- function(l_out_cosmo){
 
 #' Plot total cumulative diagnosed infections (E and I)
 #' 
-#' \code{plot_dxcum_totals} Plot total number of cumulative diagnosed 
+#' \code{plot_dxcum_totals} plot total number of cumulative diagnosed 
 #' infections (E and I) by age group and/or in total over time.
 #' 
-#' @param l_out_cosmo List with output from SC-COSMO and all parameters
-#' @param proportion Logical. Divides cumulative diagnosed infections by total population
-#' @param age_proportion Logical. Divides cumulative diagnosed infections by age-specific total population
-#' @param only_all logical. Should only overall total infections be plotted
+#' @param l_out_cosmo List with output from SC-COSMO and all parameters.
+#' @param proportion Flag (default is FALSE) of whether to divide total 
+#' cumulative diagnosed infections (E and I) by total population.
+#' @param age_proportion Flag (default is FALSE) of whether to divide 
+#' total cumulative diagnosed infections (E and I) by age-specific total population.
+#' @param only_all Flag (default is TRUE) of whether only overall ("All") total 
+#' total cumulative diagnosed infections (E and I) should be plotted.
+#' @param print_plot Flag (default is TRUE) of whether the plot should be printed
+#' in screen.
 #' @return 
-#' A data.frame with the total number of cumulative diagnosed infections (E and I) by age group and in total 
-#' as columns over time
+#' A ggplot object.
 #' @export
 plot_dxcum_totals <- function(l_out_cosmo, 
-                              proportion = FALSE, age_proportion = FALSE,
-                              only_all = TRUE, print_plot = TRUE){
+                              proportion = FALSE, 
+                              age_proportion = FALSE,
+                              only_all = TRUE, 
+                              print_plot = TRUE){
+  
   df_DXtot_plot <- calc_dxcum_totals(l_out_cosmo)
   label_y <- "Cumulative diagnosed cases"
   gg_DXtot <- plot_cosmo_data(df_plotting = df_DXtot_plot, 
@@ -398,13 +439,13 @@ plot_dxcum_totals <- function(l_out_cosmo,
 
 #' Total incident diagnosed infections (E and I)
 #' 
-#' \code{calc_dxinc_totals} Calculate total number of incident diagnosed 
+#' \code{calc_dxinc_totals} calculate total number of incident diagnosed 
 #' infections (E and I) by age group and overall over time.
 #' 
-#' @param l_out_cosmo List with output from SC-COSMO and all parameters
+#' @param l_out_cosmo List with output from SC-COSMO and all parameters.
 #' @return 
-#' A data.frame with the total number of incident diagnosed infections (E and I) by age group and overall 
-#' as columns over time
+#' A data.frame with the total number of incident diagnosed infections (E and I) 
+#' by age group and overall as columns over time.
 #' @export
 calc_dxinc_totals <- function(l_out_cosmo){
   df_out_cosmo <- l_out_cosmo$df_out_cosmo
@@ -425,16 +466,20 @@ calc_dxinc_totals <- function(l_out_cosmo){
 
 #' Plot total incident diagnosed cases (E and I)
 #' 
-#' \code{plot_dxinc_totals} Plot total number of incident diagnosed 
+#' \code{plot_dxinc_totals} plot total number of incident diagnosed 
 #' cases (E and I) by age group and/or in total over time.
 #' 
-#' @param l_out_cosmo List with output from SC-COSMO and all parameters
-#' @param proportion Logical. Divides incident diagnosed cases by total population
-#' @param age_proportion Logical. Divides incident diagnosed cases by age-specific total population
-#' @param only_all logical. Should only overall total cases be plotted
+#' @param l_out_cosmo List with output from SC-COSMO and all parameters.
+#' @param proportion Flag (default is FALSE) of whether to divide total incident
+#'  diagnosed cases (E and I) by total population.
+#' @param age_proportion Flag (default is FALSE) of whether to divide 
+#' total incident diagnosed cases (E and I) by age-specific total population.
+#' @param only_all Flag (default is TRUE) of whether only overall ("All") total 
+#' total incident diagnosed cases (E and I) should be plotted.
+#' @param print_plot Flag (default is TRUE) of whether the plot should be printed
+#' in screen.
 #' @return 
-#' A data.frame with the total number of incident diagnosed cases (E and I) by age group and in total 
-#' as columns over time
+#' A ggplot object.
 #' @export
 plot_dxinc_totals <- function(l_out_cosmo, 
                               proportion = FALSE, age_proportion = FALSE,
@@ -452,13 +497,13 @@ plot_dxinc_totals <- function(l_out_cosmo,
 
 #' Total diagnosed infections (E and I)
 #' 
-#' \code{calc_dx_totals} Calculate total number of diagnosed 
+#' \code{calc_dx_totals} calculate total number of diagnosed 
 #' infections (E and I)by age group and overall over time.
 #' 
-#' @param l_out_cosmo List with output from SC-COSMO and all parameters
+#' @param l_out_cosmo List with output from SC-COSMO and all parameters.
 #' @return 
-#' A data.frame with the total number of diagnosed infections (E and I) by age group and overall 
-#' as columns over time
+#' A data.frame with the total number of diagnosed infections (E and I) 
+#' by age group and overall as columns over time.
 #' @export
 calc_dx_totals <- function(l_out_cosmo){
   df_out_cosmo <- l_out_cosmo$df_out_cosmo
@@ -488,18 +533,27 @@ calc_dx_totals <- function(l_out_cosmo){
 
 #' Plot total diagnosed infections (E and I)
 #' 
-#' \code{plot_dx_totals} Plot total number of diagnosed 
+#' \code{plot_dx_totals} plot total number of diagnosed 
 #' infections (E and I) by age group and/or in total over time.
 #' 
-#' @param l_out_cosmo List with output from SC-COSMO and all parameters
-#' @param only_all logical. Should only overall total infections be plotted
+#' @param l_out_cosmo List with output from SC-COSMO and all parameters.
+#' @param proportion Flag (default is FALSE) of whether to divide total 
+#' diagnosed infections (E and I) by total population.
+#' @param age_proportion Flag (default is FALSE) of whether to divide 
+#' total diagnosed infections (E and I) by age-specific total population.
+#' @param only_all Flag (default is TRUE) of whether only overall ("All") total 
+#' total diagnosed infections (E and I) should be plotted.
+#' @param print_plot Flag (default is TRUE) of whether the plot should be printed
+#' in screen.
 #' @return 
-#' A data.frame with the total number of diagnosed infections (E and I) by age group and in total 
-#' as columns over time
+#' A ggplot object.
 #' @export
 plot_dx_totals <- function(l_out_cosmo, 
-                           proportion = FALSE, age_proportion = FALSE,
-                           only_all = TRUE, print_plot = TRUE){
+                           proportion = FALSE, 
+                           age_proportion = FALSE,
+                           only_all = TRUE,
+                           print_plot = TRUE){
+  
   df_DXtot_plot <- calc_dx_totals(l_out_cosmo)
   label_y <- "Diagnosed Infections"
   gg_DXtot <- plot_cosmo_data(df_plotting = df_DXtot_plot, 
@@ -514,13 +568,13 @@ plot_dx_totals <- function(l_out_cosmo,
 
 #' Total infections
 #' 
-#' \code{calc_inf_totals} Calculate total number of infections 
+#' \code{calc_inf_totals} calculate total number of infections 
 #' by age group and overall over time.
 #' 
-#' @param l_out_cosmo List with output from SC-COSMO and all parameters
+#' @param l_out_cosmo List with output from SC-COSMO and all parameters.
 #' @return 
 #' A data.frame with the total number of infections by age group and overall 
-#' as columns over time
+#' as columns over time.
 #' @export
 calc_inf_totals <- function(l_out_cosmo){
   df_out_cosmo <- l_out_cosmo$df_out_cosmo
@@ -551,18 +605,27 @@ calc_inf_totals <- function(l_out_cosmo){
 
 #' Plot total infections
 #' 
-#' \code{plot_inf_totals} Plot total number of infections by 
+#' \code{plot_inf_totals} plot total number of infections by 
 #' age group and/or in total over time.
 #' 
-#' @param l_out_cosmo List with output from SC-COSMO and all parameters
-#' @param only_all logical. Should only overall total infections be plotted
+#' @param l_out_cosmo List with output from SC-COSMO and all parameters.
+#' @param proportion Flag (default is FALSE) of whether to divide total
+#' number of infections by total population.
+#' @param age_proportion Flag (default is FALSE) of whether to divide 
+#' total number of infections by age-specific total population.
+#' @param only_all Flag (default is TRUE) of whether only overall ("All") total
+#' number of infections should be plotted.
+#' @param print_plot Flag (default is TRUE) of whether the plot should be printed
+#' in screen.
 #' @return 
-#' A data.frame with the total number of infections by age group and in total 
-#' as columns over time
+#' A ggplot object.
 #' @export
 plot_inf_totals <- function(l_out_cosmo, 
-                            proportion = FALSE, age_proportion = FALSE,
-                            only_all = TRUE, print_plot = TRUE){
+                            proportion = FALSE, 
+                            age_proportion = FALSE,
+                            only_all = TRUE, 
+                            print_plot = TRUE){
+  
   df_Inftot_plot <- calc_inf_totals(l_out_cosmo)
   label_y <- "Infections"
   gg_Inftot <- plot_cosmo_data(df_plotting = df_Inftot_plot, 
@@ -576,13 +639,13 @@ plot_inf_totals <- function(l_out_cosmo,
 
 #' Total diagnosed infections
 #' 
-#' \code{calc_idx_totals} Calculate total number of diagnosed 
+#' \code{calc_idx_totals} calculate total number of diagnosed 
 #' infections by age group and overall over time.
 #' 
-#' @param l_out_cosmo List with output from SC-COSMO and all parameters
+#' @param l_out_cosmo List with output from SC-COSMO and all parameters.
 #' @return 
 #' A data.frame with the total number of diagnosed infections by age group and overall 
-#' as columns over time
+#' as columns over time.
 #' @export
 calc_idx_totals <- function(l_out_cosmo){
   df_out_cosmo <- l_out_cosmo$df_out_cosmo
@@ -613,18 +676,27 @@ calc_idx_totals <- function(l_out_cosmo){
 
 #' Plot total diagnosed infections
 #' 
-#' \code{plot_idx_totals} Plot total number of diagnosed 
+#' \code{plot_idx_totals} plot total number of diagnosed 
 #' infections by age group and/or in total over time.
 #' 
-#' @param l_out_cosmo List with output from SC-COSMO and all parameters
-#' @param only_all logical. Should only overall total infections be plotted
+#' @param l_out_cosmo List with output from SC-COSMO and all parameters.
+#' @param proportion Flag (default is FALSE) of whether to divide total number of 
+#' diagnosed infections (E and I) by total population.
+#' @param age_proportion Flag (default is FALSE) of whether to divide 
+#' total number of diagnosed infections (E and I) by age-specific total population.
+#' @param only_all Flag (default is TRUE) of whether only overall ("All") 
+#' total number of diagnosed infections (E and I) should be plotted.
+#' @param print_plot Flag (default is TRUE) of whether the plot should be printed
+#' in screen.
 #' @return 
-#' A data.frame with the total number of diagnosed infections by age group and in total 
-#' as columns over time
+#' A ggplot object.
 #' @export
 plot_idx_totals <- function(l_out_cosmo, 
-                            proportion = FALSE, age_proportion = FALSE,
-                            only_all = TRUE, print_plot = TRUE){
+                            proportion = FALSE,
+                            age_proportion = FALSE,
+                            only_all = TRUE, 
+                            print_plot = TRUE){
+  
   df_IDXtot_plot <- calc_idx_totals(l_out_cosmo)
   label_y <- "Diagnosed Infections"
   gg_IDXtot <- plot_cosmo_data(df_plotting = df_IDXtot_plot, 
@@ -638,13 +710,13 @@ plot_idx_totals <- function(l_out_cosmo,
 
 #' Total infections (E and I)
 #' 
-#' \code{calc_expinf_totals} Calculate total number of  
+#' \code{calc_expinf_totals} calculate total number of  
 #' infections (E and I) by age group and overall over time.
 #' 
-#' @param l_out_cosmo List with output from SC-COSMO and all parameters
+#' @param l_out_cosmo List with output from SC-COSMO and all parameters.
 #' @return 
 #' A data.frame with the total number of infections (E and I) by age group and overall 
-#' as columns over time
+#' as columns over time.
 #' @export
 calc_expinf_totals <- function(l_out_cosmo){
   df_out_cosmo <- l_out_cosmo$df_out_cosmo
@@ -679,14 +751,20 @@ calc_expinf_totals <- function(l_out_cosmo){
 
 #' Plot total infections (E and I)
 #' 
-#' \code{plot_expinf_totals} Plot total number of  
+#' \code{plot_expinf_totals} plot total number of  
 #' infections (E and I) by age group and/or in total over time.
 #' 
 #' @param l_out_cosmo List with output from SC-COSMO and all parameters
-#' @param only_all logical. Should only overall total infections be plotted
+#' @param proportion Flag (default is FALSE) of whether to divide total number of
+#' infections (E and I) by total population.
+#' @param age_proportion Flag (default is FALSE) of whether to divide 
+#' total number of infections (E and I) by age-specific total population.
+#' @param only_all Flag (default is TRUE) of whether only overall ("All") total
+#' number of infections (E and I) should be plotted.
+#' @param print_plot Flag (default is TRUE) of whether the plot should be printed
+#' in screen.
 #' @return 
-#' A data.frame with the total number of infections (E and I) by age group and in total 
-#' as columns over time
+#' A ggplot object.
 #' @export
 plot_expinf_totals <- function(l_out_cosmo, 
                            proportion = FALSE, age_proportion = FALSE,
@@ -707,13 +785,13 @@ plot_expinf_totals <- function(l_out_cosmo,
 
 #' Total symptomatic infections (E and I)
 #' 
-#' \code{calc_sx_totals} Calculate total number of symptomatic 
+#' \code{calc_sx_totals} calculate total number of symptomatic 
 #' infections (E and I) by age group and overall over time.
 #' 
-#' @param l_out_cosmo List with output from SC-COSMO and all parameters
+#' @param l_out_cosmo List with output from SC-COSMO and all parameters.
 #' @return 
 #' A data.frame with the total number of symptomatic infections (E and I) 
-#' by age group and overall as columns over time
+#' by age group and overall as columns over time.
 #' @export
 calc_sx_totals <- function(l_out_cosmo){
   df_out_cosmo <- l_out_cosmo$df_out_cosmo
@@ -748,18 +826,27 @@ calc_sx_totals <- function(l_out_cosmo){
 
 #' Plot total symptomatic infections
 #' 
-#' \code{plot_sxinc_totals} Plot total number of symptomatic (E and I) 
+#' \code{plot_sx_totals} plot total number of symptomatic (E and I) 
 #' by age group and/or in total over time.
 #' 
-#' @param l_out_cosmo List with output from SC-COSMO and all parameters
-#' @param only_all logical. Should only overall total infections be plotted
+#' @param l_out_cosmo List with output from SC-COSMO and all parameters.
+#' @param proportion Flag (default is FALSE) of whether to divide total
+#'  number of symptomatic (E and I) by total population.
+#' @param age_proportion Flag (default is FALSE) of whether to divide 
+#' total number of symptomatic (E and I)  by age-specific total population.
+#' @param only_all Flag (default is TRUE) of whether only overall ("All") total 
+#' number of symptomatic (E and I) should be plotted.
+#' @param print_plot Flag (default is TRUE) of whether the plot should be printed
+#' in screen.
 #' @return 
-#' A data.frame with the total number of symptomatic (E and I) 
-#' by age group and/or in total as columns over time
+#' A ggplot object.
 #' @export
 plot_sx_totals <- function(l_out_cosmo, 
-                              proportion = FALSE, age_proportion = FALSE,
-                              only_all = TRUE, print_plot = TRUE){
+                           proportion = FALSE, 
+                           age_proportion = FALSE,
+                           only_all = TRUE, 
+                           print_plot = TRUE){
+  
   df_Sxtot_plot <- calc_sx_totals(l_out_cosmo)
   label_y <- "Symptomatic Infections"
   gg_Sxtot <- plot_cosmo_data(df_plotting = df_Sxtot_plot, 
@@ -775,15 +862,15 @@ plot_sx_totals <- function(l_out_cosmo,
 ########################### DEATHS ############################
 
 
-#' Total COVID19 deaths
+#' Total Covid-19 deaths
 #' 
-#' \code{calc_deaths_totals} Calculate total number of COVID19 
+#' \code{calc_deaths_totals} calculate total number of Covid-19 
 #' deaths by age group and overall over time.
 #' 
-#' @param l_out_cosmo List with output from SC-COSMO and all parameters
+#' @param l_out_cosmo List with output from SC-COSMO and all parameters.
 #' @return 
-#' A data.frame with the total number of infections by age group and overall 
-#' as columns over time
+#' A data.frame with the total number of Covid-19 deaths by age group and overall 
+#' as columns over time.
 #' @export
 calc_deaths_totals <- function(l_out_cosmo){
   df_out_cosmo <- l_out_cosmo$df_out_cosmo
@@ -800,23 +887,31 @@ calc_deaths_totals <- function(l_out_cosmo){
   return(df_Dcov)
 }
 
-#' Plot total COVID19 deaths
+#' Plot total Covid-19 deaths
 #' 
-#' \code{plot_deaths_totals} Plot total number of deaths from COVID19 
+#' \code{plot_deaths_totals} plot total number of deaths from Covid-19 
 #' by age group and/or in total over time.
 #' 
-#' @param l_out_cosmo List with output from SC-COSMO and all parameters
-#' @param only_all logical. Should only overall total deaths from COVID19 be plotted
+#' @param l_out_cosmo List with output from SC-COSMO and all parameters.
+#' @param proportion Flag (default is FALSE) of whether to divide total deaths 
+#' from Covid-19 by total population.
+#' @param age_proportion Flag (default is FALSE) of whether to divide 
+#' total deaths from Covid-19 by age-specific total population.
+#' @param only_all Flag (default is TRUE) of whether only overall ("All") 
+#' total deaths from Covid-19 should be plotted.
+#' @param print_plot Flag (default is TRUE) of whether the plot should be printed
+#' in screen.
 #' @return 
-#' A data.frame with the total number of deaths from COVID19 by age group and in total 
-#' as columns over time
+#' A ggplot object.
 #' @export
 plot_deaths_totals <- function(l_out_cosmo, 
-                               proportion = FALSE, age_proportion = FALSE,
-                               only_all = TRUE, print_plot = TRUE){
+                               proportion = FALSE, 
+                               age_proportion = FALSE,
+                               only_all = TRUE, 
+                               print_plot = TRUE){
 
   df_Dcov_plot <- calc_deaths_totals(l_out_cosmo)
-  label_y <- "COVID19 deaths"
+  label_y <- "Covid-19 deaths"
   gg_Dcov <- plot_cosmo_data(df_plotting = df_Dcov_plot, 
                                proportion = proportion,
                                age_proportion = age_proportion,
@@ -826,15 +921,15 @@ plot_deaths_totals <- function(l_out_cosmo,
   return(gg_Dcov)
 }
 
-#' Total COVID19 deaths from diagnosed infections
+#' Total Covid-19 deaths from diagnosed infections
 #' 
-#' \code{calc_deathsdx_totals} Calculate total number of COVID19 deaths 
+#' \code{calc_deathsdx_totals} calculate total number of Covid-19 deaths 
 #' from diagnosed infections by age group and overall over time.
 #' 
-#' @param l_out_cosmo List with output from SC-COSMO and all parameters
+#' @param l_out_cosmo List with output from SC-COSMO and all parameters.
 #' @return 
-#' A data.frame with the total number of COVID19 deaths from diagnosed 
-#' infections by age group and overall as columns over time
+#' A data.frame with the total number of Covid-19 deaths from diagnosed 
+#' infections by age group and overall as columns over time.
 #' @export
 calc_deathsdx_totals <- function(l_out_cosmo){
   df_out_cosmo <- l_out_cosmo$df_out_cosmo
@@ -851,22 +946,30 @@ calc_deathsdx_totals <- function(l_out_cosmo){
   return(df_DcovDX)
 }
 
-#' Plot total COVID19 deaths
+#' Plot total Covid-19 deaths
 #' 
-#' \code{plot_deathsdx_totals} Plot total number of COVID19 deaths 
+#' \code{plot_deathsdx_totals} plot total number of Covid-19 deaths 
 #' from diagnosed infections by age group and/or in total over time.
 #' 
-#' @param l_out_cosmo List with output from SC-COSMO and all parameters
-#' @param only_all logical. Should only overall total deaths from COVID19 be plotted
+#' @param l_out_cosmo List with output from SC-COSMO and all parameters.
+#' @param proportion Flag (default is FALSE) of whether to divide total
+#' number of Covid-19 deaths by total population.
+#' @param age_proportion Flag (default is FALSE) of whether to divide 
+#' total number of Covid-19 deaths by age-specific total population.
+#' @param only_all Flag (default is TRUE) of whether only overall ("All") 
+#' total number of Covid-19 deaths should be plotted.
+#' @param print_plot Flag (default is TRUE) of whether the plot should be printed
+#' in screen.
 #' @return 
-#' A data.frame with the total number of COVID19 deaths from diagnosed 
-#' infections by age group and in total as columns over time
+#' A ggplot object.
 #' @export
 plot_deathsdx_totals <- function(l_out_cosmo, 
-                                 proportion = FALSE, age_proportion = FALSE,
-                                 only_all = TRUE, print_plot = TRUE){
+                                 proportion = FALSE, 
+                                 age_proportion = FALSE,
+                                 only_all = TRUE, 
+                                 print_plot = TRUE){
   df_DcovDX_plot <- calc_deathsdx_totals(l_out_cosmo)
-  label_y <- "Diagnosed COVID19 deaths"
+  label_y <- "Diagnosed Covid-19 deaths"
   gg_DcovDX <- plot_cosmo_data(df_plotting = df_DcovDX_plot, 
                              proportion = proportion,
                              age_proportion = age_proportion,
@@ -876,15 +979,15 @@ plot_deathsdx_totals <- function(l_out_cosmo,
   return(gg_DcovDX)
 }
 
-#' Total Incident COVID19 deaths from diagnosed infections
+#' Total Incident Covid-19 deaths from diagnosed infections
 #' 
-#' \code{calc_incdeathsdx_totals} Calculate total incident number of 
-#' COVID19 deaths from diagnosed infections by age group and overall over time.
+#' \code{calc_incdeathsdx_totals} calculate total incident number of 
+#' Covid-19 deaths from diagnosed infections by age group and overall over time.
 #' 
-#' @param l_out_cosmo List with output from SC-COSMO and all parameters
+#' @param l_out_cosmo List with output from SC-COSMO and all parameters.
 #' @return 
-#' A data.frame with the total incident number of COVID19 deaths from diagnosed 
-#' infections by age group and overall as columns over time
+#' A data.frame with the total incident number of Covid-19 deaths from diagnosed 
+#' infections by age group and overall as columns over time.
 #' @export
 calc_incdeathsdx_totals <- function(l_out_cosmo){
   df_out_cosmo <- l_out_cosmo$df_out_cosmo
@@ -904,43 +1007,51 @@ calc_incdeathsdx_totals <- function(l_out_cosmo){
   return(df_DcovDXInc)
 }
 
-
-############################### RECOVERED/IMMUNE #####################
-
-#' Plot total Incident COVID19 deaths from diagnosed infections
+#' Plot total incident Covid-19 deaths from diagnosed infections
 #' 
-#' \code{plot_incdeathsdx_totals} Plot total incident number of COVID19 
+#' \code{plot_incdeathsdx_totals} plot total incident number of Covid-19 
 #' deaths from diagnosed infections by age group and/or in total over time.
 #' 
 #' @param l_out_cosmo List with output from SC-COSMO and all parameters
-#' @param only_all logical. Should only overall total deaths from COVID19 be plotted
+#' @param proportion Flag (default is FALSE) of whether to divide total
+#' incident number of Covid-19 deaths by total population.
+#' @param age_proportion Flag (default is FALSE) of whether to divide 
+#' total incident number of Covid-19 deaths by age-specific total population.
+#' @param only_all Flag (default is TRUE) of whether only overall ("All") total incident
+#'  number of Covid-19 deaths should be plotted.
+#' @param print_plot Flag (default is TRUE) of whether the plot should be printed
+#' in screen.
 #' @return 
-#' A data.frame with the total number of COVID19 deaths from diagnosed 
-#' infections by age group and in total as columns over time
+#' A ggplot object.
 #' @export
 plot_incdeathsdx_totals <- function(l_out_cosmo, 
-                                    proportion = FALSE, age_proportion = FALSE,
-                                    only_all = TRUE, print_plot = TRUE){
+                                    proportion = FALSE, 
+                                    age_proportion = FALSE,
+                                    only_all = TRUE,
+                                    print_plot = TRUE){
+  
   df_IncDcovDX_plot <- calc_incdeathsdx_totals(l_out_cosmo)
-  label_y <- "Diagnosed COVID19 deaths"
+  label_y <- "Diagnosed Covid-19 deaths"
   gg_IncDcovDX <- plot_cosmo_data(df_plotting = df_IncDcovDX_plot, 
-                               proportion = proportion,
-                               age_proportion = age_proportion,
-                               only_all = only_all,
-                               print_plot = print_plot,
-                               label_y = label_y)
+                                  proportion = proportion,
+                                  age_proportion = age_proportion,
+                                  only_all = only_all,
+                                  print_plot = print_plot,
+                                  label_y = label_y)
   return(gg_IncDcovDX)
 }
 
+############################### RECOVERED/IMMUNE #####################
+
 #' Total Recovered
 #' 
-#' \code{calc_rec_totals} Calculate total number of recovered 
+#' \code{calc_rec_totals} calculate total number of recovered 
 #' by age group and overall over time.
 #' 
-#' @param l_out_cosmo List with output from SC-COSMO and all parameters
+#' @param l_out_cosmo List with output from SC-COSMO and all parameters.
 #' @return 
 #' A data.frame with the total number of recovered by age group and overall 
-#' as columns over time
+#' as columns over time.
 #' @export
 calc_rec_totals <- function(l_out_cosmo){
   df_out_cosmo <- l_out_cosmo$df_out_cosmo
@@ -959,18 +1070,27 @@ calc_rec_totals <- function(l_out_cosmo){
 
 #' Plot total recovered
 #' 
-#' \code{plot_rec_totals} Plot total number of recovered 
+#' \code{plot_rec_totals} plot total number of recovered 
 #' by age group and/or in total over time.
 #' 
-#' @param l_out_cosmo List with output from SC-COSMO and all parameters
+#' @param l_out_cosmo List with output from SC-COSMO and all parameters.
+#' @param proportion Flag (default is FALSE) of whether to divide total 
+#' number of recovered by total population.
+#' @param age_proportion Flag (default is FALSE) of whether to divide 
+#' total number of recovered by age-specific total population.
+#' @param only_all Flag (default is TRUE) of whether only overall ("All") total 
+#' number of recovered should be plotted.
+#' @param print_plot Flag (default is TRUE) of whether the plot should be printed
+#' in screen.
 #' @param only_all logical. Should only overall total infections be plotted
 #' @return 
-#' A data.frame with the total number of infections by age group and in total 
-#' as columns over time
+#' A ggplot object.
 #' @export
 plot_rec_totals <- function(l_out_cosmo, 
-                            proportion = FALSE, age_proportion = FALSE,
-                            only_all = TRUE, print_plot = TRUE){
+                            proportion = FALSE, 
+                            age_proportion = FALSE,
+                            only_all = TRUE, 
+                            print_plot = TRUE){
   df_Rectot_plot <- calc_rec_totals(l_out_cosmo)
   label_y <- "Recovered"
   gg_Rectot <- plot_cosmo_data(df_plotting = df_Rectot_plot, 
@@ -988,15 +1108,14 @@ plot_rec_totals <- function(l_out_cosmo,
 
 #' Calculate basic reproduction number according to Keeling & Rohani
 #' 
-#' \code{calc_basic_reproduction_number_kr} Calculates the basic reproduction 
+#' \code{calc_basic_reproduction_number_kr} calculates the basic reproduction 
 #' number according to Keeling & Rohani.
 #' 
 #' @param l_out_cosmo List with output from SC-COSMO and all parameters.
 #' @param v_time Vector with times at which basic reproduction number is 
-#' desired to be calculated
+#' desired to be calculated.
 #' @references 
 #' \enumerate{
-#' \item 
 #' \item Emilia Vynnycky and Richard G White. An introduction to infectious 
 #' disease modelling. Oxford, New York: Oxford University Press, 2010. 
 #' \item Keeling, M. J., & Rohani, P. Modeling Infectious Diseases in 
@@ -1005,8 +1124,9 @@ plot_rec_totals <- function(l_out_cosmo,
 #' @return 
 #' A scalar with the basic reproduction number.
 #' @export
-calc_basic_reproduction_number_kr <- function(l_out_cosmo, v_time = 2:10){
-  ## Obtain cumulatve new infections
+calc_basic_reproduction_number_kr <- function(l_out_cosmo, 
+                                              v_time = 2:10){
+  ## Obtain cumulative new infections
   df_infcum_totals <- calc_infcum_totals(l_out_cosmo = l_out_cosmo)
   ## Select days on which Rt is desired
   df_infcum_totals <- df_infcum_totals[v_time, ]
@@ -1031,20 +1151,19 @@ calc_basic_reproduction_number_kr <- function(l_out_cosmo, v_time = 2:10){
 #' Estimate the time dependent reproduction number according to Wallinga & 
 #' Teunis
 #' 
-#' \code{calc_reproduction_number_wt} Calculates the time-dependent reproduction 
+#' \code{calc_reproduction_number_wt} calculates the time-dependent reproduction 
 #' number according to Wallinga & Teunis.
 #' 
 #' @param l_out_cosmo List with output from SC-COSMO and all parameters.
 #' @param v_time Vector with times at which the time-dependent reproduction 
-#' number is desired to be calculated
-#' @param nsim_chosen number of simulations used by the WT algorithm to 
+#' number is desired to be calculated.
+#' @param nsim_chosen Number of simulations used by the WT algorithm to 
 #' compute confidence intervals which are often not used. Hence the number
 #' is small. The default for WT in the package is 10,000 which uses a very
 #' large amount of memory and is not appropriate for parallelization because
-#' we will run out of RAM. The default is set to a much smaller number
+#' we will run out of RAM. The default is set to a much smaller number.
 #' @references 
 #' \enumerate{
-#' \item 
 #' \item Wallinga, J., & Teunis, P. (2004). Different epidemic curves for severe 
 #' acute respiratory syndrome reveal similar impacts of control measures. 
 #' American Journal of Epidemiology, 160(6), 509–516. 

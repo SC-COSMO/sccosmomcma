@@ -10,18 +10,17 @@ calc_basic_reproduction_number_kr(l_out_cosmo, v_time = 2:10)
 \item{l_out_cosmo}{List with output from SC-COSMO and all parameters.}
 
 \item{v_time}{Vector with times at which basic reproduction number is
-desired to be calculated}
+desired to be calculated.}
 }
 \value{
 A scalar with the basic reproduction number.
 }
 \description{
-\code{calc_basic_reproduction_number_kr} Calculates the basic reproduction
+\code{calc_basic_reproduction_number_kr} calculates the basic reproduction
 number according to Keeling & Rohani.
 }
 \references{
 \enumerate{
-\item
 \item Emilia Vynnycky and Richard G White. An introduction to infectious
 disease modelling. Oxford, New York: Oxford University Press, 2010.
 \item Keeling, M. J., & Rohani, P. Modeling Infectious Diseases in

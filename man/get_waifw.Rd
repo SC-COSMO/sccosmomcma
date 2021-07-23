@@ -2,19 +2,19 @@
 % Please edit documentation in R/02_beta_mixing_interventions_functions.R
 \name{get_waifw}
 \alias{get_waifw}
-\title{Gets correct mixing matrices for
-The Stanford-CIDE COronavirus Simulation MOdel (SC-COSMO)}
+\title{Gets correct mixing matrices for the Stanford-CIDE COronavirus Simulation
+MOdel (SC-COSMO)}
 \usage{
 get_waifw(time, l_params_all)
 }
 \arguments{
-\item{time}{current time model is evaluating}
+\item{time}{Time at which the model is evaluated.}
 
-\item{l_params_all}{List with all parameters of decision model}
+\item{l_params_all}{List with all parameters of decision model.}
 }
 \value{
-an overall WAIFW matrix appropriate for the model given the
-current time and interventions being used
+An overall WAIFW matrix appropriate for the model given the
+current time and interventions being used.
 }
 \description{
 \code{get_waifw} provides a wrapper to determine which WAIFW matrices

@@ -8,19 +8,19 @@ the Stanford-CIDE COronavirus Simulation MOdel (SC-COSMO)}
 make_intervention(intervention_type, time_start, time_stop, ...)
 }
 \arguments{
-\item{intervention_type}{one of the currently implemented intervention
+\item{intervention_type}{One of the currently implemented intervention
 types in the SC-COSMO model: 1) "StatusQuo"; 2) "SocialDistancing";
-3) "SocialDistancingLinear"}
+3) "SocialDistancingLinear".}
 
-\item{time_start}{days since model start when intervention begins}
+\item{time_start}{Days since model start when intervention begins.}
 
-\item{time_stop}{days since model start when intervention ends}
+\item{time_stop}{Days since model start when intervention ends.}
 
-\item{...}{named values specific to a given intervention type}
+\item{...}{Named values specific to a given intervention type.}
 }
 \value{
-a list object containing appropriately named values for intervention
-objects
+A list object containing appropriately named values for intervention
+objects.
 }
 \description{
 \code{make_intervention} provides a generic constructor to build

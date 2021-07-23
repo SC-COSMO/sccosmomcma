@@ -13,19 +13,24 @@ plot_dxinc_totals(
 )
 }
 \arguments{
-\item{l_out_cosmo}{List with output from SC-COSMO and all parameters}
+\item{l_out_cosmo}{List with output from SC-COSMO and all parameters.}
 
-\item{proportion}{Logical. Divides incident diagnosed cases by total population}
+\item{proportion}{Flag (default is FALSE) of whether to divide total incident
+diagnosed cases (E and I) by total population.}
 
-\item{age_proportion}{Logical. Divides incident diagnosed cases by age-specific total population}
+\item{age_proportion}{Flag (default is FALSE) of whether to divide
+total incident diagnosed cases (E and I) by age-specific total population.}
 
-\item{only_all}{logical. Should only overall total cases be plotted}
+\item{only_all}{Flag (default is TRUE) of whether only overall ("All") total
+total incident diagnosed cases (E and I) should be plotted.}
+
+\item{print_plot}{Flag (default is TRUE) of whether the plot should be printed
+in screen.}
 }
 \value{
-A data.frame with the total number of incident diagnosed cases (E and I) by age group and in total
-as columns over time
+A ggplot object.
 }
 \description{
-\code{plot_dxinc_totals} Plot total number of incident diagnosed
+\code{plot_dxinc_totals} plot total number of incident diagnosed
 cases (E and I) by age group and/or in total over time.
 }

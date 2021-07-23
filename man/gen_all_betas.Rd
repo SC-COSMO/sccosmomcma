@@ -3,24 +3,23 @@
 \name{gen_all_betas}
 \alias{gen_all_betas}
 \title{Efficiency by precomputing beta component of force of infection
-at each time step for
-The Stanford-CIDE COronavirus Simulation MOdel (SC-COSMO)}
+at each time step for the Stanford-CIDE COronavirus Simulation MOdel (SC-COSMO)}
 \usage{
 gen_all_betas(l_interventions, l_contact_info, v_names_ages, max_time, r_beta)
 }
 \arguments{
-\item{l_interventions}{list of interventions and timing}
+\item{l_interventions}{List of interventions and timing.}
 
-\item{l_contact_info}{list of WAIFW matrix inputs}
+\item{l_contact_info}{List of WAIFW matrix inputs.}
 
-\item{v_names_ages}{vector of names for rows and columns of WAIFW matrices}
+\item{v_names_ages}{Vector of names for rows and columns of WAIFW matrices.}
 
-\item{max_time}{how many time steps to precompute WAIFW matrices for}
+\item{max_time}{Number of time steps to precompute WAIFW matrices for.}
 
-\item{r_beta}{the beta component of force of infection w/o intervention}
+\item{r_beta}{Beta component of force of infection w/o intervention.}
 }
 \value{
-a 3D matrix of appropriate beta matrices for each time step in the model
+A 3D matrix of appropriate beta matrices for each time step in the model.
 }
 \description{
 \code{gen_all_betas} provides a way to precompute all beta matrices

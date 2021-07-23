@@ -2,18 +2,18 @@
 % Please edit documentation in R/02_model_output_calc_plot_functions.R
 \name{calc_deaths_totals}
 \alias{calc_deaths_totals}
-\title{Total COVID19 deaths}
+\title{Total Covid-19 deaths}
 \usage{
 calc_deaths_totals(l_out_cosmo)
 }
 \arguments{
-\item{l_out_cosmo}{List with output from SC-COSMO and all parameters}
+\item{l_out_cosmo}{List with output from SC-COSMO and all parameters.}
 }
 \value{
-A data.frame with the total number of infections by age group and overall
-as columns over time
+A data.frame with the total number of Covid-19 deaths by age group and overall
+as columns over time.
 }
 \description{
-\code{calc_deaths_totals} Calculate total number of COVID19
+\code{calc_deaths_totals} calculate total number of Covid-19
 deaths by age group and overall over time.
 }

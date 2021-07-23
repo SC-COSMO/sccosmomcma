@@ -8,9 +8,10 @@
 #' @param n_date_ini Initial date of calibration.
 #' @param n_t_calib Number of calibration days.
 #' @param n_lag_inf Lag in time series of infectious individuals.
+#' @param l_dates_targets List of initial and last dates of targets series.
 #' @return
 #' A list with outputs for validation.
-#' 
+#' @export
 validate_out <- function(m_calib_post, 
                          l_params_all,
                          n_date_ini, 
@@ -209,23 +210,13 @@ validate_out <- function(m_calib_post,
 #'
 #' \code{summarise_data} is used to to calculate the mean, standard deviation and 
 #' 95% credible interval.
-#' @param data Data frame.
+#' @param data Data.frame.
 #' @param varname Name of a column containing the variable.
 #' @param groupnames Vector of column names to be used as grouping variables.
 #' @return 
-#' A data frame containing the posterior output.
+#' A data.frame containing the posterior output.
 #' @export
 summarise_data <- function(data, varname, groupnames){
-  # summary_func <- function(x, col){
-  #   c(mean = mean(x[[col]], na.rm = TRUE),
-  #     median = quantile(x[[col]], probs = 0.5, na.rm = TRUE, names = FALSE),
-  #     sd = sd(x[[col]], na.rm=TRUE),
-  #     lb = quantile(x[[col]], probs = 0.025, na.rm = TRUE, names = FALSE),
-  #     ub = quantile(x[[col]], probs = 0.975, na.rm = TRUE, names = FALSE))
-  # }
-  # data_sum <- plyr::ddply(data, groupnames, .fun = summary_func, 
-  #                         varname)
-  # data_sum <- plyr::rename(data_sum, c("mean" = varname))
   df_summ <- data %>% 
     group_by_at(vars(groupnames)) %>%
     summarise(mean = mean(Value, na.rm = TRUE),
@@ -239,15 +230,17 @@ summarise_data <- function(data, varname, groupnames){
 
 #' Plot Targets
 #'
-#' \code{plot_targets} plots targets.
+#' \code{plot_model_out_vs_targets} plots model outputs vs targets.
 #'
-#' @param l_model_out List with decision model outputs
-#' @param l_targets List calibration targets
-#' @param print_plot Logical. Prints plot if TRUE
-#' @param return_plot Logical. Returns plot if TRUE
+#' @param l_model_out List with decision model outputs.
+#' @param l_targets List calibration targets.
+#' @param print_plot Flag (default is TRUE) of whether the plot should be 
+#' printed in screen.
+#' @param return_plot Flag (default is TRUE) of whether the plot should be 
+#' returned.
 #' @return
 #' A ggplot2 object.
-#' 
+#' @export
 plot_model_out_vs_targets <- function(df_all_targets, 
                                       df_model_out,
                                       print_plot = TRUE, 

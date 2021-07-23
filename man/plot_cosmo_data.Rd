@@ -14,21 +14,27 @@ plot_cosmo_data(
 )
 }
 \arguments{
-\item{df_plotting}{data frame of data to be plotted}
+\item{df_plotting}{Data.frame of data to be plotted.}
 
-\item{proportion}{Logical. Divides cumulative infections by total population}
+\item{proportion}{Flag (default is FALSE) of whether to divide the outcome
+of interest by total population.}
 
-\item{age_proportion}{Logical. Divides cumulative infections by age-specific total population}
+\item{age_proportion}{Flag (default is FALSE) of whether to divide
+the outcome of interest by age-specific total population.}
 
-\item{only_all}{logical. Should only overall total infections be plotted}
+\item{only_all}{Flag (default is TRUE) of whether only overall ("All") data
+should be plotted.}
 
-\item{print_plot}{logical. Should show it?}
+\item{print_plot}{Flag (default is TRUE) of whether the plot should be printed
+in screen.}
+
+\item{label_y}{y-axis label.}
 }
 \value{
-A ggplot object
+A ggplot object.
 }
 \description{
-\code{plot_cosmo_data} A generic function called by various wrapper
-funcitons to plot a data frame returned by one of our calc methods by
+\code{plot_cosmo_data} a generic function called by various wrapper
+functions to plot a data frame returned by one of our \code{calc} methods by
 age group and/or in total over time.
 }

@@ -21,37 +21,37 @@ gen_household_matrices_mc_seir(
 )
 }
 \arguments{
-\item{n_hhsize}{Household size}
+\item{n_hhsize}{Household size.}
 
-\item{n_hh_mod}{Number of household model states}
+\item{n_hh_mod}{Number of household model states.}
 
-\item{v_names_states_hh}{Vector with names of household MC SEIR model}
+\item{v_names_states_hh}{Vector with names of household MC SEIR model.}
 
-\item{v_names_exp_hh}{Vector with names of exposed states}
+\item{v_names_exp_hh}{Vector with names of exposed states.}
 
-\item{v_names_inf_hh}{Vector with names of infectious states}
+\item{v_names_inf_hh}{Vector with names of infectious states.}
 
-\item{v_index_hh_sus}{Indexing column vector of susceptibles}
+\item{v_index_hh_sus}{Indexing column vector of susceptible.}
 
-\item{v_index_hh_exp}{Indexing column vector of exposed}
+\item{v_index_hh_exp}{Indexing column vector of exposed.}
 
-\item{v_index_hh_inf}{Indexing column vector of infectious}
+\item{v_index_hh_inf}{Indexing column vector of infectious.}
 
-\item{v_index_hh_rec}{Indexing column vector of recovered}
+\item{v_index_hh_rec}{Indexing column vector of recovered.}
 
 \item{r_sigma}{Daily rate of progression of exposed individuals
-(Latent period)}
+(Latent period).}
 
 \item{r_gamma}{Daily rate of recovery of infectious individuals
 (Infectiousness period).}
 
-\item{m_possibilities}{Matrix with possible combinations of household}
+\item{m_possibilities}{Matrix with possible combinations of household.}
 }
 \value{
 A list with three transition matrices: 1) community transmission matrix; 2)
-household transmission matric; and 3) hosehold recovered matrix
+household transmission matrix; and 3) household recovered matrix.
 }
 \description{
-\code{gen_household_matrices} generates transition matrices for within
+\code{gen_household_matrices_mc_seir} generates transition matrices for within
 household epidemics.
 }

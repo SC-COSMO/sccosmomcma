@@ -1,17 +1,18 @@
 #' Generate hospitalization proportions.
 #'
-#' \code{get_MCMA_prop_hosp} wrangles individual COVID19 data for MCMA and calculates
-#' hospitalization proportions.
+#' \code{get_MCMA_prop_hosp} wrangles individual Covid-19 data for MCMA and 
+#' calculates the proportion of incident detected cases hospitalized.
 #' 
-#' @param n_date_ini Character string. Initial date to compute proportions.
-#' @param n_date_last Character string. Last date to compute proportions.
-#' @param save_data Logical. Saves data in a csv file if TRUE.
+#' @param n_date_ini Character specifying the initial date to compute proportions.
+#' @param n_date_last Character specifying the last date to compute proportions.
+#' @param save_data Flag (default is FALSE) of whether to save the data as a
+#' csv file.
 #' @return 
-#' A data.frame with cumulative mortality risk expected by 30 and 60 days.
+#' A data.frame with proportion of incident detected cases hospitalized.
 #' @export
 get_MCMA_prop_hosp <- function(n_date_ini  = "2020-02-24",
                                n_date_last = "2020-12-07",
-                               save_data   = TRUE){
+                               save_data   = FALSE){
   
 
 # Load data ---------------------------------------------------------------
@@ -170,63 +171,6 @@ get_MCMA_prop_hosp <- function(n_date_ini  = "2020-02-24",
     rename(population = "population.y") 
   
 
-# Age groups --------------------------------------------------------------
-
-  # # Vector of level names for each age group based on SC-COSMO model
-  # v_init_age_grps <- c(0, 5, 15, 25, 45, 55, 65, 70)
-  # v_names_ages <- ordered(c(paste(v_init_age_grps[-length(v_init_age_grps)], 
-  #                                 (v_init_age_grps[-1]-1), sep = "-"), 
-  #                           paste0(v_init_age_grps[length(v_init_age_grps)], "+")),
-  #                         c(paste(v_init_age_grps[-length(v_init_age_grps)], 
-  #                                 (v_init_age_grps[-1]-1), sep = "-"), 
-  #                           paste0(v_init_age_grps[length(v_init_age_grps)], "+")))
-  # v_names_age_groups <- paste(v_names_ages, "years")  
-  # 
-  # df_ssa_covid_MCMA <- df_ssa_covid_MCMA %>%
-  #   mutate(age_groups = cut(age, c(v_init_age_grps, Inf), 
-  #                         include.lowest = TRUE, right = FALSE))
-  # levels(df_ssa_covid_MCMA$age_groups) <- v_names_age_groups
-  # 
-  # df_ssa_covid_MCMA_idx_gps <- df_ssa_covid_MCMA %>%
-  #   filter(date_dx >= n_date_ini & date_dx <= n_date_last) %>%
-  #   group_by(date_dx, age_groups) %>%
-  #   summarise(idx  = n(),
-  #             dead = sum(dead_ind),
-  #             hosp = sum(hosp_ind),
-  #             vent = sum(vent_ind),
-  #             novent = sum(novent_ind),
-  #             icu  = sum(icu_ind)) %>%
-  #   rename(date = date_dx) %>%
-  #   ungroup() %>%
-  #   left_join(df_pop_size, by = c("age_groups", "date"))
-  # 
-  # df_ssa_covid_MCMA_grouped <- df_ssa_covid_MCMA %>%
-  #   filter(date_dx >= n_date_ini & date_dx <= n_date_last) %>%
-  #   group_by(age_groups) %>%
-  #   summarise(idx  = n(),
-  #             dead = sum(dead_ind),
-  #             hosp = sum(hosp_ind),
-  #             vent = sum(vent_ind),
-  #             novent = sum(novent_ind),
-  #             icu  = sum(icu_ind)) %>%
-  #   mutate(p_dead   = dead/idx,
-  #          p_hosp   = hosp/idx,
-  #          p_vent   = vent/idx,
-  #          p_novent = novent/idx,
-  #          p_icu    = icu/idx) %>%
-  #   mutate(rr_death8 = p_dead/p_dead[8],
-  #          rr_hosp8 = p_hosp/p_hosp[8],
-  #          rr_vent8 = p_vent/p_vent[8])
-  # 
-  # df_pop_size_grouped <- df_pop_size %>%
-  #   group_by(age_groups) %>%
-  #   summarise(mean_age_pop = mean(age_pop),
-  #             mean_tot_pop = mean(tot_pop)) %>%
-  #   mutate(prop_age = mean_age_pop/mean_tot_pop)
-  # 
-  # df_ssa_covid_MCMA_grouped <- df_ssa_covid_MCMA_grouped %>%
-  #   left_join(df_pop_size_grouped, by ="age_groups")
-
 # Generate proportions ----------------------------------------------------
 
   # Drop observations with time-to-dead < 0
@@ -345,14 +289,14 @@ get_MCMA_prop_hosp <- function(n_date_ini  = "2020-02-24",
   
 }
 
-#' Plot hospitalization proportions
+#' Plot proportion of incident detected cases hospitalized
 #'
-#' \code{plot_hosp_prop} plot observed and estimated hospitalization proportions
-#' for MCMA. 
+#' \code{plot_hosp_prop} plot observed and estimated proportion of incident
+#'  detected cases hospitalized. 
 #' 
-#' @param df_hosp_prop Data.frame. Data of observed and estimated hospitalization
-#' proportions.
-#' @param save_plot Logical. Saves the plot if TRUE.
+#' @param df_hosp_prop Data.frame of data of observed and estimated proportion 
+#' of incident detected cases hospitalized to be plotted.
+#' @param save_plot Flag (default is FALSE) of whether to save the plot.
 #' @return 
 #' A ggplot object.
 plot_hosp_prop <- function(df_hosp_prop,

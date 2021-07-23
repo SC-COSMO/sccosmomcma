@@ -7,8 +7,8 @@
 get_idx_scale_factor(time, l_params_all)
 }
 \arguments{
-\item{time}{the time (numeric, in days) at which v_idx_scale_factor is
-evaluated}
+\item{time}{Time (numeric, in days) at which \code{v_idx_scale_factor} is
+evaluated.}
 
 \item{l_params_all}{List with all parameters of decision model.}
 }
@@ -18,5 +18,5 @@ in time.
 }
 \description{
 \code{get_idx_scale_factor} pulls age-specific reduction factor on
-on transmission from detected infectious
+on transmission from detected infectious.
 }

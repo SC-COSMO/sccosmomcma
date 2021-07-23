@@ -3,17 +3,17 @@
 #' \code{gen_household_transmission} generates household transmission (i.e., 
 #' force of infection).
 #' 
-#' @param r_tau Transmission rate in the household model
-#' @param n_hhsize  Household size (integer)
-#' @param n_contacts_hh Average number of within household contacts
-#' @param v_HH State vector of within household epidemics
-#' @param v_index_hh_sus Indexing column vector of susceptibles
-#' @param v_index_hh_inf Indexing column vector of infectious
-#' @param v_index_hh_rec Indexing column vector of recovered
+#' @param r_tau Transmission rate in the household model.
+#' @param n_hhsize  Household size (integer).
+#' @param n_contacts_hh Average number of within household contacts.
+#' @param v_HH State vector of within household epidemics.
+#' @param v_index_hh_sus Indexing column vector of susceptible.
+#' @param v_index_hh_inf Indexing column vector of infectious.
+#' @param v_index_hh_rec Indexing column vector of recovered.
 #' @param m_possibilities Matrix with possible combinations of household 
-#' members within each epidemic compartment
+#' members within each epidemic compartment.
 #' @return 
-#' A scalar with the force of infection
+#' A scalar with the force of infection.
 #' @export
 gen_household_transmission_mc_seir <- function(r_tau,
                                                n_hhsize,

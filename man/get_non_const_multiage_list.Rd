@@ -8,16 +8,17 @@ change over the duration of the simulation.}
 get_non_const_multiage_list(v_time_stop, m_ageval)
 }
 \arguments{
-\item{v_time_stop}{vector with time period at which values change (in days).
-Last entry should be n_t.}
+\item{v_time_stop}{Vector with time period at which values change (in days).
+Last entry should be \code{n_t}.}
 
-\item{m_ageval}{matrix of values for each age group (n_ages) at each time period}
+\item{m_ageval}{Matrix of values for each age group (\code{n_ages}) at each
+time period.}
 }
 \value{
-List (l_l_period) list of lists of periods (1 per age group) with
-non-constant values
+List (\code{l_l_period}) list of lists of periods (1 per age group) with
+non-constant values.
 }
 \description{
-\code{get_non_const_multiage_list} Adds lists of time periods as new entries
-in list of age group lists
+\code{get_non_const_multiage_list} adds lists of time periods as new entries
+in list of age group lists.
 }

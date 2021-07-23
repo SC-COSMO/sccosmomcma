@@ -18,26 +18,26 @@ obtain_init_pop(
 )
 }
 \arguments{
-\item{v_init_age_grps}{Vector with initial ages of age groups}
+\item{v_init_age_grps}{Vector with initial ages of age groups.}
 
 \item{v_inf_init_ages}{Vector with number of individuals in first infectious
-class for each age group}
+class for each age group.}
 
-\item{v_names_ages}{Vector with age groups}
+\item{v_names_ages}{Vector with age groups.}
 
-\item{n_ages}{Number of age groups}
+\item{n_ages}{Number of age groups.}
 
-\item{v_names_states}{Vector with names of compartment states}
+\item{v_names_states}{Vector with names of compartment states.}
 
-\item{n_states}{NUmber of compartment states}
+\item{n_states}{Number of compartment states.}
 
-\item{ctry}{Country}
+\item{ctry}{Country.}
 
-\item{ste}{State}
+\item{ste}{State.}
 
-\item{cty}{County or municipality}
+\item{cty}{County or municipality.}
 
-\item{year}{Year}
+\item{year}{Year.}
 }
 \value{
 An array with the initial population at each class by age group.

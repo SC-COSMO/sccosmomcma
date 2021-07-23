@@ -7,21 +7,22 @@
 general_logit(logit_lb, logit_ub, logit_change_rate, logit_change_mid, logit_t)
 }
 \arguments{
-\item{logit_lb}{lower asymptote}
+\item{logit_lb}{Lower asymptote.}
 
-\item{logit_ub}{upper asymptote}
+\item{logit_ub}{Upper asymptote.}
 
-\item{logit_change_rate}{rate of change from lower to upper asymptote}
+\item{logit_change_rate}{Rate of change from lower to upper asymptote.}
 
-\item{logit_change_mid}{point in time (t) where function has gone halfway from lb to ub}
+\item{logit_change_mid}{Point in time (t) where function has gone halfway
+from lb to ub.}
 
-\item{logit_t}{time point(s) at which function should be evaluated}
+\item{logit_t}{Time point(s) at which function should be evaluated.}
 }
 \value{
-value(s) of generalized logit function | inputs
+Value(s) of generalized logit function | inputs.
 }
 \description{
-\code{general_logit} Computes a generalized logistic function whose starting (lb)
+\code{general_logit} computes a generalized logistic function whose starting (lb)
 and ending values (ub) are determined by parameters. Rate of change from lb to ub
-and timing of change are also controled by parameters.
+and timing of change are also controlled by parameters.
 }

@@ -7,18 +7,19 @@
 prep_dx_hospitalizations(l_out_cosmo, use_prevalence = FALSE)
 }
 \arguments{
-\item{l_out_cosmo}{List with output from SC-COSMO and all parameters}
+\item{l_out_cosmo}{List with output from SC-COSMO and all parameters.}
 
-\item{use_prevalence}{Indicator to use prevalence as input to hospitalization
-model. If FALSE, incidence is used instead of prevalence (Default == FALSE).}
+\item{use_prevalence}{Flag (default is FALSE) of whether to use prevalence as
+input to hospitalization model. If FALSE, incidence is used instead of
+prevalence.}
 }
 \value{
-A list of incident hosptalizations by type (Not Severe , Severe, or ICU),
+A list of incident hospitalizations by type (Tot , Non ICU, or ICU),
 age group (including All), and time
-and of prevalent hosptalizations by type (Not Severe , Severe, or ICU),
-age group (including All), and time
+and of prevalent hospitalizations by type (Tot , Non ICU, or ICU),
+age group (including All), and time.
 }
 \description{
-Computes both incident hospitalizations and prevalence in hospital
-also by hospitalized not severe, severe and ICU, and age groups.
+\code{prep_dx_hospitalizations} computes both incident hospitalizations
+and prevalence in hospital also by Non ICU and ICU, and age groups.
 }

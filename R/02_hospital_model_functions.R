@@ -1,15 +1,15 @@
 #' Get parameters for gamma distribution 
 #'
-#' \code{get_gamma_params} Get parameters for gamma distribution based on mean 
+#' \code{get_gamma_params} get parameters for gamma distribution based on mean 
 #' rates of exiting and standard deviation of time to exiting over time
 #' @param m_r_exit Matrix or vector with mean rates of exiting by age groups 
-#' over time (matrix) or for a given day (vector)
+#' over time (matrix) or for a given day (vector).
 #' @param m_sigma_exit Matrix or vector with standard deviations of time to 
-#' exiting by age groups over time (matrix) or for a given day (vector)
+#' exiting by age groups over time (matrix) or for a given day (vector).
 #' @param gamma_times Number of times for which time-varying gamma parameters
 #' should be produced.
 #' @return 
-#' List with time-specific shape and rate parameters for the gamma distribution
+#' List with time-specific shape and rate parameters for the gamma distribution.
 #' @export
 get_gamma_params <- function(m_r_exit, m_sigma_exit, gamma_times){
   if(is.null(dim(m_r_exit)) & is.null(dim(m_sigma_exit))){
@@ -43,8 +43,8 @@ get_gamma_params <- function(m_r_exit, m_sigma_exit, gamma_times){
 #' Get proportion of cases that go into hospitalization over time
 #'
 #' \code{get_prop_hosp} pulls age-specific proportion of incident detected cases 
-#' hospitalized for a given time
-#' @param time the time (numeric, in days) at which p_hosp is evaluated
+#' hospitalized for a given time.
+#' @param time Time (numeric, in days) at which \code{p_hosp} is evaluated.
 #' @param l_params_all List with all parameters of decision model.
 #' @return 
 #' Proportion hospitalized (age-specific) at a given point in time.
@@ -64,16 +64,17 @@ get_prop_hosp <- function(time, l_params_all) {
 
 #' Produce hospitalization occupation over time
 #' 
-#' Computes both incident hospitalizations and prevalence in hospital
-#' also by Non ICU and ICU, and age groups.
-#' @param l_out_cosmo List with output from SC-COSMO and all parameters
-#' @param use_prevalence Indicator to use prevalence as input to hospitalization
-#' model. If FALSE, incidence is used instead of prevalence (Default == FALSE).
+#' \code{prep_dx_hospitalizations} computes both incident hospitalizations 
+#' and prevalence in hospital also by Non ICU and ICU, and age groups.
+#' @param l_out_cosmo List with output from SC-COSMO and all parameters.
+#' @param use_prevalence Flag (default is FALSE) of whether to use prevalence as 
+#' input to hospitalization model. If FALSE, incidence is used instead of 
+#' prevalence.
 #' @return 
 #' A list of incident hospitalizations by type (Tot , Non ICU, or ICU), 
 #' age group (including All), and time
 #' and of prevalent hospitalizations by type (Tot , Non ICU, or ICU), 
-#' age group (including All), and time
+#' age group (including All), and time.
 #' @export
 prep_dx_hospitalizations <- function(l_out_cosmo, use_prevalence = FALSE) {
   with(as.list(l_out_cosmo$l_params_all), {  
@@ -158,16 +159,16 @@ prep_dx_hospitalizations <- function(l_out_cosmo, use_prevalence = FALSE) {
 
 #' Total Incident DX hospitalizations
 #' 
-#' Calculate total number of incident diagnosed hospitalizations.
+#' \code{calc_dx_inchosp} calculate total number of incident diagnosed hospitalizations.
 #' 
 #' @param l_hosp List with output from the hospitalization simulation 
-#' (prep_hospitalizations)
-#' @param l_out_cosmo List with output from SC-COSMO and all parameters
+#' (\code{prep_dx_hospitalizations}).
+#' @param l_out_cosmo List with output from SC-COSMO and all parameters.
 #' @return 
 #' A data.frame with the total number of total number of incident diagnosed 
 #' hospitalizations by age group and overall as columns over time.
 #' @export
-calc_dx_inchosp<-function(l_hosp, l_out_cosmo) {
+calc_dx_inchosp <- function(l_hosp, l_out_cosmo) {
   m_hosp_inc   <- l_hosp$m_hosp_inc
   l_params_all <- l_out_cosmo$l_params_all
   
@@ -182,16 +183,16 @@ calc_dx_inchosp<-function(l_hosp, l_out_cosmo) {
 
 #' Total Incident DX ICU hospitalizations
 #' 
-#' Calculate total number of incident diagnosed ICU hospitalizations.
+#' \code{calc_dx_inchosp_icu} calculate total number of incident diagnosed ICU hospitalizations.
 #' 
 #' @param l_hosp List with output from the hospitalization simulation 
-#' (prep_hospitalizations)
-#' @param l_out_cosmo List with output from SC-COSMO and all parameters
+#' (\code{prep_dx_hospitalizations}).
+#' @param l_out_cosmo List with output from SC-COSMO and all parameters.
 #' @return 
 #' A data.frame with the total number of total number of incident diagnosed 
 #' ICU hospitalizations by age group and overall as columns over time.
 #' @export
-calc_dx_inchosp_icu<-function(l_hosp, l_out_cosmo) {
+calc_dx_inchosp_icu <- function(l_hosp, l_out_cosmo) {
   m_hosp_inc   <- l_hosp$m_hosp_inc
   l_params_all <- l_out_cosmo$l_params_all
   
@@ -206,16 +207,17 @@ calc_dx_inchosp_icu<-function(l_hosp, l_out_cosmo) {
 
 #' Total Incident DX Non-ICU hospitalizations
 #' 
-#' Calculate total number of incident diagnosed Non-ICU hospitalizations.
+#' \code{calc_dx_inchosp_nonicu} calculates total number of incident 
+#' diagnosed Non-ICU hospitalizations.
 #' 
 #' @param l_hosp List with output from the hospitalization simulation 
-#' (prep_hospitalizations)
-#' @param l_out_cosmo List with output from SC-COSMO and all parameters
+#' (\code{prep_dx_hospitalizations}).
+#' @param l_out_cosmo List with output from SC-COSMO and all parameters.
 #' @return 
 #' A data.frame with the total number of total number of incident diagnosed 
 #' Non-ICU hospitalizations by age group and overall as columns over time.
 #' @export
-calc_dx_inchosp_nonicu<-function(l_hosp, l_out_cosmo) {
+calc_dx_inchosp_nonicu <- function(l_hosp, l_out_cosmo) {
   m_hosp_inc   <- l_hosp$m_hosp_inc
   l_params_all <- l_out_cosmo$l_params_all
   
@@ -230,16 +232,17 @@ calc_dx_inchosp_nonicu<-function(l_hosp, l_out_cosmo) {
 
 #' Total Prevalent DX hospitalizations
 #' 
-#' Calculate total number of prevalent diagnosed hospitalizations.
+#' \code{calc_dx_hosp} calculate total number of prevalent diagnosed
+#' hospitalizations.
 #' 
 #' @param l_hosp List with output from the hospitalization simulation 
-#' (prep_hospitalizations)
-#' @param l_out_cosmo List with output from SC-COSMO and all parameters
+#' (\code{prep_dx_hospitalizations})
+#' @param l_out_cosmo List with output from SC-COSMO and all parameters.
 #' @return 
 #' A data.frame with the total number of total number of prevalent diagnosed 
 #' hospitalizations by age group and overall as columns over time.
 #' @export
-calc_dx_hosp<-function(l_hosp, l_out_cosmo) {
+calc_dx_hosp <- function(l_hosp, l_out_cosmo) {
   m_hosp_prev   <- l_hosp$m_hosp_prev
   l_params_all <- l_out_cosmo$l_params_all
   
@@ -254,16 +257,17 @@ calc_dx_hosp<-function(l_hosp, l_out_cosmo) {
 
 #' Total Prevalent DX ICU hospitalizations
 #' 
-#' Calculate total number of prevalent diagnosed ICU hospitalizations.
+#' \code{calc_dx_hosp_icu} calculate total number of prevalent diagnosed ICU 
+#' hospitalizations.
 #' 
 #' @param l_hosp List with output from the hospitalization simulation 
-#' (prep_hospitalizations)
-#' @param l_out_cosmo List with output from SC-COSMO and all parameters
+#' (\code{prep_dx_hospitalizations}).
+#' @param l_out_cosmo List with output from SC-COSMO and all parameters.
 #' @return 
 #' A data.frame with the total number of total number of prevalent diagnosed 
 #' ICU hospitalizations by age group and overall as columns over time.
 #' @export
-calc_dx_hosp_icu<-function(l_hosp, l_out_cosmo) {
+calc_dx_hosp_icu <- function(l_hosp, l_out_cosmo) {
   m_hosp_prev   <- l_hosp$m_hosp_prev
   l_params_all <- l_out_cosmo$l_params_all
   
@@ -278,16 +282,16 @@ calc_dx_hosp_icu<-function(l_hosp, l_out_cosmo) {
 
 #' Total Prevalent DX Non-ICU hospitalizations
 #' 
-#' Calculate total number of prevalent diagnosed Non-ICU hospitalizations.
+#' \code{calc_dx_hosp_nonicu} calculate total number of prevalent diagnosed Non-ICU hospitalizations.
 #' 
 #' @param l_hosp List with output from the hospitalization simulation 
-#' (prep_hospitalizations)
-#' @param l_out_cosmo List with output from SC-COSMO and all parameters
+#' (\code{prep_dx_hospitalizations}).
+#' @param l_out_cosmo List with output from SC-COSMO and all parameters.
 #' @return 
 #' A data.frame with the total number of total number of prevalent diagnosed 
 #' Non-ICU hospitalizations by age group and overall as columns over time.
 #' @export
-calc_dx_hosp_nonicu<-function(l_hosp, l_out_cosmo) {
+calc_dx_hosp_nonicu <- function(l_hosp, l_out_cosmo) {
   m_hosp_prev   <- l_hosp$m_hosp_prev
   l_params_all <- l_out_cosmo$l_params_all
   

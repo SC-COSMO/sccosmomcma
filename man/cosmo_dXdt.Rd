@@ -7,11 +7,11 @@
 cosmo_dXdt(time, v_pop, l_params_all)
 }
 \arguments{
-\item{time}{Time at which the derivatives will be computed}
+\item{time}{Time at which the derivatives will be computed.}
 
-\item{v_pop}{Vector with the population by class}
+\item{v_pop}{Vector with the population by class.}
 
-\item{l_params_all}{List with all parameters of SC-COSMO model}
+\item{l_params_all}{List with all parameters of SC-COSMO model.}
 }
 \value{
 A list with a vector of derivatives for each class by age group.

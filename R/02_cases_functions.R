@@ -1,9 +1,9 @@
 #' Get reduction factor on transmission from detected infectious (IDX)
 #'
 #' \code{get_idx_scale_factor} pulls age-specific reduction factor on 
-#' on transmission from detected infectious
-#' @param time the time (numeric, in days) at which v_idx_scale_factor is 
-#' evaluated
+#' on transmission from detected infectious.
+#' @param time Time (numeric, in days) at which \code{v_idx_scale_factor} is 
+#' evaluated.
 #' @param l_params_all List with all parameters of decision model.
 #' @return 
 #' Reduction (age-specific) on infectiousness of detected cases at a given point 

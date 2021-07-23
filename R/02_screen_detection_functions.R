@@ -1,15 +1,16 @@
-#' The Stanford-CIDE COronavirus Simulation MOdel (SC-COSMO)
+#' Get screen detection parameters for the Stanford-CIDE COronavirus Simulation 
+#' MOdel (SC-COSMO)
 #'
-#' \code{get_screen_detection} pulls screen detection parameters for a given time
-#' @param time the time (numeric, in days) at which screen detection rate is evaluated
+#' \code{get_screen_detection} pulls screen detection parameters for a given time.
+#' @param time Time (numeric, in days) at which screen detection rate is evaluated.
 #' @param l_params_all List with all parameters of decision model.
-#' Screen detection rates should be stored as a list within l_params_all$l_screen_detection
-#' @param severity defines the severity level and state (exp1, exp2, inf1, inf2)
+#' Screen detection rates should be stored as a list within 
+#' \code{l_params_all$l_screen_detection}.
+#' @param severity defines the severity level and state (exp1, exp2, inf1, inf2).
 #' @return 
 #' Screen detection rate for a given severity (1, 2) or state (exp, inf) at a
 #' given point in time.
 #' @export
-
 get_screen_detection <- function(time, l_params_all, severity) {
 #  with(as.list(l_params_all), {
     

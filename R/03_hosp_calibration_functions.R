@@ -1,13 +1,15 @@
-#' Generate model outputs for calibration from a parameter set
+#' Generate model outputs for calibration from a hospitalization parameter set
 #'
 #' \code{hosp_calibration_out} computes model hospitalization outputs
 #' to be used for calibration routines.
 #'
-#' @param v_params_calib Vector of hosp parameters that need to be calibrated.
+#' @param v_params_calib Vector of hospitalization parameters that need to be 
+#' calibrated.
 #' @param l_params_all List with all parameters of the decision model.
 #' @param n_lag_inf Lag in time series of infectious individuals.
 #' @param n_lag_conf Lag in time series to account for the difference from 
 #' first symptomatic.
+#' @param l_dates_hosp_targets List of initial and final date of target series.
 #' @return 
 #' A list with model-predicted outcomes for each target.
 #' @export
@@ -185,16 +187,16 @@ hosp_calibration_out <- function(v_params_calib,
 #' Log-likelihood function for a hospitalization parameter set 
 #'
 #' \code{hosp_log_lik_opt} computes a log-likelihood value for one (or multiple) 
-#' hosptialization parameter set(s) to be used in optimization procedures
+#' hospitalization parameter set(s) to be used in optimization procedures.
 #'
 #' @param v_params Vector (or matrix) of hospitalization parameters.
-#' @param l_params_all List with all parameters of the decision model. 
+#' @param ... Further arguments to be passed to.
 #' @return 
 #' A scalar (or vector) with log-likelihood values.
 #' @importFrom stats dnorm dunif quantile qunif rbeta rgamma sd
 #' @export
 hosp_log_lik_opt <- function(v_params,
-                        ...){ # User defined
+                             ...){ # User defined
   
   if(is.null(dim(v_params))) { # If vector, change to matrix
     v_params <- t(v_params)
@@ -342,13 +344,13 @@ hosp_log_lik_opt <- function(v_params,
 #' hospitalization parameter set(s).
 #'
 #' @param v_params Vector (or matrix) of hospitalization parameters.
-#' @param l_params_all List with all parameters of the decision model. 
+#' @param ... Further arguments to be passed to.
 #' @return 
 #' A scalar (or vector) with log-likelihood values.
 #' @importFrom stats dnorm dunif quantile qunif rbeta rgamma sd
 #' @export
 hosp_log_lik <- function(v_params,
-                    ...){ # User defined
+                         ...){ # User defined
 
   if(is.null(dim(v_params))) { # If vector, change to matrix
     v_params <- t(v_params)
@@ -496,20 +498,22 @@ hosp_log_lik <- function(v_params,
   return(v_llik_overall)
 }
 
-#' Parallel evaluation of log-likelihood function for a sets of parameters
+#' Parallel evaluation of log-likelihood function for a sets of hospitalization
+#' parameters
 #'
 #' \code{hosp_log_lik_par} computes a log-likelihood value for one (or multiple) 
-#' parameter set(s) using parallel computation.
+#' hospitalization parameter set(s) using parallel computation.
 #'
 #' @param v_params Vector (or matrix) of model parameters.
-#' @param l_params_all List with all parameters of the decision model. 
+#' @param log_lik_offset Offset applied to log-likelihood values. 
+#' @param ... Further arguments to be passed to.
 #' @return 
 #' A scalar (or vector) with log-likelihood values.
 #' @importFrom stats dnorm dunif quantile qunif rbeta rgamma sd
 #' @export
 hosp_log_lik_par <- function(v_params, 
-                        log_lik_offset,
-                        ...) { 
+                             log_lik_offset,
+                             ...) { 
   if(is.null(dim(v_params))) { # If vector, change to matrix
     v_params <- t(v_params)
   }
@@ -588,12 +592,12 @@ hosp_log_lik_par <- function(v_params,
       # }
       # names(l_temp) <- names(l_params)
       
-      hosp_log_lik(v_params = v_params[i,] ,
-              # l_params_all = l_params_all,
-              # n_lag_inf = 14,
-              # n_lag_conf = 0,
-              # l_dates_hosp_targets)
-              ...)
+      hosp_log_lik(v_params = v_params[i,],
+                   # l_params_all = l_params_all,
+                   # n_lag_inf = 14,
+                   # n_lag_conf = 0,
+                   # l_dates_hosp_targets)
+                   ...)
     }
     n_time_end_likpar <- Sys.time()
   }
@@ -612,7 +616,7 @@ hosp_log_lik_par <- function(v_params,
 #' Likelihood
 #'
 #' \code{hosp_likelihood} computes a likelihood value for one (or multiple) 
-#' hostpitalization parameter set(s).
+#' hospitalization parameter set(s).
 #'
 #' @param v_params Vector (or matrix) of hospitalization parameters. 
 #' @return 
@@ -624,7 +628,7 @@ hosp_likelihood <- function(v_params){
                             l_params_all,
                             n_lag_inf, 
                             n_lag_conf, 
-                            l_dates_hosp_targets)) # 504 + 
+                            l_dates_hosp_targets))
   return(v_like)
 }
 
@@ -634,7 +638,8 @@ hosp_likelihood <- function(v_params){
 #' hospitalization parameter set(s) based on the simulation model, 
 #' likelihood functions and prior distributions.
 #' 
-#' @param v_params Vector (or matrix) of model parameters 
+#' @param v_params Vector (or matrix) of model parameters.
+#' @param ... Further arguments to be passed to.
 #' @return 
 #' A scalar (or vector) with log-posterior values.
 #' @export
@@ -647,10 +652,11 @@ hosp_log_post <- function(v_params, ...) {
 #'
 #' \code{hosp_log_post_opt} computes a log-posterior value for one (or multiple) 
 #' hospitalization parameter set(s) based on the simulation model, likelihood 
-#' functions and prior distributions and it's used for OPTIMIZATION purposes, 
+#' functions and prior distributions. Used for OPTIMIZATION purposes, 
 #' NOT Bayesian estimation.
 #' 
-#' @param v_params Vector (or matrix) of hospitalization parameters 
+#' @param v_params Vector (or matrix) of hospitalization parameters.
+#' @param ... Further arguments to be passed to.
 #' @return 
 #' A scalar (or vector) with log-posterior values.
 #' @export
@@ -697,7 +703,8 @@ hosp_log_post_opt <- function(v_params, ...) {
 #' \code{hosp_posterior} computes a posterior value for one (or multiple) hospitalization
 #' parameter set(s).
 #' 
-#' @param v_params Vector (or matrix) of model parameters 
+#' @param v_params Vector (or matrix) of model parameters.
+#' @param ... Further arguments to be passed to. 
 #' @return 
 #' A scalar (or vector) with posterior values.
 #' @export
@@ -706,13 +713,13 @@ hosp_posterior <- function(v_params, ...) {
   return(v_posterior)
 }
 
-#' Get bounds for hospitalization parameters to calibrate (and their standard errors).
+#' Get bounds for hospitalization parameters to calibrate
 #'
-#' \code{get_hosp_bounds} defines the bounds for each of the calibrated hospitalization
-#' parameters.
+#' \code{get_hosp_bounds} defines the bounds for each of the calibrated 
+#' hospitalization parameters.
 #' 
 #' @return 
-#' A list with lower and upper bounds and their standard errors
+#' A list with lower and upper bounds and their standard errors.
 #' @export
 get_hosp_bounds <- function() {
   
@@ -752,8 +759,8 @@ get_hosp_bounds <- function() {
 #' @param v_ub Vector with lower bounds for each parameter.
 #' @param v_lb Vector with upper bounds for each parameter.
 #' @return 
-#' A matrix with 3 rows and \code{n_samp} rows. Each row corresponds to a 
-#' parameter set sampled from their prior distributions
+#' A matrix with 6 columns and \code{n_samp} rows. Each row corresponds to a 
+#' parameter set sampled from their prior distributions.
 #' @export
 hosp_sample_prior <- function(n_samp,
                          v_param_names = names(get_hosp_bounds()$v_lb), #make sure this is actually same name as in model params
@@ -788,9 +795,9 @@ hosp_sample_prior <- function(n_samp,
 #' A scalar (or vector) with log-prior values.
 #' @export
 hosp_log_prior <- function(v_params, 
-                      v_param_names = names(get_hosp_bounds()$v_lb), #make sure this is actually same name as in model params
-                      v_lb = get_hosp_bounds()$v_lb, # get rid of defaults and then user can pass in 
-                      v_ub = get_hosp_bounds()$v_ub){
+                           v_param_names = names(get_hosp_bounds()$v_lb), #make sure this is actually same name as in model params
+                           v_lb = get_hosp_bounds()$v_lb, # get rid of defaults and then user can pass in 
+                           v_ub = get_hosp_bounds()$v_ub){
   if(is.null(dim(v_params))) { # If vector, change to matrix
     v_params <- t(v_params) 
   }
@@ -815,8 +822,8 @@ hosp_log_prior <- function(v_params,
 #' Evaluate log-prior of calibrated hospitalization parameters for OPTIMIZATION purposes
 #'
 #' \code{hosp_log_prior_opt} computes a log-prior value for one (or multiple)
-#' hospitalization parameter set(s) based on their prior distributions and it's 
-#' used for OPTIMIZATION purposes, NOT Bayesian estimation.
+#' hospitalization parameter set(s) based on their prior distributions. Used for 
+#' OPTIMIZATION purposes, NOT Bayesian estimation.
 #' 
 #' @param v_params Vector (or matrix) of model parameters.
 #' @param v_param_names Vector with parameter names.
@@ -861,7 +868,7 @@ hosp_log_prior_opt <- function(v_params,
 #'
 #' \code{hosp_prior} computes a prior value for one (or multiple) hospitalization
 #' parameter set(s).
-#' @param v_params Vector (or matrix) of model parameters 
+#' @param v_params Vector (or matrix) of model parameters. 
 #' @return 
 #' A scalar (or vector) with prior values.
 #' @export
@@ -870,41 +877,21 @@ hosp_prior <- function(v_params) {
   return(v_prior)
 }
 
-#' Get operating system
-#' 
-#' @return 
-#' A string with the operating system.
-#' @export
-get_os <- function(){
-  sysinf <- Sys.info()
-  if (!is.null(sysinf)){
-    os <- sysinf['sysname']
-    if (os == 'Darwin')
-      os <- "MacOSX"
-  } else { ## mystery machine
-    os <- .Platform$OS.type
-    if (grepl("^darwin", R.version$os))
-      os <- "osx"
-    if (grepl("linux-gnu", R.version$os))
-      os <- "linux"
-  }
-  tolower(os)
-}
-
 #' Produce hospitalization occupation over time
 #' 
 #' \code{prep_dx_hosp_calib} computes both incident hospitalizations and prevalence 
 #' in hospitalizations (Tot, Non ICU and ICU) by age groups to be used for 
 #' calibration routines.
 #' 
-#' @param l_out_cosmo List with output from SC-COSMO and all parameters
-#' @param use_prevalence Indicator to use prevalence as input to hospitalization
-#' model. If FALSE, incidence is used instead of prevalence (Default == FALSE).
+#' @param l_out_cosmo List with output from SC-COSMO and all parameters.
+#' @param use_prevalence Flag (default is FALSE) of whether to use prevalence as 
+#' input to hospitalization model. If FALSE, incidence is used instead of 
+#' prevalence.
 #' @return 
 #' A list of incident hospitalizations by type (Tot , Non ICU, or ICU), 
 #' age group (including All), and time
 #' and of prevalent hospitalizations by type (Tot , Non ICU, or ICU), 
-#' age group (including All), and time
+#' age group (including All), and time.
 #' @export
 prep_dx_hosp_calib <- function(l_params_all, use_prevalence = FALSE) {
   with(as.list(l_params_all), {  

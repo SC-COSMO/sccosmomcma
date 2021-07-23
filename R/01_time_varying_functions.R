@@ -1,17 +1,22 @@
 #' Generalized logistic function
 #' 
-#' \code{general_logit} Computes a generalized logistic function whose starting (lb) 
+#' \code{general_logit} computes a generalized logistic function whose starting (lb) 
 #' and ending values (ub) are determined by parameters. Rate of change from lb to ub
-#' and timing of change are also controled by parameters.
-#' @param logit_lb lower asymptote
-#' @param logit_ub upper asymptote
-#' @param logit_change_rate rate of change from lower to upper asymptote
-#' @param logit_change_mid point in time (t) where function has gone halfway from lb to ub
-#' @param logit_t time point(s) at which function should be evaluated
+#' and timing of change are also controlled by parameters.
+#' @param logit_lb Lower asymptote.
+#' @param logit_ub Upper asymptote.
+#' @param logit_change_rate Rate of change from lower to upper asymptote.
+#' @param logit_change_mid Point in time (t) where function has gone halfway 
+#' from lb to ub.
+#' @param logit_t Time point(s) at which function should be evaluated.
 #' @return 
-#' value(s) of generalized logit function | inputs
+#' Value(s) of generalized logit function | inputs.
 #' @export
-general_logit <- function(logit_lb, logit_ub, logit_change_rate, logit_change_mid, logit_t) {
+general_logit <- function(logit_lb, 
+                          logit_ub, 
+                          logit_change_rate, 
+                          logit_change_mid, 
+                          logit_t) {
   
   if (logit_lb<0 | 
       logit_ub<0 
@@ -26,19 +31,19 @@ general_logit <- function(logit_lb, logit_ub, logit_change_rate, logit_change_mi
 
 #' Generalized logistic function (matrix version)
 #' 
-#' \code{m_general_logit} Computes a generalized logistic function whose 
+#' \code{m_general_logit} computes a generalized logistic function whose 
 #' starting (lb) and ending values (ub) are determined by parameters. 
-#' Rate of change from lb to ub and timing of change are also controled by 
+#' Rate of change from lb to ub and timing of change are also controlled by 
 #' parameters.
-#' @param v_logit_lb Age-specific lower asymptote
-#' @param v_logit_ub Age-specific upper asymptote
+#' @param v_logit_lb Age-specific lower asymptote.
+#' @param v_logit_ub Age-specific upper asymptote.
 #' @param v_logit_change_rate Age-specific rate of change from lower to upper 
-#' asymptote
+#' asymptote.
 #' @param v_logit_change_mid Age-specific point in time (t) where function has 
-#' gone halfway from lb to ub
-#' @param logit_t time point(s) at which function should be evaluated
+#' gone halfway from lb to ub.
+#' @param logit_t time point(s) at which function should be evaluated.
 #' @return 
-#' Matrix with value(s) of generalized logit function | inputs
+#' Matrix with value(s) of generalized logit function | inputs.
 #' @export
 m_general_logit <- function(v_logit_lb, 
                             v_logit_ub, 
@@ -69,17 +74,24 @@ m_general_logit <- function(v_logit_lb,
 
 #' Helper function to define a time chunk for a time varying parameter
 #' 
-#' \code{make_period} Defines a time chunk for a generic time varying parameter.
+#' \code{make_period} defines a time chunk for a generic time varying parameter.
 #' Includes some required arguments, but also allows additional arguments.
-#' @param functional_form character string of "linear", "constant", or "general_logit"
-#' @param time_start numeric time period start (in days)
-#' @param time_stop numeric time period end (in days)
-#' @param val_start starting value for time varying parameter at time_start
-#' @param val_end ending value for time varying parameter at time_end
+#' @param functional_form Character string of "linear", "constant", or 
+#' "general_logit".
+#' @param time_start Numeric time period start (in days).
+#' @param time_stop Numeric time period end (in days).
+#' @param val_start Starting value for time varying parameter at \code{time_start}.
+#' @param val_end Ending value for time varying parameter at \code{time_end}.
+#' @param ... Further arguments to be passed to.
 #' @return 
-#' list with parameters initialized
+#' A list with parameters initialized.
 #' @export
-make_period <- function(functional_form, time_start, time_stop, val_start, val_end, ...) {
+make_period <- function(functional_form, 
+                        time_start, 
+                        time_stop, 
+                        val_start, 
+                        val_end, 
+                        ...) {
   
   l_input_list <- list(...)
   
@@ -109,11 +121,12 @@ make_period <- function(functional_form, time_start, time_stop, val_start, val_e
 
 #' Helper function add periods together into a list containing all periods
 #' 
-#' \code{add_period} Adds time periods as new entries in list of time periods
-#' @param l_period_def the existing list of period definitions
-#' @param l_period_add the period to add to the full list, should be defined using make_period
+#' \code{add_period} adds time periods as new entries in list of time periods
+#' @param l_period_def Existing list of period definitions.
+#' @param l_period_add Period to add to the full list, should be defined
+#' using \code{make_period}.
 #' @return 
-#' List (l_period_def) appended with l_period_add as a new entry
+#' List (\code{l_period_def}) appended with \code{l_period_add} as a new entry.
 #' @export
 add_period <- function(l_period_def = NULL, l_period_add) {
   if (is.null(l_period_def)) {
@@ -138,15 +151,16 @@ add_period <- function(l_period_def = NULL, l_period_add) {
 }
 
 
-#' Helper function add lists of periods into single containing list which for each age group
-#' has values for all periods
+#' Helper function add lists of periods into single containing list which for 
+#' each age group has values for all periods
 #' 
-#' \code{add_list_periods} Adds lists of time periods as new entries in list of age group lists
-#' @param l_l_period_def the existing list of lists
-#' @param l_period_add the list of periods to add to the containing list, should be defined using 
-#' add_period calls
+#' \code{add_list_periods} adds lists of time periods as new entries in list of 
+#' age group lists.
+#' @param l_l_period_def Existing list of lists.
+#' @param l_period_add List of periods to add to the containing list, should 
+#' be defined using add_period calls.
 #' @return 
-#' List (l_l_period_def) appended with l_period_def as a new entry
+#' List (\code{l_l_period_def}) appended with \code{l_period_def} as a new entry.
 #' @export
 add_list_periods <- function(l_l_period_def = NULL, l_period_def) {
   if (is.null(l_l_period_def)) {
@@ -161,11 +175,13 @@ add_list_periods <- function(l_l_period_def = NULL, l_period_def) {
 #' Helper convenience function that defines age-specific lists of periods for values that 
 #' will remain constant over the duration of the simulation.
 #' 
-#' \code{get_const_multiage_list} Adds lists of time periods as new entries in list of age group lists
-#' @param time_stop numeric time period end (in days) (should be n_t)
-#' @param v_ageval vector of const values for each each group (n_ages)
+#' \code{get_const_multiage_list} adds lists of time periods as new entries in 
+#' list of age group lists.
+#' @param time_stop Time period end (numeric, in days) (should be \code{n_t}).
+#' @param v_ageval Vector of constant values for each each group.
 #' @return 
-#' List (l_l_period) list of lists of periods (1 per age group) with constant values
+#' List (\code{l_l_period}) list of lists of periods (1 per age group) 
+#' with constant values.
 #' @export
 get_const_multiage_list <- function(time_stop, v_ageval) {
   n_ages <- length(v_ageval)
@@ -190,14 +206,15 @@ get_const_multiage_list <- function(time_stop, v_ageval) {
 #' Helper convenience function that defines age-specific lists of periods for values that 
 #' change over the duration of the simulation.
 #' 
-#' \code{get_non_const_multiage_list} Adds lists of time periods as new entries 
-#' in list of age group lists
-#' @param v_time_stop vector with time period at which values change (in days).
-#' Last entry should be n_t.
-#' @param m_ageval matrix of values for each age group (n_ages) at each time period
+#' \code{get_non_const_multiage_list} adds lists of time periods as new entries 
+#' in list of age group lists.
+#' @param v_time_stop Vector with time period at which values change (in days).
+#' Last entry should be \code{n_t}.
+#' @param m_ageval Matrix of values for each age group (\code{n_ages}) at each
+#' time period.
 #' @return 
-#' List (l_l_period) list of lists of periods (1 per age group) with 
-#' non-constant values
+#' List (\code{l_l_period}) list of lists of periods (1 per age group) with 
+#' non-constant values.
 #' @export
 get_non_const_multiage_list <- function(v_time_stop, m_ageval) {
   n_ages     <- nrow(m_ageval)
@@ -227,14 +244,17 @@ get_non_const_multiage_list <- function(v_time_stop, m_ageval) {
   return(l_l_period)
 } 
 
-#' Helper function for creating time-varying vector of values based on entries in l_period_def
+#' Helper function for creating time-varying vector of values
 #' 
-#' \code{gen_time_varying} Creates a time-varying vector of values based on entries in l_period_def
-#' @param l_period_def the existing list of period definitions, created using add_period
-#' @param max_time the number of days that should be estimated, will fill if not fully covered by
-#' final stop in l_period_def
+#' \code{gen_time_varying} creates a time-varying vector of values based on 
+#' entries in \code{l_period_def}.
+#' @param l_period_def Existing list of period definitions, created using 
+#' \code{add_period}.
+#' @param max_time Number of days that should be estimated, will fill if not 
+#' fully covered by final stop in \code{l_period_def}.
 #' @return 
-#' Vector of time-varying parameter values at minimum of length max_time (could be longer)
+#' Vector of time-varying parameter values at minimum of length max_time 
+#' (could be longer).
 #' @export
 gen_time_varying <- function(l_period_def, max_time) {
   

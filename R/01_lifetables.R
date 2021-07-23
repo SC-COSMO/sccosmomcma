@@ -1,9 +1,9 @@
 #' Get lifetables for MX states
 #'
-#' \code{get_lifetables_mx} returns a dataframe with all of the 
+#' \code{get_lifetables_mx} returns a data.frame with all of the 
 #' processed information on lifetables. 
 #' 
-#' @param reload a flag (default is FALSE) of whether to 
+#' @param reload Flag (default is FALSE) of whether to 
 #' redownload and process the data file
 #'
 #' @export
@@ -16,18 +16,20 @@ get_lifetables_mx <- function(reload = FALSE) {
   return(df_lifetables_mx)
 }
 
-#' Get Lifetables 
+#' Get lifetables 
 #'
 #' \code{get_lifetables} wrapper function that allows user to
 #' subset data from various sources.
 #' If only county is specified (other parameters = ""), 
 #' it provides national level data.
 #' If county is also specified (and the dataset contains counties),
-#' then only those counties within the state(s) are returned
+#' then only those counties within the state(s) are returned.
 #' 
-#' @param reload a flag (default is FALSE) of whether to 
-#' redownload and process the data file
-#'
+#' @param country Country of desired data.
+#' @param state State of desired data.
+#' @param county County of desired data.
+#' @return
+#' A data.frame with all of the processed information on lifetables.
 #' @export
 get_lifetables <- function(country = "", 
                            state = "",

@@ -7,13 +7,13 @@
 calc_idxcum_totals(l_out_cosmo)
 }
 \arguments{
-\item{l_out_cosmo}{List with output from SC-COSMO and all parameters}
+\item{l_out_cosmo}{List with output from SC-COSMO and all parameters.}
 }
 \value{
 A data.frame with the total number of cumulative diagnosed infectious infections by age group and overall
-as columns over time
+as columns over time.
 }
 \description{
-\code{calc_idxcum_totals} Calculate total number of cumulative diagnosed
+\code{calc_idxcum_totals} calculate total number of cumulative diagnosed
 infectious infections by age group and overall over time.
 }

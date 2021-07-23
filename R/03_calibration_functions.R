@@ -6,7 +6,9 @@
 #' @param v_params_calib Vector of parameters that need to be calibrated.
 #' @param l_params_all List with all parameters of the decision model.
 #' @param n_lag_inf Lag in time series of infectious individuals.
-#' @param n_lag_conf Lag in time series to account for the difference from first symptomatic.
+#' @param n_lag_conf Lag in time series to account for the difference from. 
+#' first symptomatic.
+#' @param l_dates_targets List of initial and last dates of targets series.
 #' @return 
 #' A list with model-predicted outcomes for each target.
 #' @export
@@ -255,87 +257,13 @@ calibration_out <- function(v_params_calib,
   return(l_out)
 }
 
-#' Function to plot decision model output
-#' \code{plot_model_out_vs_targets} plots the decision model outputs vs. 
-#' calibration targets.
-#'
-#' @param l_model_out List with decision model outputs.
-#' @param l_targets List with calibration targets.
-#' @param print_plot Logical. Prints plot if TRUE.
-#' @param return_plot Logical. Returns plot if TRUE.
-#' @return 
-#' A list with a ggplot object per decision model output.
-#' @export
-plot_model_out_vs_targets <- function(l_model_out,
-                                      print_plot = TRUE, 
-                                      return_plot = TRUE){
-  with(as.list(l_model_out, l_targets), {
-    #### Cumulative deaths
-    gg.out.adeno <- ggplot(cases, aes(x = Date, y = value,
-                                      ymin = lb, ymax = ub)) +
-      geom_point(shape = 1, size = 2) +
-      geom_errorbar() +
-      geom_line(data = df.out.adeno,
-                aes(x = Age, y = value), col = "blue") +
-      geom_ribbon(data = df.out.adeno,
-                  aes(ymin = lb, ymax = ub), alpha = 0.4, fill = "blue") +
-      facet_wrap(~Target) +
-      scale_x_continuous(limits = c(NA, 90)) +
-      scale_y_continuous(breaks = number_ticks(6)) +
-      ylab("Proportion per 100") +
-      theme_bw(base_size = 16)
-    # #### CRC Incidence
-    # gg.out.crc <- ggplot(df.targets_crc, aes(x = Age, y = value, 
-    #                                          ymin = lb, ymax = ub)) +
-    #   geom_point(shape = 1, size = 2) +
-    #   geom_errorbar() +
-    #   geom_line(data = df.out.crc, 
-    #             aes(x = Age, y = value), col = "red") +
-    #   geom_ribbon(data = df.out.crc,
-    #               aes(ymin = lb, ymax = ub), alpha = 0.4, fill = "red") +
-    #   facet_wrap(~Target) +
-    #   scale_x_continuous(limits = c(NA, 85)) +
-    #   scale_y_continuous(breaks = number_ticks(6)) +
-    #   ylab("Incidence per 100,000") +
-    #   theme_bw(base_size = 16)
-    # #### CRC Mortality
-    # gg.out.crc.mort <- ggplot(df.target_crc_mort, aes(x = Age, y = value, 
-    #                                                   ymin = lb, ymax = ub)) +
-    #   geom_point(shape = 1, size = 2) +
-    #   geom_errorbar() +
-    #   geom_line(data = df.out.crc.mort, 
-    #             aes(x = Age, y = value), col = "red") +
-    #   geom_ribbon(data = df.out.crc.mort,
-    #               aes(ymin = lb, ymax = ub), alpha = 0.4, fill = "red") +
-    #   facet_wrap(~Target) +
-    #   scale_x_continuous(limits = c(NA, 85)) +
-    #   scale_y_continuous(breaks = number_ticks(6)) +
-    #   ylab("Mortality rate per 100,000") +
-    #   theme_bw(base_size = 16)
-    # 
-    # if(print.plot == T){
-    #   print(gg.out.adeno)
-    #   print(gg.out.crc)
-    #   print(gg.out.crc.mort)
-    # }
-    # if(return.plot){
-    #   return(list(gg.out.adeno    = gg.out.adeno,
-    #               gg.out.crc      = gg.out.crc,
-    #               gg.out.crc.mort = gg.out.crc.mort))  
-    # }
-  }
-  )
-  
-}
-
 #' Log-likelihood function for a parameter set
 #'
 #' \code{log_lik} computes a log-likelihood value for one (or multiple) 
 #' parameter set(s) to be used in optimization procedures
 #'
 #' @param v_params Vector (or matrix) of model parameters.
-#' @param l_params_all List with all parameters of the decision model. 
-#' @param comp Logil. Should the compiled versio of SC-COSMO be used?
+#' @param ... Further arguments to be passed to.
 #' @return 
 #' A scalar (or vector) with log-likelihood values.
 #' @importFrom stats dnorm dunif quantile qunif rbeta rgamma sd
@@ -437,8 +365,7 @@ log_lik_opt <- function(v_params,
 #' parameter set(s).
 #'
 #' @param v_params Vector (or matrix) of model parameters.
-#' @param l_params_all List with all parameters of the decision model. 
-#' @param comp Logil. Should the compiled versio of SC-COSMO be used?
+#' @param ... Further arguments to be passed to.
 #' @return 
 #' A scalar (or vector) with log-likelihood values.
 #' @importFrom stats dnorm dunif quantile qunif rbeta rgamma sd
@@ -550,7 +477,8 @@ log_lik <- function(v_params,
 #' parameter set(s) using parallel computation.
 #'
 #' @param v_params Vector (or matrix) of model parameters.
-#' @param l_params_all List with all parameters of the decision model. 
+#' @param log_lik_offset Offset applied to log-likelihood values. 
+#' @param ... Further arguments to be passed to. 
 #' @return 
 #' A scalar (or vector) with log-likelihood values.
 #' @importFrom stats dnorm dunif quantile qunif rbeta rgamma sd
@@ -626,7 +554,7 @@ log_lik_par <- function(v_params,
 #' \code{likelihood} computes a likelihood value for one (or multiple) 
 #' parameter set(s).
 #'
-#' @param v_params Vector (or matrix) of model parameters. 
+#' @param v_params Vector (or matrix) of model parameters.
 #' @return 
 #' A scalar (or vector) with likelihood values.
 #' @export
@@ -642,10 +570,11 @@ likelihood <- function(v_params){
 
 #' Evaluate log-posterior of calibrated parameters
 #'
-#' \code{log_post} Computes a log-posterior value for one (or multiple) 
+#' \code{log_post} computes a log-posterior value for one (or multiple) 
 #' parameter set(s) based on the simulation model, likelihood functions and 
 #' prior distributions.
-#' @param v_params Vector (or matrix) of model parameters 
+#' @param v_params Vector (or matrix) of model parameters. 
+#' @param ... Further arguments to be passed to.
 #' @return 
 #' A scalar (or vector) with log-posterior values.
 #' @export
@@ -656,11 +585,12 @@ log_post <- function(v_params, ...) {
 
 #' Evaluate log-posterior of calibrated parameters for OPTIMIZATION purposes
 #'
-#' \code{log_post_opt} Computes a log-posterior value for one (or multiple) 
+#' \code{log_post_opt} computes a log-posterior value for one (or multiple) 
 #' parameter set(s) based on the simulation model, likelihood functions and 
-#' prior distributions and it's used for OPTIMIZATION purposes, NOT Bayesian
+#' prior distributions. Used for OPTIMIZATION purposes, NOT Bayesian
 #' estimation.
-#' @param v_params Vector (or matrix) of model parameters 
+#' @param v_params Vector (or matrix) of model parameters.
+#' @param ... Further arguments to be passed to. 
 #' @return 
 #' A scalar (or vector) with log-posterior values.
 #' @export
@@ -701,7 +631,8 @@ log_post_opt <- function(v_params, ...) {
 #'
 #' \code{posterior} computes a posterior value for one (or multiple) parameter 
 #' set(s).
-#' @param v_params Vector (or matrix) of model parameters 
+#' @param v_params Vector (or matrix) of model parameters. 
+#' @param ... Further arguments to be passed to.
 #' @return 
 #' A scalar (or vector) with posterior values.
 #' @export
@@ -710,7 +641,7 @@ posterior <- function(v_params, ...) {
   return(v_posterior)
 }
 
-#' Get bounds for parameters to calibrate (and their standard errors)
+#' Get bounds for parameters to calibrate 
 #'
 #' \code{get_bounds} defines the bounds for each of the calibrated parameters.
 #'
@@ -766,8 +697,9 @@ get_bounds <- function() {
 #' @param v_ub Vector with lower bounds for each parameter.
 #' @param v_lb Vector with upper bounds for each parameter.
 #' @return 
-#' A matrix with 3 rows and \code{n_samp} rows. Each row corresponds to a 
-#' parameter set sampled from their prior distributions
+#' A matrix with number of calibrated parameters as columns and \code{n_samp} 
+#' rows. Each row corresponds to a parameter set sampled from their prior 
+#' distributions.
 #' @export
 sample.prior <- function(n_samp,
                          v_param_names = names(get_bounds()$v_lb), #make sure this is actually same name as in model params
@@ -828,7 +760,7 @@ log_prior <- function(v_params,
 #' Evaluate log-prior of calibrated parameters for OPTIMIZATION purposes
 #'
 #' \code{log_prior} computes a log-prior value for one (or multiple) parameter 
-#' set(s) based on their prior distributions and it's used for OPTIMIZATION 
+#' set(s) based on their prior distributions. Used for OPTIMIZATION 
 #' purposes, NOT Bayesian estimation.
 #' @param v_params Vector (or matrix) of model parameters.
 #' @param v_param_names Vector with parameter names.
@@ -872,7 +804,7 @@ log_prior_opt <- function(v_params,
 #' Evaluate prior of calibrated parameters
 #'
 #' \code{prior} computes a prior value for one (or multiple) parameter set(s).
-#' @param v_params Vector (or matrix) of model parameters 
+#' @param v_params Vector (or matrix) of model parameters. 
 #' @return 
 #' A scalar (or vector) with prior values.
 #' @export
@@ -880,65 +812,3 @@ prior <- function(v_params) {
   v_prior <- exp(log_prior(v_params)) 
   return(v_prior)
 }
-
-#' Get operating system
-#' 
-#' @return 
-#' A string with the operating system.
-#' @export
-get_os <- function(){
-  sysinf <- Sys.info()
-  if (!is.null(sysinf)){
-    os <- sysinf['sysname']
-    if (os == 'Darwin')
-      os <- "MacOSX"
-  } else { ## mystery machine
-    os <- .Platform$OS.type
-    if (grepl("^darwin", R.version$os))
-      os <- "osx"
-    if (grepl("linux-gnu", R.version$os))
-      os <- "linux"
-  }
-  tolower(os)
-}
-
-#' Helper convenience function that defines age-specific lists of periods for values that 
-#' change over the duration of the simulation.
-#' 
-#' \code{get_non_const_multiage_list} Adds lists of time periods as new entries 
-#' in list of age group lists
-#' @param v_time_stop vector with time period at which values change (in days).
-#' Last entry should be n_t.
-#' @param m_ageval matrix of values for each age group (n_ages) at each time period
-#' @return 
-#' List (l_l_period) list of lists of periods (1 per age group) with 
-#' non-constant values
-#' @export
-get_non_const_multiage_list <- function(v_time_stop, m_ageval) {
-  n_ages     <- nrow(m_ageval)
-  n_periods  <- length(v_time_stop)
-  l_l_period <- NULL
-  
-  for(curr_age in 1:n_ages) { # curr_age <- 1
-    curr_l_period <- NULL
-    time_start    <- 0
-    for(period in 1:n_periods){ # period <- 1
-      time_stop <- v_time_stop[period] 
-      curr_period <- make_period(functional_form = "constant", 
-                                 time_start      = time_start, 
-                                 time_stop       = time_stop,
-                                 val_start       = m_ageval[curr_age, period],
-                                 val_end         = m_ageval[curr_age, period]
-      )
-      if(period==1){
-        curr_l_period <- add_period(NULL, curr_period) 
-      } else{
-        curr_l_period <- add_period(curr_l_period, curr_period)
-      }
-      time_start <- time_stop
-    }
-    l_l_period <- add_list_periods(l_l_period, curr_l_period)
-  }
-  return(l_l_period)
-} 
-

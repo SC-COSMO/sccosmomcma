@@ -2,13 +2,12 @@
 #'
 #' \code{gen_hosp_targets} generates targets for hospitalization parameters. 
 #'
-#' @param n_time_stamp   Date at which hosp series were released
-#' @param n_date_ini     Initial date to generate targets
-#' @param n_date_last    Last date to generate targets
+#' @param n_time_stamp Date at which hospitalization series were released.
+#' @param n_date_ini Initial date to generate targets.
+#' @param n_date_last Last date to generate targets.
 #' @return 
-#' A data.frame with state-specific calibration targets for Mexico.
+#' A data.frame with state-specific calibration targets.
 #' @export
-#'
 gen_hosp_targets <-function(n_time_stamp   = "2020-12-21",
                             n_date_ini     = NULL,
                             n_date_last    = "2020-12-07"){
@@ -172,14 +171,14 @@ gen_hosp_targets <-function(n_time_stamp   = "2020-12-21",
 
 #' Plot hospitalization targets
 #'
-#' \code{plot_hosp_targets} plots hospitalization targets.
+#' \code{plot_hosp_targets} plot calibration targets.
 #'
-#' @param l_hosp_targets List. Calibration targets.
-#' @param print_plot Logical. Print plot if TRUE.
-#' @param save_plot Logical. Save plot if TRUE.
+#' @param l_hosp_targets List of calibration targets.
+#' @param print_plot Flag (default is FALSE) of whether to print plot.
+#' @param save_plot Flag (default is FALSE) of whether to save plot.
 #' @return
-#' A ggplot2 object.
-#' 
+#' A ggplot object.
+#' @export
 plot_hosp_targets <- function(l_hosp_targets, 
                               print_plot = TRUE, 
                               save_plot = TRUE){
@@ -227,7 +226,7 @@ plot_hosp_targets <- function(l_hosp_targets,
 #' @param v_sd Vector of standard deviations (or standard errors)
 #' @return
 #' A covariance matrix.
-#'
+#' @export
 hosp_acor2cov <- function(v_acor, v_sd){
   n_y <- length(v_acor)
   m_cor <- matrix(0, n_y, n_y)

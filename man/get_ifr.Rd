@@ -2,12 +2,12 @@
 % Please edit documentation in R/02_mortality_functions.R
 \name{get_ifr}
 \alias{get_ifr}
-\title{The Stanford-CIDE COronavirus Simulation MOdel (SC-COSMO)}
+\title{Get the fraction of undetected cases that die}
 \usage{
 get_ifr(time, l_params_all)
 }
 \arguments{
-\item{time}{the time (numeric, in days) at which v_ifr is evaluated}
+\item{time}{Time (numeric, in days) at which \code{v_ifr} is evaluated.}
 
 \item{l_params_all}{List with all parameters of decision model.}
 }
@@ -15,5 +15,6 @@ get_ifr(time, l_params_all)
 Proportion (age-specific) of undetected cases that die at a given point in time.
 }
 \description{
-\code{get_ifr} pulls age-specific fraction of undetected cases that die at a given time
+\code{get_ifr} pulls age-specific fraction of undetected cases that die at a
+given time.
 }

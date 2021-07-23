@@ -1,69 +1,79 @@
-#' Base-case inital parameter set
+#' Base-case initial parameter set
 #'
-#' \code{load_params_init} generates the initial values of the SC-COSMO parameters
+#' \code{load_params_init} generates the initial values of the SC-COSMO parameters.
 #' 
-#' @param n_t Time horizon in day.
+#' @param n_t Time horizon in days.
 #' @param time_step Model evaluations per day.
-#' @param comp Logical. Should the compiled version of SC-COSMO be used?
+#' @param comp Flag (default TRUE) of whether the compiled version of SC-COSMO 
+#' should be used.
 #' @param v_init_age_grps Vector with initial ages of age groups.
-#' @param v_inf_init_ages Vector with number of individuals in first .
+#' @param v_inf_init_ages Vector with number of individuals in first
 #' infectious class for each age group. Default will assign 1 for each age 
 #' group.
 #' @param ctry Country.
 #' @param ste State.
 #' @param cty County or municipality.
 #' @param l_contact_info A list with overall and setting specific contact 
-#' matrices, typically obtained from `sccosmoData`.
+#' matrices.
 #' @param r_birth Daily birth rate (crude).
 #' @param r_beta Transmission parameters.
 #' @param v_sigma Age-specific daily rate of progression of exposed individuals 
-#' (Latent period)
+#' (Latent period).
 #' @param v_gamma Age-specific daily rate of recovery of infectious individuals 
-#' (Infectiousness period)
+#' (Infectiousness period).
 #' @param v_omega Age-specific daily rate of waning immunity of recovered 
-#' individuals
-#' @param l_nu_exp1_dx list specifying time-varying case detection when exposed l=1
-#' @param l_nu_exp2_dx list specifying time-varying case detection when exposed l=2
-#' @param l_nu_inf1_dx list specifying time-varying case detection when infectious l=1
-#' @param l_nu_inf2_dx list specifying time-varying case detection when infectious l=2
-#' @param l_phi_exp1_dx list specifying time-varying screen detection when exposed l=1
-#' @param l_phi_exp2_dx list specifying time-varying screen detection when exposed l=2
-#' @param l_phi_inf1_dx list specifying time-varying screen detection when infectious l=1
-#' @param l_phi_inf2_dx list specifying time-varying screen detection when infectious l=2
-#' @param v_cfr Age-specific case fatality rate. Default from \code{data-raw} 
-#' folder.
-#' @param v_ifr Age-specific infection fatality rate. Default from \code{data-raw} 
-#' folder.
-#' @param l_interventions a list of intervention "objects" defining type, timing, and
-#' effects of interventions.
-#' @param l_idx_scale_factor Age-specific infectiousness reduction factor on detected cases
-#' @param v_reduced_sus Age-specific reduction factor on susceptibility
-#' @param v_alpha_dx Age-specific reduction in mortality on detected infectious vs undetected infectious
-#' @param l_l_hospitalizations list of lists specifying age-specific,
-#'                             time-varying probability of hospitalizations
-#' @param v_p_hosp Age-specific Probability of hospitalization for detected (prevalent or 
-#' incident) cases     
-#' @param v_p_s_hosp Age-specific Proportion of hospitalizations that are 
-#' severe based on NEJM definition
-#' @param v_p_icu_s_hosp Age-specific Probability of going to ICU given that 
-#' you are severe hospitalization 
-#' @param v_p_icu_ns_hosp Age-specific Probability of going to ICU given that 
-#' you are non-severe hospitalization
+#' individuals.
+#' @param l_nu_exp1_dx List specifying time-varying case detection when exposed
+#' \code{l = 1}.
+#' @param l_nu_exp2_dx List specifying time-varying case detection when exposed 
+#' \code{l = 2}.
+#' @param l_nu_inf1_dx List specifying time-varying case detection when infectious
+#' \code{l = 1}.
+#' @param l_nu_inf2_dx List specifying time-varying case detection when infectious
+#' \code{l = 2}.
+#' @param l_phi_exp1_dx List specifying time-varying screen detection when exposed
+#' \code{l = 1}.
+#' @param l_phi_exp2_dx List specifying time-varying screen detection when exposed
+#'\code{l = 2}.
+#' @param l_phi_inf1_dx List specifying time-varying screen detection when 
+#' infectious \code{l = 1}.
+#' @param l_phi_inf2_dx List specifying time-varying screen detection when 
+#' infectious \code{l = 2}.
+#' @param l_cfr Age-specific case fatality rate.
+#' @param l_ifr Age-specific infection fatality rate.
+#' @param l_interventions List of intervention "objects" defining type, timing,
+#' and effects of interventions.
+#' @param l_idx_scale_factor Age-specific infectiousness reduction factor on 
+#' detected cases.
+#' @param v_reduced_sus Age-specific reduction factor on susceptibility.
+#' @param v_alpha_dx Age-specific reduction in mortality on detected infectious
+#' vs undetected infectious.   
+#' @param l_p_hosp Age-specific probability of hospitalization for detected (prevalent or 
+#' incident) cases.
+#' @param v_p_s_hosp Age-specific proportion of hospitalizations that are 
+#' severe based on NEJM definition.
+#' @param v_p_icu_s_hosp Age-specific probability of going to ICU given that 
+#' you are severe hospitalization.
+#' @param v_p_icu_ns_hosp Age-specific probability of going to ICU given that 
+#' you are non-severe hospitalization.
 #' @param m_r_exit_tot Age-specific rate of non-severe hospital exit
 #' @param m_r_exit_nonicu Age-specific rate of severe hospital exit
 #' @param m_r_exit_icu Age-specific rate of ICU hospital exit
-#' @param m_sigma_tot Age-specific sigma (gamma distrib) tot hosp duration
-#' @param m_sigma_nonicu  Age-specific sigma (gamma distrib) non ICU hosp duration
-#' @param m_sigma_icu Age-specific sigma (gamma distrib) ICU hosp duration
-#' @param n_hhsize Household size (integer)
-#' @param r_tau Transmission rate in the household model
+#' @param m_sigma_tot Age-specific sigma (gamma distribution) total 
+#' hospitalization duration.
+#' @param m_sigma_nonicu  Age-specific sigma (gamma distribution) non ICU 
+#' hospitalizations duration.
+#' @param m_sigma_icu Age-specific sigma (gamma distribution) ICU hospitalization
+#' duration.
+#' @param n_hhsize Household size (integer).
+#' @param r_tau Transmission rate in the household model.
 #' @param r_sigma Daily rate of progression of exposed individuals 
-#' (Latent period). Default to the first entry of the age-specific v_sigma
+#' (Latent period). Default to the first entry of the age-specific \code{v_sigma}.
 #' @param r_gamma Daily rate of recovery of infectious individuals 
 #' (Infectiousness period). Default to the first entry of the age-specific 
-#' v_gamma
+#' \code{v_gamma}.
 #' @param r_omega Waning rate for the household model (default to the first 
-#' entry of the age-specific v_omega)
+#' entry of the age-specific \code{v_omega}).
 #' Default will assign a reduction factor of 1 (i.e., no social distancing).
 #' @return 
 #' List of all parameters 
@@ -322,8 +332,10 @@ load_params_init <- function(
 #' infectious detected states from multiple sources and creates a list.
 #'
 #' @param l_params_init List with initial set of parameters
-#' @param file.init String with the location and name of the file with initial set of parameters
-#' @param file.mort String with the location and name of the file with mortality data
+#' @param file.init String with the location and name of the file with initial
+#' set of parameters.
+#' @param file.mort String with the location and name of the file with mortality
+#' data.
 #' @return 
 #' A list of all parameters used for the decision model.
 #' @export
@@ -725,12 +737,14 @@ load_all_params <- function(l_params_init = load_params_init(),
 #' \code{update_param_list} is used to update list of all parameters with new 
 #' values for specific parameters.
 #'
-#' @param l_params_all List with all parameters of decision model
-#' @param params_updated Parameters for which values need to be updated
+#' @param l_params_all List with all parameters of decision model.
+#' @param params_updated Parameters for which values need to be updated.
 #' @return 
 #' A list with all parameters updated.
 #' @export
-update_param_list <- function(regen_internals_flag = TRUE, l_params_all, params_updated){
+update_param_list <- function(regen_internals_flag = TRUE, 
+                              l_params_all, 
+                              params_updated){
   ### Verify if `params_updated` is a list, if not, make it a list
   if (typeof(params_updated) != "list"){
     params_updated <- split(unname(params_updated), names(params_updated)) #converte the named vector to a list
@@ -836,17 +850,17 @@ update_param_list <- function(regen_internals_flag = TRUE, l_params_all, params_
 #' \code{obtain_init_pop} generates the number of people at each compartment by
 #' age group.
 #'
-#' @param v_init_age_grps Vector with initial ages of age groups
+#' @param v_init_age_grps Vector with initial ages of age groups.
 #' @param v_inf_init_ages Vector with number of individuals in first infectious 
-#' class for each age group
-#' @param v_names_ages Vector with age groups
-#' @param n_ages Number of age groups
-#' @param v_names_states Vector with names of compartment states
-#' @param n_states NUmber of compartment states
-#' @param ctry Country
-#' @param ste State
-#' @param cty County or municipality
-#' @param year Year
+#' class for each age group.
+#' @param v_names_ages Vector with age groups.
+#' @param n_ages Number of age groups.
+#' @param v_names_states Vector with names of compartment states.
+#' @param n_states Number of compartment states.
+#' @param ctry Country.
+#' @param ste State.
+#' @param cty County or municipality.
+#' @param year Year.
 #' @return 
 #' An array with the initial population at each class by age group.
 #' @export
@@ -884,11 +898,11 @@ obtain_init_pop <- function(v_init_age_grps = c(0, 5, 15, 25, 45, 55, 65, 70),
 #' \code{obtain_setting_data} generates the number of people at each compartment by
 #' age group.
 #'
-#' @param v_init_age_grps Vector with initial ages of age groups
-#' @param ctry Country
-#' @param ste State
-#' @param cty County or municipality
-#' @param year Year
+#' @param v_init_age_grps Vector with initial ages of age groups.
+#' @param ctry Country.
+#' @param ste State.
+#' @param cty County or municipality.
+#' @param year Year.
 #' @return 
 #' An array with the initial population at each class by age group.
 #' @export

@@ -7,9 +7,9 @@
 update_param_list(regen_internals_flag = TRUE, l_params_all, params_updated)
 }
 \arguments{
-\item{l_params_all}{List with all parameters of decision model}
+\item{l_params_all}{List with all parameters of decision model.}
 
-\item{params_updated}{Parameters for which values need to be updated}
+\item{params_updated}{Parameters for which values need to be updated.}
 }
 \value{
 A list with all parameters updated.

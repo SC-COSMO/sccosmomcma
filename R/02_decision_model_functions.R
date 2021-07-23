@@ -2,10 +2,11 @@
 #'
 #' \code{cosmo} implements the Stanford-CIDE COronavirus Simulation MOdel 
 #' (SC-COSMO), which is an age-structure Susceptible-Exposed-Infectious-Recovered
-#' (SEIR) model of the coronavirus disease (COVID-19).
-#' @param l_params_all List with all parameters of decision model
+#' (SEIR) model of the Coronavirus disease (Covid-19).
+#' @param l_params_all List with all parameters of decision model.
 #' @return 
-#' A data.frame with population for each class by age group over time.
+#' A data.frame with population for each class by age group over time and a
+#' list with all pareameters of decision model.
 #' @export
 cosmo <- function(l_params_all){
   df_out_cosmo <- as.data.frame(deSolve::ode(y = l_params_all$v_states_init, 
@@ -24,9 +25,9 @@ cosmo <- function(l_params_all){
 #' \code{cosmo_dXdt} computes the derivatives of the Stanford-CIDE COronavirus 
 #' Simulation MOdel (SC-COSMO).
 #'
-#' @param time Time at which the derivatives will be computed
-#' @param v_pop Vector with the population by class
-#' @param l_params_all List with all parameters of SC-COSMO model
+#' @param time Time at which the derivatives will be computed.
+#' @param v_pop Vector with the population by class.
+#' @param l_params_all List with all parameters of SC-COSMO model.
 #' @return 
 #' A list with a vector of derivatives for each class by age group.
 #' @export
@@ -420,7 +421,7 @@ cosmo_dXdt <- function(time, v_pop, l_params_all) {
 #' Compiled Stanford-CIDE COronavirus Simulation MOdel (SC-COSMO) with detected
 #' infectious states
 #'
-#' \code{cosmo_dXdt_comp} Compiled version of the Stanford-CIDE COronavirus 
+#' \code{cosmo_dXdt_comp} compiled version of the Stanford-CIDE COronavirus 
 #' Simulation MOdel (SC-COSMO).
 #' @export
 cosmo_dXdt_comp <- compiler::cmpfun(cosmo_dXdt)

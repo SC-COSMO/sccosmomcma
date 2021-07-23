@@ -7,7 +7,7 @@
 get_prop_hosp(time, l_params_all)
 }
 \arguments{
-\item{time}{the time (numeric, in days) at which p_hosp is evaluated}
+\item{time}{Time (numeric, in days) at which \code{p_hosp} is evaluated.}
 
 \item{l_params_all}{List with all parameters of decision model.}
 }
@@ -16,5 +16,5 @@ Proportion hospitalized (age-specific) at a given point in time.
 }
 \description{
 \code{get_prop_hosp} pulls age-specific proportion of incident detected cases
-hospitalized for a given time
+hospitalized for a given time.
 }

@@ -7,20 +7,23 @@
 make_period(functional_form, time_start, time_stop, val_start, val_end, ...)
 }
 \arguments{
-\item{functional_form}{character string of "linear", "constant", or "general_logit"}
+\item{functional_form}{Character string of "linear", "constant", or
+"general_logit".}
 
-\item{time_start}{numeric time period start (in days)}
+\item{time_start}{Numeric time period start (in days).}
 
-\item{time_stop}{numeric time period end (in days)}
+\item{time_stop}{Numeric time period end (in days).}
 
-\item{val_start}{starting value for time varying parameter at time_start}
+\item{val_start}{Starting value for time varying parameter at \code{time_start}.}
 
-\item{val_end}{ending value for time varying parameter at time_end}
+\item{val_end}{Ending value for time varying parameter at \code{time_end}.}
+
+\item{...}{Further arguments to be passed to.}
 }
 \value{
-list with parameters initialized
+A list with parameters initialized.
 }
 \description{
-\code{make_period} Defines a time chunk for a generic time varying parameter.
+\code{make_period} defines a time chunk for a generic time varying parameter.
 Includes some required arguments, but also allows additional arguments.
 }

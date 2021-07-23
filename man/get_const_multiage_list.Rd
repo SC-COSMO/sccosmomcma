@@ -8,13 +8,15 @@ will remain constant over the duration of the simulation.}
 get_const_multiage_list(time_stop, v_ageval)
 }
 \arguments{
-\item{time_stop}{numeric time period end (in days) (should be n_t)}
+\item{time_stop}{Time period end (numeric, in days) (should be \code{n_t}).}
 
-\item{v_ageval}{vector of const values for each each group (n_ages)}
+\item{v_ageval}{Vector of constant values for each each group.}
 }
 \value{
-List (l_l_period) list of lists of periods (1 per age group) with constant values
+List (\code{l_l_period}) list of lists of periods (1 per age group)
+with constant values.
 }
 \description{
-\code{get_const_multiage_list} Adds lists of time periods as new entries in list of age group lists
+\code{get_const_multiage_list} adds lists of time periods as new entries in
+list of age group lists.
 }

@@ -7,13 +7,13 @@
 calc_sx_totals(l_out_cosmo)
 }
 \arguments{
-\item{l_out_cosmo}{List with output from SC-COSMO and all parameters}
+\item{l_out_cosmo}{List with output from SC-COSMO and all parameters.}
 }
 \value{
 A data.frame with the total number of symptomatic infections (E and I)
-by age group and overall as columns over time
+by age group and overall as columns over time.
 }
 \description{
-\code{calc_sx_totals} Calculate total number of symptomatic
+\code{calc_sx_totals} calculate total number of symptomatic
 infections (E and I) by age group and overall over time.
 }

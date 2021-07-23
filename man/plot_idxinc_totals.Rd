@@ -13,19 +13,24 @@ plot_idxinc_totals(
 )
 }
 \arguments{
-\item{l_out_cosmo}{List with output from SC-COSMO and all parameters}
+\item{l_out_cosmo}{List with output from SC-COSMO and all parameters.}
 
-\item{proportion}{Logical. Divides incident diagnosed infections by total population}
+\item{proportion}{Flag (default is FALSE) of whether to divide total number of
+incident diagnosed infectious by total population.}
 
-\item{age_proportion}{Logical. Divides incident diagnosed infections by age-specific total population}
+\item{age_proportion}{Flag (default is FALSE) of whether to divide
+total number of incident diagnosed infectious by age-specific total population.}
 
-\item{only_all}{logical. Should only overall total infections be plotted}
+\item{only_all}{Flag (default is TRUE) of whether only overall ("All") total
+total number of incident diagnosed infectious should be plotted.}
+
+\item{print_plot}{Flag (default is TRUE) of whether the plot should be printed
+in screen.}
 }
 \value{
-A data.frame with the total number of incident diagnosed infectious infections by age group and in total
-as columns over time
+A ggplot object.
 }
 \description{
-\code{plot_idxinc_totals} Plot total number of incident diagnosed
+\code{plot_idxinc_totals} plot total number of incident diagnosed
 infectious infections by age group and/or in total over time.
 }

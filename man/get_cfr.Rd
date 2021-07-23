@@ -2,12 +2,12 @@
 % Please edit documentation in R/02_mortality_functions.R
 \name{get_cfr}
 \alias{get_cfr}
-\title{The Stanford-CIDE COronavirus Simulation MOdel (SC-COSMO)}
+\title{Proportion (age-specific) of detected cases that die}
 \usage{
 get_cfr(time, l_params_all)
 }
 \arguments{
-\item{time}{the time (numeric, in days) at which v_cfr is evaluated}
+\item{time}{Time (numeric, in days) at which \code{v_cfr} is evaluated.}
 
 \item{l_params_all}{List with all parameters of decision model.}
 }
@@ -15,5 +15,6 @@ get_cfr(time, l_params_all)
 Proportion (age-specific) of detected cases that die at a given point in time.
 }
 \description{
-\code{get_cfr} pulls age-specific fraction of detected cases that die at a given time
+\code{get_cfr} pulls age-specific fraction of detected cases that die at a
+given time.
 }

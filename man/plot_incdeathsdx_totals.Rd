@@ -2,7 +2,7 @@
 % Please edit documentation in R/02_model_output_calc_plot_functions.R
 \name{plot_incdeathsdx_totals}
 \alias{plot_incdeathsdx_totals}
-\title{Plot total Incident COVID19 deaths from diagnosed infections}
+\title{Plot total incident Covid-19 deaths from diagnosed infections}
 \usage{
 plot_incdeathsdx_totals(
   l_out_cosmo,
@@ -15,13 +15,22 @@ plot_incdeathsdx_totals(
 \arguments{
 \item{l_out_cosmo}{List with output from SC-COSMO and all parameters}
 
-\item{only_all}{logical. Should only overall total deaths from COVID19 be plotted}
+\item{proportion}{Flag (default is FALSE) of whether to divide total
+incident number of Covid-19 deaths by total population.}
+
+\item{age_proportion}{Flag (default is FALSE) of whether to divide
+total incident number of Covid-19 deaths by age-specific total population.}
+
+\item{only_all}{Flag (default is TRUE) of whether only overall ("All") total incident
+number of Covid-19 deaths should be plotted.}
+
+\item{print_plot}{Flag (default is TRUE) of whether the plot should be printed
+in screen.}
 }
 \value{
-A data.frame with the total number of COVID19 deaths from diagnosed
-infections by age group and in total as columns over time
+A ggplot object.
 }
 \description{
-\code{plot_incdeathsdx_totals} Plot total incident number of COVID19
+\code{plot_incdeathsdx_totals} plot total incident number of Covid-19
 deaths from diagnosed infections by age group and/or in total over time.
 }
