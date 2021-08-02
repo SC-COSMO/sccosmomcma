@@ -753,95 +753,95 @@ update_param_list <- function(regen_internals_flag = TRUE,
   ### There are reasons in calibration to pass arguments through so have turned this from
   ### stop to warn and commented out
   ### may be better to add a flag about whether to be strict with this or not
-#  if(sum((names(params_updated) %in% names(l_params_all))) != length(params_updated)){
-#    warn("Not all variables in `params_updated` are included in `l_params_all`")
-#  }
+  #  if(sum((names(params_updated) %in% names(l_params_all))) != length(params_updated)){
+  #    warn("Not all variables in `params_updated` are included in `l_params_all`")
+  #  }
   l_params_all <- modifyList(l_params_all, params_updated) #update the values
-  if(regen_internals_flag == TRUE) {
-    l_params_all$l_waifws_all_internal <- gen_all_waifws(
-                                            l_params_all$l_interventions, 
-                                            l_params_all$l_contact_info, 
-                                            l_params_all$v_names_ages, 
-                                            l_params_all$n_t
-                                            )
-    l_params_all$l_intervention_effects_all_internal <- gen_all_intervention_effects(
-                                                          l_params_all$l_interventions, 
-                                                          l_params_all$v_names_ages, 
-                                                          l_params_all$n_t
-                                                          )
-    l_params_all$m_betas_all_internal <- gen_all_betas(
-                                          l_params_all$l_interventions, 
-                                          l_params_all$l_contact_info, 
-                                          l_params_all$v_names_ages, 
-                                          l_params_all$n_t,
-                                          l_params_all$r_beta
-                                        )
+
+  l_params_all$l_waifws_all_internal <- gen_all_waifws(
+    l_params_all$l_interventions, 
+    l_params_all$l_contact_info, 
+    l_params_all$v_names_ages, 
+    l_params_all$n_t
+  )
+  l_params_all$l_intervention_effects_all_internal <- gen_all_intervention_effects(
+    l_params_all$l_interventions, 
+    l_params_all$v_names_ages, 
+    l_params_all$n_t
+  )
+  l_params_all$m_betas_all_internal <- gen_all_betas(
+    l_params_all$l_interventions, 
+    l_params_all$l_contact_info, 
+    l_params_all$v_names_ages, 
+    l_params_all$n_t,
+    l_params_all$r_beta
+  )
+  
+  
+  l_params_all$r_omega  = l_params_all$v_omega[1]
+  
+  l_params_all$v_nu_exp1_dx <- gen_time_varying(l_period_def = l_params_all$l_nu_exp1_dx, 
+                                                max_time     = l_params_all$n_t + 1)
+  l_params_all$v_nu_exp2_dx <- gen_time_varying(l_period_def = l_params_all$l_nu_exp2_dx, 
+                                                max_time     = l_params_all$n_t + 1)
+  l_params_all$v_nu_inf1_dx <- gen_time_varying(l_period_def = l_params_all$l_nu_inf1_dx, 
+                                                max_time     = l_params_all$n_t + 1)
+  l_params_all$v_nu_inf2_dx <- gen_time_varying(l_period_def = l_params_all$l_nu_inf2_dx, 
+                                                max_time     = l_params_all$n_t + 1)
+  
+  l_params_all$v_phi_exp1_dx <- gen_time_varying(l_period_def = l_params_all$l_phi_exp1_dx, 
+                                                 max_time     = l_params_all$n_t + 1)
+  l_params_all$v_phi_exp2_dx <- gen_time_varying(l_period_def = l_params_all$l_phi_exp2_dx, 
+                                                 max_time     = l_params_all$n_t + 1)
+  l_params_all$v_phi_inf1_dx <- gen_time_varying(l_period_def = l_params_all$l_phi_inf1_dx, 
+                                                 max_time     = l_params_all$n_t + 1)
+  l_params_all$v_phi_inf2_dx <- gen_time_varying(l_period_def =l_params_all$l_phi_inf2_dx, 
+                                                 max_time     = l_params_all$n_t + 1)  
+  
+  # l_params_all$m_p_hosp <- matrix(0, nrow = l_params_all$n_ages, ncol = l_params_all$n_t + 1)
+  # for (i in 1:l_params_all$n_ages) {
+  #   l_params_all$m_p_hosp[i, ] <- gen_time_varying(l_params_all$l_p_hosp[[i]], max_time = l_params_all$n_t + 1)
+  # }
+  # 
+  # l_params_all$m_cfr <- matrix(0, nrow = l_params_all$n_ages, ncol = l_params_all$n_t + 1)
+  # for (i in 1:l_params_all$n_ages) {
+  #   l_params_all$m_cfr[i, ] <- gen_time_varying(l_params_all$l_cfr[[i]], max_time = l_params_all$n_t + 1)
+  # }
+  # 
+  # l_params_all$m_ifr <- matrix(0, nrow = l_params_all$n_ages, ncol = l_params_all$n_t + 1)
+  # for (i in 1:l_params_all$n_ages) {
+  #   l_params_all$m_ifr[i, ] <- gen_time_varying(l_params_all$l_ifr[[i]], max_time = l_params_all$n_t + 1)
+  # }
+  
+  #m_p_hosp <- matrix(0, nrow = n_ages, ncol = n_t + 1)
+  l_params_all$m_p_hosp <- list()
+  for (i in 1:l_params_all$n_ages) {
+    #m_p_hosp[i, ] <- gen_time_varying(l_p_hosp[[i]], max_time = n_t + 1)
+    l_params_all$m_p_hosp[[i]] <- gen_time_varying(l_params_all$l_p_hosp[[i]], max_time = l_params_all$n_t + 1)
     
-    
-    l_params_all$r_omega  = l_params_all$v_omega[1]
-    
-    l_params_all$v_nu_exp1_dx <- gen_time_varying(l_period_def = l_params_all$l_nu_exp1_dx, 
-                                     max_time     = l_params_all$n_t + 1)
-    l_params_all$v_nu_exp2_dx <- gen_time_varying(l_period_def = l_params_all$l_nu_exp2_dx, 
-                                     max_time     = l_params_all$n_t + 1)
-    l_params_all$v_nu_inf1_dx <- gen_time_varying(l_period_def = l_params_all$l_nu_inf1_dx, 
-                                     max_time     = l_params_all$n_t + 1)
-    l_params_all$v_nu_inf2_dx <- gen_time_varying(l_period_def = l_params_all$l_nu_inf2_dx, 
-                                     max_time     = l_params_all$n_t + 1)
-    
-    l_params_all$v_phi_exp1_dx <- gen_time_varying(l_period_def = l_params_all$l_phi_exp1_dx, 
-                                      max_time     = l_params_all$n_t + 1)
-    l_params_all$v_phi_exp2_dx <- gen_time_varying(l_period_def = l_params_all$l_phi_exp2_dx, 
-                                      max_time     = l_params_all$n_t + 1)
-    l_params_all$v_phi_inf1_dx <- gen_time_varying(l_period_def = l_params_all$l_phi_inf1_dx, 
-                                      max_time     = l_params_all$n_t + 1)
-    l_params_all$v_phi_inf2_dx <- gen_time_varying(l_period_def =l_params_all$l_phi_inf2_dx, 
-                                      max_time     = l_params_all$n_t + 1)  
-    
-    # l_params_all$m_p_hosp <- matrix(0, nrow = l_params_all$n_ages, ncol = l_params_all$n_t + 1)
-    # for (i in 1:l_params_all$n_ages) {
-    #   l_params_all$m_p_hosp[i, ] <- gen_time_varying(l_params_all$l_p_hosp[[i]], max_time = l_params_all$n_t + 1)
-    # }
-    # 
-    # l_params_all$m_cfr <- matrix(0, nrow = l_params_all$n_ages, ncol = l_params_all$n_t + 1)
-    # for (i in 1:l_params_all$n_ages) {
-    #   l_params_all$m_cfr[i, ] <- gen_time_varying(l_params_all$l_cfr[[i]], max_time = l_params_all$n_t + 1)
-    # }
-    # 
-    # l_params_all$m_ifr <- matrix(0, nrow = l_params_all$n_ages, ncol = l_params_all$n_t + 1)
-    # for (i in 1:l_params_all$n_ages) {
-    #   l_params_all$m_ifr[i, ] <- gen_time_varying(l_params_all$l_ifr[[i]], max_time = l_params_all$n_t + 1)
-    # }
-    
-    #m_p_hosp <- matrix(0, nrow = n_ages, ncol = n_t + 1)
-    l_params_all$m_p_hosp <- list()
-    for (i in 1:l_params_all$n_ages) {
-      #m_p_hosp[i, ] <- gen_time_varying(l_p_hosp[[i]], max_time = n_t + 1)
-      l_params_all$m_p_hosp[[i]] <- gen_time_varying(l_params_all$l_p_hosp[[i]], max_time = l_params_all$n_t + 1)
-      
-    }
-    
-    #m_cfr <- matrix(0, nrow = n_ages, ncol = n_t + 1)
-    l_params_all$m_cfr <- list()
-    for (i in 1:l_params_all$n_ages) {
-      #m_cfr[i, ] <- gen_time_varying(l_cfr[[i]], max_time = n_t + 1)
-      l_params_all$m_cfr[[i]] <- gen_time_varying(l_params_all$l_cfr[[i]], max_time = l_params_all$n_t + 1)
-    }
-    
-    #m_ifr <- matrix(0, nrow = n_ages, ncol = n_t + 1)
-    l_params_all$m_ifr <- list()
-    for (i in 1:l_params_all$n_ages) {
-      #m_ifr[i, ] <- gen_time_varying(l_ifr[[i]], max_time = n_t + 1)
-      l_params_all$m_ifr[[i]] <- gen_time_varying(l_params_all$l_ifr[[i]], max_time = l_params_all$n_t + 1)
-    }
-    
-    #m_idx_scale_factor <- matrix(0, nrow = n_ages, ncol = n_t + 1)
-    l_params_all$m_idx_scale_factor <- list()
-    for (i in 1:l_params_all$n_ages) {
-      #m_idx_scale_factor[i, ] <- gen_time_varying(l_idx_scale_factor[[i]], max_time = n_t + 1)
-      l_params_all$m_idx_scale_factor[[i]] <- gen_time_varying(l_params_all$l_idx_scale_factor[[i]], max_time = l_params_all$n_t + 1)
-    }
   }
+  
+  #m_cfr <- matrix(0, nrow = n_ages, ncol = n_t + 1)
+  l_params_all$m_cfr <- list()
+  for (i in 1:l_params_all$n_ages) {
+    #m_cfr[i, ] <- gen_time_varying(l_cfr[[i]], max_time = n_t + 1)
+    l_params_all$m_cfr[[i]] <- gen_time_varying(l_params_all$l_cfr[[i]], max_time = l_params_all$n_t + 1)
+  }
+  
+  #m_ifr <- matrix(0, nrow = n_ages, ncol = n_t + 1)
+  l_params_all$m_ifr <- list()
+  for (i in 1:l_params_all$n_ages) {
+    #m_ifr[i, ] <- gen_time_varying(l_ifr[[i]], max_time = n_t + 1)
+    l_params_all$m_ifr[[i]] <- gen_time_varying(l_params_all$l_ifr[[i]], max_time = l_params_all$n_t + 1)
+  }
+  
+  #m_idx_scale_factor <- matrix(0, nrow = n_ages, ncol = n_t + 1)
+  l_params_all$m_idx_scale_factor <- list()
+  for (i in 1:l_params_all$n_ages) {
+    #m_idx_scale_factor[i, ] <- gen_time_varying(l_idx_scale_factor[[i]], max_time = n_t + 1)
+    l_params_all$m_idx_scale_factor[[i]] <- gen_time_varying(l_params_all$l_idx_scale_factor[[i]], max_time = l_params_all$n_t + 1)
+  }
+  
   return(l_params_all)
 }
 
@@ -872,15 +872,10 @@ obtain_init_pop <- function(v_init_age_grps = c(0, 5, 15, 25, 45, 55, 65, 70),
                             ste = NULL, 
                             cty = NULL, 
                             year = 2020){
-  ### CHANGE THIS!
-  if(ctry == "Italy"){
-    POP_data   <- read.csv("data-raw/Italy_2019_REDUCED.csv", header=FALSE)  
-    v_pop_init <- as.matrix(POP_data)
-  } else{
-    df_setting_data <- obtain_setting_data(v_init_age_grps, ctry, ste, cty, year)
-    v_pop_init <- df_setting_data$population
-    v_r_mort   <- df_setting_data$mort_rate
-  }
+
+  df_setting_data <- obtain_setting_data(v_init_age_grps, ctry, ste, cty, year)
+  v_pop_init <- df_setting_data$population
+  v_r_mort   <- df_setting_data$mort_rate
   
   ### Generate array with initial population
   a_states <- array(data = 0, 
