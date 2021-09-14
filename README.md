@@ -21,7 +21,8 @@ following manuscript:
     Goldhaber-Fiebert JD, Stanford-CIDE Coronavirus Simulation Model
     (SC-COSMO) Modeling Consortium (2021) “Dependence of Covid-19
     policies on end-of-year holiday contacts in Mexico City Metropolitan
-    Area: A Modeling Study” (Under review).
+    Area: A Modeling Study”. *Medical Decision Making Policy & Practice*
+    (In press).
 
 <!-- The release that accompanies the published article has been archived in zenodo: https://zenodo.org/record/5093594#.YPYyDy1h1qs -->
 
@@ -37,8 +38,8 @@ update the ‘last accessed’ date):
 > Claypool AL, Salomon JA, Studdert DM, Andrews JR, Goldhaber-Fiebert
 > JD, Stanford-CIDE Coronavirus Simulation Model (SC-COSMO) Modeling
 > Consortium (2021) “Dependence of Covid-19 policies on end-of-year
-> holiday contacts in Mexico City Metropolitan Area: A Modeling Study”
-> (Under review).
+> holiday contacts in Mexico City Metropolitan Area: A Modeling Study”.
+> *Medical Decision Making Policy & Practice* (In press).
 
 > Alarid-Escudero F, Gracia V, Luviano A, Roa J, Peralta Y, Reitsma MB,
 > Claypool AL, Salomon JA, Studdert DM, Andrews JR, Goldhaber-Fiebert
