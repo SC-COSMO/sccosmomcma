@@ -20,12 +20,14 @@ following manuscript:
 -   Alarid-Escudero F, Gracia V, Luviano A, Roa J, Peralta Y, Reitsma
     MB, Claypool AL, Salomon JA, Studdert DM, Andrews JR,
     Goldhaber-Fiebert JD, Stanford-CIDE Coronavirus Simulation Model
-    (SC-COSMO) Modeling Consortium (2021) “Dependence of Covid-19
+    (SC-COSMO) Modeling Consortium (2021) “[Dependence of Covid-19
     policies on end-of-year holiday contacts in Mexico City Metropolitan
-    Area: A Modeling Study”. *Medical Decision Making Policy & Practice*
-    (In press).
+    Area: A Modeling
+    Study](https://journals.sagepub.com/doi/full/10.1177/23814683211049249)”.
+    *Medical Decision Making Policy & Practice* (Online First).
 
-The release that accompanies the published article has been archived in zenodo: https://zenodo.org/badge/latestdoi/371769010
+The release that accompanies the published article has been archived in
+zenodo: <https://zenodo.org/badge/latestdoi/371769010>
 
 ## How to cite this package in your article
 
@@ -38,9 +40,10 @@ update the ‘last accessed’ date):
 > Alarid-Escudero F, Gracia V, Luviano A, Roa J, Peralta Y, Reitsma MB,
 > Claypool AL, Salomon JA, Studdert DM, Andrews JR, Goldhaber-Fiebert
 > JD, Stanford-CIDE Coronavirus Simulation Model (SC-COSMO) Modeling
-> Consortium (2021) “Dependence of Covid-19 policies on end-of-year
-> holiday contacts in Mexico City Metropolitan Area: A Modeling Study”.
-> *Medical Decision Making Policy & Practice* (In press).
+> Consortium (2021) “[Dependence of Covid-19 policies on end-of-year
+> holiday contacts in Mexico City Metropolitan Area: A Modeling
+> Study](https://journals.sagepub.com/doi/full/10.1177/23814683211049249)”.
+> *Medical Decision Making Policy & Practice* (Onlie first).
 
 > Alarid-Escudero F, Gracia V, Luviano A, Roa J, Peralta Y, Reitsma MB,
 > Claypool AL, Salomon JA, Studdert DM, Andrews JR, Goldhaber-Fiebert
@@ -48,5 +51,6 @@ update the ‘last accessed’ date):
 > Consortium (2021). {sccosmomcma}: An R package that implements the
 > Stanford-CIDE Coronavirus Simulation Model (SC-COSMO) to the covid-19
 > pandemic in late 2020 and early 2021 in the Mexico City Metropolitan
-> Area (MCMA) (Version v1.0.0). Zenodo. [https://zenodo.org/badge/latestdoi/371769010](https://zenodo.org/badge/latestdoi/371769010).
-> Last accessed 25 September 2021
+> Area (MCMA) (Version v1.0.0). Zenodo.
+> <https://zenodo.org/badge/latestdoi/371769010>. Last accessed 25
+> September 2021
