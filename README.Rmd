@@ -6,8 +6,6 @@ output: github_document
 
 [![DOI](https://zenodo.org/badge/371769010.svg)](https://zenodo.org/badge/latestdoi/371769010)
 
-# HOLA
-
 # SC-COSMO MCMA
 [`sccosmomcma`](https://github.com/SC-COSMO/sccosmomcma) is an R package that implements the Stanford-CIDE Coronavirus Simulation Model (SC-COSMO) to evaluate the effect of policies considering increased contacts during the end-of-year holidays, intensification of physical distancing, and school reopening on projected confirmed cases and deaths, hospital demand, and hospital capacity exceedance during the covid-19 pandemic in late 2020 and early 2021 in the Mexico City Metropolitan Area (MCMA).
 
